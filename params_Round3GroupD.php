@@ -108,13 +108,13 @@ unset($test);
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclitparameters.wsdl
 $soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoString', 
-        array('inputString' => &$string));
+        array('param0' => &$string));
 $soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoStringArray', 
-        array('inputString' => &$string_array));
+        array('param0' => &$string_array));
 $soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoStruct',
-        array('inputStruct' => &$soapstruct));
+        array('param0' => &$soapstruct));
 $soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoVoid', NULL);
 
