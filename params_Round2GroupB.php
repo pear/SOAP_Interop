@@ -29,10 +29,12 @@ $expect = array(
         'outputInteger'=>34,
         'outputFloat'=>325.325
     );
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoStructAsSimpleTypes',
-    array('inputStruct' => &$soapstruct), $expect);
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoStructAsSimpleTypes',
-    array('inputStruct' => &$soapstruct_soapval), $expect);
+$soap_tests[INTEROP_R2GROUPB][] = 
+    new SOAP_Interop_Test('echoStructAsSimpleTypes',
+        array('inputStruct' => &$soapstruct), $expect);
+$soap_tests[INTEROP_R2GROUPB][] = 
+    new SOAP_Interop_Test('echoStructAsSimpleTypes',
+        array('inputStruct' => &$soapstruct_soapval), $expect);
 
 //***********************************************************
 // GroupB echoSimpleTypesAsStruct

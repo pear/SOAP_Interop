@@ -68,20 +68,21 @@ $float_array_null = NULL;
 $float_array_null_soapval = new SOAP_Value('inputFloatArray','Array',NULL);
 $float_array_null_soapval->arrayType='{http://www.w3.org/2001/XMLSchema}float';
 
-$soapstruct = new SOAPStruct();
-$soapstruct_soapval = $soapstruct->to_soap();
+$soapstruct = new SOAPStruct('arg',34,325.325);
+$soapstruct_soapval = $soapstruct->__to_soap();
+$soapstruct_header_soapval = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest');
 $soapstruct_array = array(&$soapstruct, &$soapstruct, &$soapstruct);
 $soapstruct_array_soapval = new SOAP_Value('inputStructArray','Array',
     array(&$soapstruct_soapval,&$soapstruct_soapval,&$soapstruct_soapval));
 
-$soapstructstruct = new SOAPStructStruct();
-$soapstructstruct_soapval = $soapstructstruct->to_soap();
+$soapstructstruct = new SOAPStructStruct('arg',34,325.325,$soapstruct);
+$soapstructstruct_soapval = &$soapstructstruct->__to_soap();
 $soapstructstruct_array = array(&$soapstructstruct, &$soapstructstruct, &$soapstructstruct);
 $soapstructstruct_array_soapval = new SOAP_Value('inputStructArray','Array',
     array(&$soapstructstruct_soapval,&$soapstructstruct_soapval,&$soapstructstruct_soapval));
 
-$soaparraystruct = new SOAPArrayStruct();
-$soaparraystruct_soapval = $soaparraystruct->to_soap();
+$soaparraystruct = new SOAPArrayStruct('arg',34,325.325,array('good','bad','ugly'));
+$soaparraystruct_soapval = &$soaparraystruct->__to_soap();
 $soaparraystruct_array = array(&$soaparraystruct, &$soaparraystruct, &$soaparraystruct);
 $soaparraystruct_array_soapval = new SOAP_Value('inputStructArray','Array',
     array(&$soaparraystruct_soapval,&$soaparraystruct_soapval,&$soaparraystruct_soapval));
@@ -150,8 +151,10 @@ $multidimarray_soapval =
 $multidimarray_soapval->options['flatten'] = TRUE;
 
 // Round2GroupC values
-$person = new Person1();
-$employee = new Employee(new Person2(), '12435', '1000000');
+$_person = new Person(32,12345,'Shane',TRUE);
+$person = $_person->__to_soap();
+$_employee = new Employee($_person,12345,1000000.00);
+$employee = $_employee->__to_soap();
 
 
 ?>

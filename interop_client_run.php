@@ -28,22 +28,44 @@ $iop = new Interop_Client();
 #$iop->fetchEndpoints();
 
 // set some options
-$iop->currentTest = 'Round 3 Group D RpcEnc';      // see $tests above
+$iop->client_type='pear'; // 'pear' or 'php-soap'
+$iop->currentTest = 'Round 2 Base';      // see $tests above
 $iop->paramType = 'php';     // 'php' or 'soapval'
 $iop->useWSDL = 1;           // 1= do wsdl tests
 $iop->numServers = 0;        // 0 = all
 $iop->specificEndpoint = ''; // test only this endpoint
 $iop->testMethod = '';       // test only this method
-$iop->skipEndpointList = array(); // endpoints to skip
+$iop->skipEndpointList = array('Frontier'); // endpoints to skip
 $this->nosave = 0; // 1= disable saving results to database
 // debug output
 $iop->show = 1;
 $iop->debug = 0;
 $iop->showFaults = 0; // used in result table output
 
-$iop->doTest();  // run a single set of tests using above options
+// these are endpoints that are listed in the interop
+// server, but do not realy exist any longer
+$bad = array('Spheon JSOAP','Phalanx',
+             'SilverStream','SOAPx4 (PHP)',
+             'Virtuoso (development)',
+             'Zolera SOAP Infrastructure');
+$iop->skipEndpointList = array_merge($iop->skipEndpointList, $bad);
+
+
+#$iop->tests = array(/*'Round 2 Base',
+#                       'Round 2 Group B', 
+#                       'Round 2 Group C', */
+#                       'Round 3 Group D Compound 1',
+#                       'Round 3 Group D Compound 2',
+#                       'Round 3 Group D DocLit',
+#                       'Round 3 Group D DocLitParams',
+#                       'Round 3 Group D Import 1',
+#                       'Round 3 Group D Import 2',
+#                       'Round 3 Group D Import 3',
+#                       'Round 3 Group D RpcEnc'
+#            );
+#$iop->doTest();  // run a single set of tests using above options
 #$iop->doGroupTests(); // run a group of tests set in $currentTest
-#$iop->doTests();  // run all tests, ignore above options
+$iop->doTests();  // run all tests, ignore above options
 #$iop->outputTables();
 echo "done";
 

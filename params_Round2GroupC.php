@@ -101,8 +101,7 @@ unset($test);
 // php val tests
 // echoMeStructRequest with endpoint as header destination, doesn't have to understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
-$test->headers[] = array('{http://soapinterop.org/echoheader/}echoMeStructRequest',
-        &$soapstruct, 0,SOAP_TEST_ACTOR_NEXT);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE);
 $test->headers_expect['echoMeStructRequest'] =
     array('echoMeStructResponse'=> &$soapstruct);
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
@@ -110,8 +109,7 @@ unset($test);
 
 // echoMeStructRequest with endpoint as header destination, must understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
-$test->headers[] = array('{http://soapinterop.org/echoheader/}echoMeStructRequest',
-        &$soapstruct, 1,SOAP_TEST_ACTOR_NEXT);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,1);
 $test->headers_expect['echoMeStructRequest'] =
     array('echoMeStructResponse'=> &$soapstruct);
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
@@ -119,16 +117,14 @@ unset($test);
 
 // echoMeStructRequest with endpoint NOT header destination, doesn't have to understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
-$test->headers[] = array('{http://soapinterop.org/echoheader/}echoMeStructRequest',
-        &$soapstruct, 0, SOAP_TEST_ACTOR_OTHER);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,0, SOAP_TEST_ACTOR_OTHER);
 $test->headers_expect['echoMeStructRequest'] = array();
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
 unset($test);
 
 // echoMeStructRequest with endpoint NOT header destination, must understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
-$test->headers[] = array('{http://soapinterop.org/echoheader/}echoMeStructRequest',
-        &$soapstruct, 1, SOAP_TEST_ACTOR_OTHER);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,1, SOAP_TEST_ACTOR_OTHER);
 $test->headers_expect['echoMeStructRequest'] = array();
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
 unset($test);
@@ -138,8 +134,7 @@ unset($test);
 // echoMeStructRequest with endpoint as header destination, doesn't have to understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
 $test->type = 'soapval';
-$test->headers[] = new SOAP_Header('{http://soapinterop.org/echoheader/}echoMeStructRequest',NULL,
-            $soapstruct);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE);
 $test->headers_expect['echoMeStructRequest'] =
     array('echoMeStructResponse'=> &$soapstruct);
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
@@ -148,8 +143,7 @@ unset($test);
 // echoMeStructRequest with endpoint as header destination, must understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
 $test->type = 'soapval';
-$test->headers[] = new SOAP_Header('{http://soapinterop.org/echoheader/}echoMeStructRequest',NULL,
-            $soapstruct, 1);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,1);
 $test->headers_expect['echoMeStructRequest'] =
     array('echoMeStructResponse'=> &$soapstruct);
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
@@ -158,8 +152,7 @@ unset($test);
 // echoMeStructRequest with endpoint NOT header destination, doesn't have to understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
 $test->type = 'soapval';
-$test->headers[] = new SOAP_Header('{http://soapinterop.org/echoheader/}echoMeStructRequest',NULL,
-            $soapstruct, 0, SOAP_TEST_ACTOR_OTHER);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,0, SOAP_TEST_ACTOR_OTHER);
 $test->headers_expect['echoMeStructRequest'] = array();
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
 unset($test);
@@ -167,8 +160,7 @@ unset($test);
 // echoMeStructRequest with endpoint NOT header destination, must understand
 $test = new SOAP_Interop_Test('echoVoid', NULL);
 $test->type = 'soapval';
-$test->headers[] = new SOAP_Header('{http://soapinterop.org/echoheader/}echoMeStructRequest',NULL,
-            $soapstruct, 1, SOAP_TEST_ACTOR_OTHER);
+$test->headers[] = $soapstruct->__to_soap('{http://soapinterop.org/echoheader/}echoMeStructRequest',TRUE,1, SOAP_TEST_ACTOR_OTHER);
 $test->headers_expect['echoMeStructRequest'] = array();
 $soap_tests[INTEROP_R2GROUPC][] =& $test;
 unset($test);

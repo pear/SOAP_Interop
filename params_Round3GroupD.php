@@ -33,15 +33,22 @@ define('INTEROP_R3D_RPCENC','Round 3 Group D RpcEnc');
 
 # COMPOUND 1 tests
 # http://www.whitemesa.net/wsdl/r3/compound1.wsdl
-#$soap_tests[INTEROP_R3D_COMPOUND1][] = 
-#    new SOAP_Interop_Test('echoPerson', &$person);
-#$soap_tests[INTEROP_R3D_COMPOUND1][] = 
-#    new SOAP_Interop_Test('echoDocument', 'Test Document Here');
+$test = new SOAP_Interop_Test('echoPerson', array('x_Person'=>&$person));
+$test->type = 'php'; // force to php testing
+$soap_tests[INTEROP_R3D_COMPOUND1][] = &$test;
+unset($test);
+
+$test = new SOAP_Interop_Test('echoDocument', array('document'=>'Test Document Here'));
+$test->type = 'php'; // force to php testing
+$soap_tests[INTEROP_R3D_COMPOUND1][] = &$test;
+unset($test);
 
 # COMPOUND 2 tests
 # http://www.whitemesa.net/wsdl/r3/compound2.wsdl
-#$soap_tests[INTEROP_R3D_COMPOUND2][] = 
-#    new SOAP_Interop_Test('echoEmployee', &$employee);
+$test = new SOAP_Interop_Test('echoEmployee', array('employee'=>&$employee));
+$test->type = 'php'; // force to php testing
+$soap_tests[INTEROP_R3D_COMPOUND2][] = &$test;
+unset($test);
 
 # DOC LIT Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclit.wsdl
