@@ -46,9 +46,11 @@
         <file role="php" name="interop_Round2Base.php"/>
         <file role="php" name="interop_Round2GroupB.php"/>
         <file role="php" name="interop_Round2GroupC.php"/>
+        <file role="php" name="interop_Round3GroupD.php"/>
         <file role="php" name="server_Round2Base.php"/>
         <file role="php" name="server_Round2GroupB.php"/>
         <file role="php" name="server_Round2GroupC.php"/>
+        <file role="php" name="server_Round3GroupD.php"/>
         <file role="php" name="server_Round3GroupDCompound1.php"/>
         <file role="php" name="server_Round3GroupDCompound2.php"/>
         <file role="php" name="server_Round3GroupDDocLit.php"/>
