@@ -80,7 +80,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 	</binding>
 	<service name="Compound1">
 		<port name="SoapInteropCompound1Port" binding="wsdlns:SoapInteropCompound1Binding">
-			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupD.php"/>
+			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupDCompound1.php"/>
 		</port>
 	</service>
 </definitions>

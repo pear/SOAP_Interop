@@ -1,4 +1,4 @@
-Database soapinterop running on localhost
+# Database soapinterop running on localhost
 
 # phpMyAdmin MySQL-Dump
 # version 2.2.5
@@ -30,6 +30,7 @@ CREATE TABLE clientinfo (
 
 CREATE TABLE results (
   id int(11) NOT NULL auto_increment,
+  client varchar(100) NOT NULL default '0',
   endpoint int(11) NOT NULL default '0',
   stamp int(11) NOT NULL default '0',
   class varchar(50) NOT NULL default '',

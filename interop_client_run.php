@@ -19,6 +19,7 @@
 //
 // $Id$
 //
+if (!isset($_SERVER['SERVER_NAME'])) {
 set_time_limit(0);
 require_once 'interop_client.php';
 #$SOAP_RAW_CONVERT = TRUE;
@@ -30,7 +31,7 @@ $iop = new Interop_Client();
 
 // set some options
 $iop->client_type='pear'; // 'pear' or 'php-soap'
-$iop->currentTest = 'Round 2 Group C';      // see $tests above
+$iop->currentTest = '';      // see $tests above
 $iop->paramType = 'php';     // 'php' or 'soapval'
 $iop->useWSDL = 1;           // 1= do wsdl tests
 $iop->numServers = 0;        // 0 = all
@@ -69,5 +70,7 @@ $iop->skipEndpointList = array_merge($iop->skipEndpointList, $bad);
 $iop->doTests();  // run all tests, ignore above options
 #$iop->outputTables();
 echo "done";
-
+} else {
+    echo "full test run cannot be done via webserver.";
+}
 ?>

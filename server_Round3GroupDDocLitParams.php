@@ -19,21 +19,65 @@
 // $Id$
 //
 require_once 'SOAP/Server.php';
-require_once 'interop_Round3GroupD.php';
+require_once 'params_classes.php';
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd = new SOAP_Interop_GroupD();
-$server = new SOAP_Server;
+class SOAP_Interop_GroupDDocLitParams {
+    function &echoString($inputString)
+    {
+	return new SOAP_Value('return','string',$inputString);
+    }
+
+    function &echoStringArray($inputStringArray)
+    {
+	$ra = array();
+	if ($inputStringArray) {
+	foreach($inputStringArray as $s) {
+	    $ra[] = new SOAP_Value('item','string',$s);
+	}
+	}
+	return new SOAP_Value('return',NULL,$ra);
+    }
+
+    function &echoStruct($inputStruct)
+    {
+        if (is_object($inputStruct) && get_class($inputStruct)=='soapstruct')
+            return $inputStruct->__to_soap('return');
+        else {
+            if (is_object($inputStruct)) {
+                $inputStruct = get_object_vars($inputStruct);
+            }
+            $struct = new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            return $struct->__to_soap('return');
+        }
+    }
+
+    function echoVoid()
+    {
+	return NULL;
+    }
+}
+
+
+// http://www.whitemesa.com/r3/interop3.html
+// http://www.whitemesa.com/r3/plan.html
+
+$options = array('use'=>'literal','style'=>'document');
+$groupd = new SOAP_Interop_GroupDDocLitParams();
+$server = new SOAP_Server($options);
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop/');
 $server->addObjectMap($groupd,'http://soapinterop.org/xsd');
 
-$server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
-
-$test = '<?xml version="1.0" encoding="UTF-8"?>
+$server->bind('http://localhost/soap_interop/wsdl/InteropTestDocLitParameters.wsdl.php');
+if (isset($_SERVER['SERVER_NAME'])) {
+    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+} else {
+    // allows command line testing of specific request
+    $test = '<?xml version="1.0" encoding="UTF-8"?>
 
 <SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -43,8 +87,9 @@ $test = '<?xml version="1.0" encoding="UTF-8"?>
 >
 <SOAP-ENV:Body>
 
-<ns4:x_Document>Test Document Here</ns4:x_Document>
+<ns4:echoVoid/>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-#$server->service($test,'',TRUE);
+    $server->service($test,'',TRUE);
+}
 ?>

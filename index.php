@@ -5,33 +5,43 @@
 	<title>PEAR SOAP Interop</title>
 </head>
 <?php
+require_once 'registrationAndNotification.php';
+
+$tests = array('Round 2 Base',
+                'Round 2 Group B', 
+                'Round 2 Group C', 
+                'Round 3 Group D Compound 1',
+                'Round 3 Group D Compound 2',
+                'Round 3 Group D DocLit',
+                'Round 3 Group D DocLitParams',
+                'Round 3 Group D Import 1',
+                'Round 3 Group D Import 2',
+                'Round 3 Group D Import 3',
+                'Round 3 Group D RpcEnc'
+        );
+
 // get our endpoint
-$server = $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
-$base = 'http://'.$server."/soap_interop/wsdl/interop.wsdl.php";
-$baseendpoint = 'http://'.$server."/soap_interop/server_Round2Base.php";
-
-$groupb = 'http://'.$server."/soap_interop/interopB.wsdl.php";
-$groupbendpoint = 'http://'.$server."/soap_interop/server_Round2GroupB.php";
-
-$groupc = 'http://'.$server."/soap_interop/echoheadersvc.wsdl.php";
-$groupcendpoint = 'http://'.$server."/soap_interop/server_Round2GroupC.php";
+$baseurl = 'http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].'/soap_interop/';
 ?>
 <body>
 
 <h2 align='center'>PEAR SOAP Interop</h2>
 <p>Welcome to the PEAR SOAP Interop pages.  These pages are set up for
 SOAP Builder interop tests.  You can find out more about the interop tests
-at <a href="http://www.whitemesa.com/interop.htm">White Mesa</a>.</p>
-<p>Currently Round 2 base, Group B and Group C interop tests are enabled.</p>
+at <a href="http://www.soapbuilders.org/">SOAP Builders</a>.</p>
+<table width="90%" border="1" cellspacing="0" cellpadding="2" align="center">
+<?php
 
-<h3>Round 2 Interop Server</h3>
-Base WSDL: <a href="<?php echo $base ?>"><?php echo $base ?></a><br>
-Endpoint: <?php echo $baseendpoint; ?><br>
-Group B WSDL: <a href="<?php echo $groupb ?>"><?php echo $groupb ?></a><br>
-Endpoint: <?php echo $groupbendpoint; ?><br>
-Group C WSDL: <a href="<?php echo $groupc ?>"><?php echo $groupc ?></a><br>
-Endpoint: <?php echo $groupcendpoint; ?><br>
+foreach ($tests as $test) {
+    $ep = getLocalInteropServer($test,0,$baseurl);
+    echo "<tr><td>$test</td><td>\n";
+    echo "WSDL: <a href=\"{$ep->wsdlURL}\">{$ep->wsdlURL}</a><br>\n";
+    echo "Endpoint: {$ep->endpointURL}<br>\n";
+    echo "</td></tr>\n";
+}
 
+?>
+</table>
 <h3>Interop Client</h3>
 
 <p>

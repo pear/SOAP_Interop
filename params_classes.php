@@ -136,6 +136,12 @@ class Person {
     }        
 }
 
+class x_Person extends Person {
+    function x_Person($a=NULL, $i=NULL, $n=NULL, $m=NULL) {
+        $parent->Person($a,$i,$n,$m);
+    }
+}
+
 class Employee {
     var $ID;
     var $salary;
@@ -159,4 +165,9 @@ class Employee {
     }    
 }
 
+class x_Employee extends Employee {
+    function x_Employee($person=NULL,$id=NULL,$salary=NULL) {
+        $parent->Employee($person,$id,$salary);
+    }
+}
 ?>

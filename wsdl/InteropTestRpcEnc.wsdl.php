@@ -121,7 +121,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
     <service name="WSDLInteropTestRpcEncService">
         <port binding="tns:WSDLInteropTestRpcEncPortBinding" 
             name="WSDLInteropTestRpcEncPort">
-                <soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupD.php"/>
+                <soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupDRpcEnc.php"/>
         </port>
     </service>
 </definitions>

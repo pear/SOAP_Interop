@@ -18,66 +18,48 @@
 //
 // $Id$
 //
+require_once 'SOAP/Server.php';
 require_once 'params_classes.php';
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-class SOAP_Interop_GroupD{
-    // wsdlns:SoapInteropEmptySABinding
+class SOAP_Interop_GroupDImport1 {
     function &echoString($inputString)
     {
-	return new SOAP_Value('outputString','string',$inputString);
+	return new SOAP_Value('Result','string',$inputString);
     }
-
-    function &echoStringArray($inputStringArray)
-    {
-	$ra = array();
-	if ($inputStringArray) {
-	foreach($inputStringArray as $s) {
-	    $ra[] = new SOAP_Value('item','string',$s);
-	}
-	}
-	return new SOAP_Value('outputStringArray',NULL,$ra);
-    }
-
-    function &echoStruct($inputStruct)
-    {
-	return $inputStruct->to_soap();
-    }
-
-    function &echoStructArray($inputStructArray)
-    {
-	$ra = array();
-	if ($inputStructArray) {
-	    $c = count($inputStructArray);
-	    for ($i = 0; $i < $c; $i++) {
-	        $ra[] = $inputStructArray[$i]->to_soap();
-	    }
-	}
-	return $ra;
-    }
-
-    function echoVoid()
-    {
-	return NULL;
-    }
-
-    function echoPerson()
-    {
-	return NULL;
-    }
-
-    function &x_Document(&$document)
-    {
-	return new SOAP_Value('result_Document','{http://soapinterop.org/xsd}x_Document',$document);
-    }
-    
-    function echoEmployee()
-    {
-	return NULL;
-    }
-    
 }
 
+
+// http://www.whitemesa.com/r3/interop3.html
+// http://www.whitemesa.com/r3/plan.html
+
+$groupd = new SOAP_Interop_GroupDImport1();
+$server = new SOAP_Server();
+$server->_auto_translation = true;
+
+$server->addObjectMap($groupd,'http://soapinterop/echoString/');
+
+$server->bind('http://localhost/soap_interop/wsdl/import1.wsdl.php');
+if (isset($_SERVER['SERVER_NAME'])) {
+    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+} else {
+    // allows command line testing of specific request
+    $test = '<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:ns4="http://soapinterop/echoString/"
+ SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<SOAP-ENV:Body>
+
+<ns4:echoString>
+<x xsi:type="xsd:string">Hello World</x></ns4:echoString>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>';
+    $server->service($test,'',TRUE);
+}
 ?>

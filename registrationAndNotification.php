@@ -62,9 +62,8 @@ class ChangeItem {
     var $url;
 }
 
-function getLocalInteropServer($testname,$id) {
+function getLocalInteropServer($testname,$id,$localBaseUrl='http://localhost/soap_interop/') {
     $localServer = array();
-    $localBaseUrl = 'http://localhost/soap_interop/';
     $localServer['service_id']=$id;
     $localServer['name']='Local PEAR::SOAP';
     $localServer['version']=SOAP_LIBRARY_VERSION;
@@ -82,39 +81,39 @@ function getLocalInteropServer($testname,$id) {
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/echoheadersvc.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D EmptySA':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDEmptySA.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/emptysa.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D Compound 1':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDCompound1.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/compound1.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D Compound 2':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDCompound2.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/compound2.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D DocLit':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDDocLit.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestDocLit.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D DocLitParams':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDDocLitParams.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestDocLitParameters.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D Import 1':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDImport1.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/import1.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D Import 2':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDImport2.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/import2.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D Import 3':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDImport3.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/import3.wsdl.php';
         return new serverInfo($localServer);
     case 'Round 3 Group D RpcEnc':
-        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupDRpcEnc.php';
         $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestRpcEnc.wsdl.php';
         return new serverInfo($localServer);
     #case 'Round 3 Group E DocLit':
@@ -346,15 +345,18 @@ class SOAP_Interop_registrationDB {
     }
 
     function _updateOrAddServer($id, $server) {
-        $res = $this->dbc->getRow("select id from serverinfo where service_id='$id' and name='{$server->name}'");
+        $res = $this->dbc->getRow("select * from serverinfo where service_id='$id' and name='{$server->name}'");
         if ($res && !PEAR::isError($res)) {
             $res = $this->dbc->query("update serverinfo set ".
                                         "version='{$server->version}', ".
                                         "endpointURL='{$server->endpointURL}', ".
-                                        "wsdlURL='{$server->wsdlURL}' where id={$res['id']}");
+                                        "wsdlURL='{$server->wsdlURL}' where id={$res->id}");
         } else {
             $res = $this->dbc->query("insert into serverinfo (service_id,name,version,endpointURL,wsdlURL) ".
                                         "values('$id','{$server->name}','{$server->version}','{$server->endpointURL}','{$server->wsdlURL}')");
+        }
+        if (PEAR::isError($res)) {
+            echo $res->getMessage().$res->getUserInfo()."<br>\n";
         }
     }
     

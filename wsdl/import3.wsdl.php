@@ -9,8 +9,8 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 		xmlns:typens="http://soapinterop.org/xsd"
 		xmlns="http://schemas.xmlsoap.org/wsdl/">
 	
-	<import namespace = "http://soapinterop.org/xsd" location = "import2.wsdl"/>
-	<import namespace = "http://soapinterop.org/definitions/" location = "import2.wsdl"/>
+	<import namespace = "http://soapinterop.org/xsd" location = "import2.wsdl.php"/>
+	<import namespace = "http://soapinterop.org/definitions/" location = "import2.wsdl.php"/>
 	
 	<types>
 	<schema targetNamespace='http://soapinterop.org/xsd2'
@@ -71,7 +71,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 	</binding>
 	<service name="Import3">
 		<port name="SoapInteropImport3Port" binding="wsdlns:SoapInteropImport3Binding">
-			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupD.php"/>
+			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupDImport3.php"/>
 		</port>
 	</service>
 </definitions>
