@@ -66,6 +66,11 @@ class SOAP_Interop_Test {
         $this->result['fault'] =& $fault;
     }
 
+    function reset()
+    {
+        $this->result = array();
+    }
+    
     /**
     *  showMethodResult
     * print simple output about a methods result

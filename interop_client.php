@@ -124,15 +124,15 @@ class Interop_Client
     function getResults($test = 'Round 2 Base', $type = 'php', $wsdl = 0) {
         // be sure we have the right endpoints for this test result
         $this->getEndpoints($test);
-        
+        $c = count($this->endpoints);
+
         // retreive the results and put them into the endpoint info
         $sql = "select * from results where class='$test' and type='$type' and wsdl=$wsdl";
         $results =& $this->dbc->getAll($sql,NULL, DB_FETCHMODE_ASSOC );
         $rc = count($results);
-        for ($i=0; $i < $rc; $i++) {
-            $result =& $results[$i];
+        for ($j=0; $j < $rc; $j++) {
+            $result =& $results[$j];
             // find the endpoint
-            $c = count($this->endpoints);
             for ($i=0;$i<$c;$i++) {
                 if ($this->endpoints[$i]->id == $result['endpoint']) {
                     // store the info
@@ -257,6 +257,8 @@ class Interop_Client
         $soap_test->result['type'] = $this->paramType;
         $soap_test->result['wsdl'] = $this->useWSDL;
         $opdata = NULL;
+        #global $soap_value_total;
+        #print "SOAP VALUES TEST-START: $soap_value_total\n";
         
         if ($this->useWSDL) {
             if ($endpoint_info->wsdlURL) {
@@ -272,8 +274,9 @@ class Interop_Client
                 }
                 if ($endpoint_info->client->_wsdl->__isfault()) {
                     $fault =& $endpoint_info->client->_wsdl->fault->getFault();
+                    $detail = $fault->faultstring."\n\n".$fault->faultdetail;
                     $soap_test->setResult(0,'WSDL',
-                                            $fault->faultstring."\n\n".$fault->faultdetail,
+                                            $detail,
                                             $fault->faultstring,
                                             $fault
                                             );
@@ -403,10 +406,12 @@ class Interop_Client
             else
                 $sent_d =& $sent;
             
-            $soap_test->result['sent'] =& $sent;
-            $soap_test->result['return'] =& $return;
+            #$soap_test->result['sent'] =& $sent;
+            #$soap_test->result['return'] =& $return;
             // compare the results with what we sent
             $ok = $this->compareResult($sent_d,$return, $sent->type);
+            unset($sent_d);
+            unset($sent);
             if (!$ok && $soap_test->expect) {
                 $ok = $this->compareResult($soap_test->expect,$return);
             }
@@ -448,6 +453,9 @@ class Interop_Client
             }
             $soap_test->setResult($ok,$res, $soap->__get_wire(),$fault->faultstring, $fault);
         }
+        $soap->_reset();
+        unset($return);
+        #print "SOAP VALUES TEST-END: $soap_value_total\n";
         return $ok;
     }
     
@@ -479,8 +487,9 @@ class Interop_Client
             
             if ($this->show) print "Processing {$endpoint_info->name} at {$endpoint_info->endpointURL}<br>\n";
             
-            foreach($soap_tests[$this->currentTest] as $soap_test) {
-            //foreach(array_keys($method_params[$this->currentTest][$this->paramType]) as $method)
+            $tc = count($soap_tests[$this->currentTest]);
+            for($ti=0; $ti<$tc; $ti++) {
+                $soap_test =& $soap_tests[$this->currentTest][$ti];
             
                 // only run the type of test we're looking for (php or soapval)
                 if ($soap_test->type != $this->paramType) continue;
@@ -552,9 +561,10 @@ class Interop_Client
                 }
                 $soap_test->showTestResult($this->debug);
                 $this->_saveResults($endpoint_info->id, $soap_test);
-                $soap_test->result = NULL;
+                $soap_test->reset();
                 $this->totals['calls']++;
             }
+            unset($endpoint_info->client);
             if ($this->numservers && ++$i >= $this->numservers) break;
         }
     }
