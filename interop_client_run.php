@@ -39,7 +39,7 @@ $iop =& new Interop_Client();
 $iop->client_type='pear'; // 'pear' or 'php-soap'
 $iop->currentTest = '';      // see $tests above
 $iop->paramType = 'php';     // 'php' or 'soapval'
-$iop->useWSDL = 1;           // 1= do wsdl tests
+$iop->useWSDL = 0;           // 1= do wsdl tests
 $iop->numServers = 0;        // 0 = all
 $iop->specificEndpoint = ''; // test only this endpoint
 $iop->testMethod = '';       // test only this method
@@ -51,7 +51,8 @@ $iop->debug = 0;
 $iop->showFaults = 0; // used in result table output
 $restrict = NULL;
 
-$args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:q');
+#$_SERVER['argv'] = array('-r', "Round 3", '-s', "Local PEAR::SOAP");
+$args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:v:wq');
 
 function help() {
 print <<<END
@@ -67,6 +68,8 @@ interop_client_run.php [options]
     -r string               restrict tests to those whose name starts with...
     -s server_name          test a specific server
     -t test_name            run a specific set of tests
+    -v php|soapval          run tests with specific param types (requires -t)
+    -w                      run wsdl tests only (requires -t)
     -q                      do not run tests
 END;
 }
@@ -138,6 +141,14 @@ foreach($args[0] as $arg) {
         break;
     case 't':
         $iop->currentTest = $arg[1];
+        break;
+    case 'v':
+        if ($arg[1]!='php' && $arg[1]!='soapval')
+            die('Incorrect value for argument v: '.$arg[1]);
+        $iop->paramType = $arg[1];
+        break;
+    case 'w':
+        $iop->useWSDL = true;
         break;
     case 'q':
         exit(0);
