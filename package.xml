@@ -84,7 +84,7 @@
       </dir>
     </filelist>
     <deps>
-      <dep type="ext" rel="has">SOAP</dep>
+      <dep type="pkg" rel="has">SOAP</dep>
     </deps>
   </release>
   <changelog>
