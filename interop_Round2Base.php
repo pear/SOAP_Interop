@@ -93,7 +93,7 @@ class SOAP_Interop_Base {
 
     function &echoStruct($inputStruct)
     {
-        if (get_class($inputStruct)=='SOAPStruct')
+        if (get_class($inputStruct)=='soapstruct')
             return $inputStruct->__to_soap();
         return $inputStruct;
     }
@@ -145,7 +145,7 @@ class SOAP_Interop_Base {
     {
 	return new SOAP_Value('return','boolean',$boolean);
     }
-    
+
     function &echoMimeAttachment($stuff)
     {
         return new SOAP_Attachment('return','application/octet-stream',NULL,$stuff);
