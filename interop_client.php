@@ -470,6 +470,9 @@ class Interop_Client
         global $soap_tests;
         $empty_string='';
         // get endpoints for this test
+        if (!$this->currentTest) {
+            die("Asked to run a test, but no testname!\n");
+        }
         $this->getEndpoints($this->currentTest);
         #clear totals
         $this->totals = array();

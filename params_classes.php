@@ -146,13 +146,13 @@ class Employee {
     
     function &__to_soap($name = 'x_Employee', $ns='http://soapinterop.org/employee')
     {
-        $person = $this->person->__to_soap('person','http://soapinterop.org/person',true);
+        $person =& $this->person->__to_soap('person','http://soapinterop.org/person',true);
         $person->namespace = $ns;
         $v =& new SOAP_Value("\{$ns}salary",'double',$this->salary);
         $v =& new SOAP_Value("\{$ns}ID",'int',$this->ID);
-        return new SOAP_Value("\{$ns}$name",'Employee',
-            array( #push struct elements into one soap value
-                &$person, &$v));
+        $va[] = &$person;
+        $va[] = &$v;
+        return new SOAP_Value("\{$ns}$name",'Employee',$va);
     }    
 }
 

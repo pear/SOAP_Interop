@@ -57,13 +57,13 @@ class SOAP_Interop_Test {
         }
     }
     
-    function setResult($ok, $result, &$wire, $error = '', $fault = NULL)
+    function setResult($ok, $result, $wire, $error = '', $fault = NULL)
     {
         $this->result['success'] = $ok;
-        $this->result['result'] =& $result;
-        $this->result['error'] =& $error;
-        $this->result['wire'] =& $wire;
-        $this->result['fault'] =& $fault;
+        $this->result['result'] = $result;
+        $this->result['error'] = $error;
+        $this->result['wire'] = $wire;
+        $this->result['fault'] = $fault;
     }
 
     function reset()
