@@ -148,10 +148,9 @@ class Employee {
     {
         $person =& $this->person->__to_soap('person','http://soapinterop.org/person',true);
         $person->namespace = $ns;
-        $v =& new SOAP_Value("\{$ns}salary",'double',$this->salary);
-        $v =& new SOAP_Value("\{$ns}ID",'int',$this->ID);
         $va[] = &$person;
-        $va[] = &$v;
+        $va[] =& new SOAP_Value("\{$ns}salary",'double',$this->salary);
+        $va[] =& new SOAP_Value("\{$ns}ID",'int',$this->ID);
         return new SOAP_Value("\{$ns}$name",'Employee',$va);
     }    
 }
