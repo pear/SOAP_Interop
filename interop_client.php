@@ -317,7 +317,10 @@ class Interop_Client
         }
         $soap->setEncoding($soap_test->encoding);
         
-        $return = $soap->call($soap_test->method_name,$soap_test->method_params, $namespace, $soapaction);
+        $options = array('namespace'=>$namespace, 
+                         'soapaction'=>$soapaction,
+                         'trace'=>1);
+        $return = $soap->call($soap_test->method_name,$soap_test->method_params, $options);
         
         if(!PEAR::isError($return)){
             if (is_array($soap_test->method_params) && count($soap_test->method_params) == 1) {
