@@ -21,10 +21,10 @@
   <release>
     <state>beta</state>
     <version>0.7.1</version>
-    <date>2002-12-1</date>
+    <date>2002-12-01</date>
     <notes>
        Minor fixes to make interop suite run without modifications.
-    </Notes>
+    </notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
         <file role="php" name="config.php.orig"/>
