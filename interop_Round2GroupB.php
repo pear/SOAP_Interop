@@ -29,6 +29,22 @@ class SOAP_Interop_GroupB {
 		array('in' => array('inputStruct' => 'SOAPStruct'),
 		      'out' => array('outputString' => 'string', 'outputInteger' => 'int', 'outputFloat' => 'float')
 		      );
+	$this->__dispatch_map['echoSimpleTypesAsStruct'] =
+		array('in' => array('inputString' => 'string', 'inputInteger' => 'int', 'inputFloat' => 'float'),
+		      'out' => array('return' => 'SOAPStruct')
+		      );
+	$this->__dispatch_map['echoNestedStruct'] =
+		array('in' => array('inputStruct' => 'SOAPStructStruct'),
+		      'out' => array('return' => 'SOAPStructStruct')
+		      );
+	$this->__dispatch_map['echo2DStringArray'] =
+		array('in' => array('input2DStringArray' => 'ArrayOfString2D'),
+		      'out' => array('return' => 'ArrayOfString2D')
+		      );
+	$this->__dispatch_map['echoNestedArray'] =
+		array('in' => array('inputString' => 'SOAPArrayStruct'),
+		      'out' => array('return' => 'SOAPArrayStruct')
+		      );
     }
     
     /* this private function is called on by SOAP_Server to determine any
@@ -36,7 +52,7 @@ class SOAP_Interop_GroupB {
         can be used to set up a dispatch map for functions that return multiple
         OUT parameters */
     function __dispatch($methodname) {
-        if (isset($this->__dispatch_map[$methodname]))
+        if (array_key_exists($methodname,$this->__dispatch_map))
             return $this->__dispatch_map[$methodname];
         return NULL;
     }
