@@ -23,7 +23,7 @@ require_once 'SOAP/Client.php';
 
 require_once 'config.php';
 require_once 'interop_test_functions.php';
-require_once 'interop_wrapper.php';
+//require_once 'interop_wrapper.php';
 require_once 'params_Round2Base.php';
 require_once 'params_Round2GroupB.php';
 require_once 'params_Round2GroupC.php';

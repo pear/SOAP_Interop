@@ -1,6 +1,7 @@
 <?php
 require_once 'DB.php'; // PEAR/DB
 require_once 'SOAP/Client.php';
+require_once 'config.php';
 
 class clientInfo {
     var $name;
@@ -265,7 +266,7 @@ class SOAP_Interop_registrationAndNotificationService_ChangeLogPort extends SOAP
 }
 
 class SOAP_Interop_registrationDB {
-    var $DSN = 'mysql://user@localhost/soapinterop';
+    var $DSN;
     var $dbc = NULL;
     
     var $client; // soap_client
@@ -276,6 +277,8 @@ class SOAP_Interop_registrationDB {
     
     function SOAP_Interop_registrationDB()
     {
+        global $interopConfig;
+	$this->DSN = $interopConfig['DSN'];
         $this->client = new SOAP_Interop_registrationAndNotificationService_ServicesPort();
         $this->connectDB();
         $this->getServiceList();

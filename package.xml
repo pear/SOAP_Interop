@@ -20,11 +20,11 @@
   <license>PHP License</license>
   <release>
     <state>beta</state>
-    <version>0.7.0</version>
-    <date>2002-10-20</date>
+    <version>0.7.1</version>
+    <date>2002-12-1</date>
     <notes>
-      Initial release of the SOAP Builders Interop Test Suite for PEAR::SOAP
-    </notes>
+       Minor fixes to make interop suite run without modifications.
+    </Notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
         <file role="php" name="config.php.orig"/>
@@ -87,4 +87,14 @@
       <dep type="ext" rel="has">SOAP</dep>
     </deps>
   </release>
+  <changelog>
+  <release>
+    <state>beta</state>
+    <version>0.7.0</version>
+    <date>2002-10-20</date>
+    <notes>
+      Initial release of the SOAP Builders Interop Test Suite for PEAR::SOAP
+    </notes>
+  </release>
+  </changelog>
 </package>
