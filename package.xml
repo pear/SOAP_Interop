@@ -3,7 +3,7 @@
      generated package.xml files -->
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-  <name>SOAP</name>
+  <name>SOAP_Interop</name>
   <summary>SOAP Interop Test Application</summary>
   <description>
     Test harness for SOAP Builders tests.
