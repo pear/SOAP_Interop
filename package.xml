@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- do not use the "Type" attribute here, that one is only for
+     generated package.xml files -->
+<!DOCTYPE package SYSTEM "../package.dtd">
+<package version="1.0">
+  <name>SOAP</name>
+  <summary>SOAP Interop Test Application</summary>
+  <description>
+    Test harness for SOAP Builders tests.
+    Supports Round 2 and Round 3 tests.
+  </description>
+  <maintainers>
+    <maintainer>
+      <user>shane</user>
+      <name>Shane Caraveo</name>
+      <email>shane@php.net</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <license>PHP License</license>
+  <release>
+    <state>beta</state>
+    <version>0.7.0</version>
+    <date>2002-10-20</date>
+    <notes>
+      Initial release of the SOAP Builders Interop Test Suite for PEAR::SOAP
+    </notes>
+    <filelist>
+      <dir name="/" baseinstalldir="SOAP/Interop">
+        <file role="php" name="config.php.orig"/>
+        <file role="php" name="index.php"/>
+        <file role="php" name="interop_client.php"/>
+        <file role="php" name="interop_client_results.php"/>
+        <file role="php" name="interop_client_run.php"/>
+        <file role="php" name="interop_database.sql"/>
+        <file role="php" name="interop_test.php"/>
+        <file role="php" name="interop_test_functions.php"/>
+        <file role="php" name="readme.txt"/>
+        <file role="php" name="registrationAndNotification.php"/>
+        <file role="php" name="interop_Round2Base.php"/>
+        <file role="php" name="interop_Round2GroupB.php"/>
+        <file role="php" name="interop_Round2GroupC.php"/>
+        <file role="php" name="server_Round2Base.php"/>
+        <file role="php" name="server_Round2GroupB.php"/>
+        <file role="php" name="server_Round2GroupC.php"/>
+        <file role="php" name="server_Round3GroupDCompound1.php"/>
+        <file role="php" name="server_Round3GroupDCompound2.php"/>
+        <file role="php" name="server_Round3GroupDDocLit.php"/>
+        <file role="php" name="server_Round3GroupDDocLitParams.php"/>
+        <file role="php" name="server_Round3GroupDEmptySA.php"/>
+        <file role="php" name="server_Round3GroupDImport1.php"/>
+        <file role="php" name="server_Round3GroupDImport2.php"/>
+        <file role="php" name="server_Round3GroupDImport3.php"/>
+        <file role="php" name="server_Round3GroupDRpcEnc.php"/>
+        <file role="php" name="params_classes.php"/>
+        <file role="php" name="params_values.php"/>
+        <file role="php" name="params_Round2Base.php"/>
+        <file role="php" name="params_Round2GroupB.php"/>
+        <file role="php" name="params_Round2GroupC.php"/>
+        <file role="php" name="params_Round3GroupD.php"/>
+        <dir name="wsdl"> 
+          <file role="php" name="compound1.wsdl.php"/>
+          <file role="php" name="compound2.wsdl.php"/>
+          <file role="php" name="echoheadersvc.wsdl.php"/>
+          <file role="php" name="emptysa.wsdl.php"/>
+          <file role="php" name="import1.wsdl.php"/>
+          <file role="php" name="import2.wsdl.php"/>
+          <file role="php" name="import3.wsdl.php"/>
+          <file role="php" name="interop.wsdl.php"/>
+          <file role="php" name="interopB.wsdl.php"/>
+          <file role="php" name="InteropTestDocLit.wsdl.php"/>
+          <file role="php" name="InteropTestDocLitParameters.wsdl.php"/>
+          <file role="php" name="InteropTestExtensibility.wsdl.php"/>
+          <file role="php" name="InteropTestExtensibilityRequired.wsdl.php"/>
+          <file role="php" name="InteropTestheaders.wsdl.php"/>
+          <file role="php" name="InteropTestList.wsdl.php"/>
+          <file role="php" name="InteropTestRpcEnc.wsdl.php"/>
+            <dir name="imported"> 
+                <file role="php" name="import1B.wsdl"/>
+                <file role="php" name="import2B.wsdl"/>
+                <file role="php" name="import2B.xsd"/>
+            </dir>
+        </dir>
+      </dir>
+    </filelist>
+    <deps>
+      <dep type="ext" rel="has">SOAP</dep>
+    </deps>
+  </release>
+</package>
