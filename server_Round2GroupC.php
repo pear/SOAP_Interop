@@ -25,6 +25,8 @@ require_once 'interop_Round2GroupC.php';
 $groupc_headers = new SOAP_Interop_GroupC_Headers();
 $base = new SOAP_Interop_Base();
 $server = new SOAP_Server;
+$server->_auto_translation = true;
+
 $server->addObjectMap($groupc_headers,'http://soapinterop.org/echoheader/');
 $server->addObjectMap($base,'http://soapinterop.org/');
 $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);

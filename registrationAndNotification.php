@@ -62,6 +62,74 @@ class ChangeItem {
     var $url;
 }
 
+function getLocalInteropServer($testname,$id) {
+    $localServer = array();
+    $localBaseUrl = 'http://localhost/soap_interop/';
+    $localServer['service_id']=$id;
+    $localServer['name']='Local PEAR::SOAP';
+    $localServer['version']=SOAP_LIBRARY_VERSION;
+    switch ($testname) {
+    case 'Round 2 Base':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round2Base.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/interop.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 2 Group B':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round2GroupB.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/interopB.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 2 Group C':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round2GroupC.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/echoheadersvc.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D EmptySA':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/emptysa.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D Compound 1':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/compound1.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D Compound 2':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/compound2.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D DocLit':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestDocLit.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D DocLitParams':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestDocLitParameters.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D Import 1':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/import1.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D Import 2':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/import2.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D Import 3':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/import3.wsdl.php';
+        return new serverInfo($localServer);
+    case 'Round 3 Group D RpcEnc':
+        $localServer['endpointURL']=$localBaseUrl.'server_Round3GroupD.php';
+        $localServer['wsdlURL']=$localBaseUrl.'wsdl/InteropTestRpcEnc.wsdl.php';
+        return new serverInfo($localServer);
+    #case 'Round 3 Group E DocLit':
+    #case 'Round 3 Group E RpcEnc':
+    #case 'Round 3 Group F Extensibility':
+    #case 'Round 3 Group F ExtensibilityRequired':
+    #case 'Round 3 Group F Headers':
+    #case 'Round 4 DIME/Doc Attachments':
+    #case 'Round 4 DIME/RPC Attachments':
+    #case 'Round 4 MIME/Doc Attachments':
+    #case 'Round 4 SwA/RPC Attachments':
+    }
+    return NULL;
+}
+
 class SOAP_Interop_registrationAndNotificationService_ServicesPort extends SOAP_Client {
     function SOAP_Interop_registrationAndNotificationService_ServicesPort() {
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
@@ -274,12 +342,25 @@ class SOAP_Interop_registrationDB {
                 $res = $this->dbc->query("insert into services (id,name,description,wsdlURL,websiteURL) ".
                                          "values('{$service->id}','{$service->name}','{$service->description}','{$service->wsdlURL}','{$service->websiteURL}')");
             }
-            
         }
     }
 
+    function _updateOrAddServer($id, $server) {
+        $res = $this->dbc->getRow("select id from serverinfo where service_id='$id' and name='{$server->name}'");
+        if ($res && !PEAR::isError($res)) {
+            $res = $this->dbc->query("update serverinfo set ".
+                                        "version='{$server->version}', ".
+                                        "endpointURL='{$server->endpointURL}', ".
+                                        "wsdlURL='{$server->wsdlURL}' where id={$res['id']}");
+        } else {
+            $res = $this->dbc->query("insert into serverinfo (service_id,name,version,endpointURL,wsdlURL) ".
+                                        "values('$id','{$server->name}','{$server->version}','{$server->endpointURL}','{$server->wsdlURL}')");
+        }
+    }
+    
     function updateServerDb()
     {
+        global $INTEROP_LOCAL_SERVER;
         if (!$this->connectDB()) return false;
         $this->retreiveServiceList();
         $c = count($this->services);
@@ -288,17 +369,13 @@ class SOAP_Interop_registrationDB {
             echo "Updating Servers for {$this->services[$i]->name}<br>\n";
             if (!$this->servers) continue;
             foreach ($this->servers as $server) {
-                $res = $this->dbc->getRow("select id from serverinfo where service_id='{$this->services[$i]->id}' and name='{$server->name}'");
-                if ($res && !PEAR::isError($res)) {
-                    $res = $this->dbc->query("update serverinfo set ".
-                                             "version='{$server->version}', ".
-                                             "endpointURL='{$server->endpointURL}', ".
-                                             "wsdlURL='{$server->wsdlURL}' where id={$res['id']}");
-                } else {
-                    $res = $this->dbc->query("insert into serverinfo (service_id,name,version,endpointURL,wsdlURL) ".
-                                             "values('{$this->services[$i]->id}','{$server->name}','{$server->version}','{$server->endpointURL}','{$server->wsdlURL}')");
-                }
-                
+                $this->_updateOrAddServer($this->services[$i]->id,$server);
+            }
+            // add the local server now
+            if ($INTEROP_LOCAL_SERVER) {
+                $server = getLocalInteropServer($this->services[$i]->name,$this->services[$i]->id);
+                if ($server)
+                    $this->_updateOrAddServer($this->services[$i]->id,$server);
             }
         }
     }    

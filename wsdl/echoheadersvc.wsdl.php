@@ -10,7 +10,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 	<service name="interopLabEchoHeader">
 
   		<port name="interopPortEchoHdr" binding="tns:InteropEchoHeaderBinding">
-			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_round2.php"/>
+			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round2GroupC.php"/>
   		</port>
 
 	</service>

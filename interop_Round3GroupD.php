@@ -68,9 +68,9 @@ class SOAP_Interop_GroupD{
 	return NULL;
     }
 
-    function echoDocument()
+    function &x_Document(&$document)
     {
-	return NULL;
+	return new SOAP_Value('result_Document','{http://soapinterop.org/xsd}x_Document',$document);
     }
     
     function echoEmployee()

@@ -36,6 +36,7 @@ class SOAP_Interop_Test {
     var $show = 1;
     var $debug = 0;
     var $encoding = SOAP_DEFAULT_ENCODING;
+    var $service = NULL; // if multiple services, this sets to a specific service
     
     function SOAP_Interop_Test($methodname, $params, $expect = NULL) {
         if (strchr($methodname,'(')) {

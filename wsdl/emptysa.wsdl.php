@@ -33,7 +33,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 	</binding>
 	<service name="EmptySA">
 		<port name="SoapInteropEmptySAPort" binding="wsdlns:SoapInteropEmptySABinding">
-			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_round3.php"/>
+			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round3GroupD.php"/>
 		</port>
 	</service>
 </definitions>

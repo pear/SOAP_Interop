@@ -8,7 +8,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; ?>
 
 	<service name="interopLabB">
   		<port name="interopTestPortB" binding="tns:InteropTestSoapBindingB">
-			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_round2.php"/>
+			<soap:address location="http://<?php echo $_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"];?>/soap_interop/server_Round2GroupB.php"/>
   		</port>
 	</service>
 

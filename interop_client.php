@@ -31,6 +31,7 @@ require_once 'params_Round3GroupD.php';
 require_once 'registrationAndNotification.php';
 
 error_reporting(E_ALL ^ E_NOTICE);
+$INTEROP_LOCAL_SERVER = false;
 
 class Interop_Client
 {
@@ -253,11 +254,18 @@ class Interop_Client
         $soap_test->result['class'] = $this->currentTest;
         $soap_test->result['type'] = $this->paramType;
         $soap_test->result['wsdl'] = $this->useWSDL;
+        $opdata = NULL;
         
         if ($this->useWSDL) {
             if ($endpoint_info->wsdlURL) {
                 if (!$endpoint_info->client) {
+                    if (0 /* dynamic client */) {
+                    $endpoint_info->wsdl = new SOAP_WSDL($endpoint_info->wsdlURL);
+                    $endpoint_info->wsdl->trace=1;
+                    $endpoint_info->client = $endpoint_info->wsdl->getProxy('',$endpoint_info->name);
+                    } else {
                     $endpoint_info->client = new SOAP_Client($endpoint_info->wsdlURL,1);
+                    }
                     $endpoint_info->client->_auto_translation = true;
                 }
                 if ($endpoint_info->client->_wsdl->__isfault()) {
@@ -269,7 +277,12 @@ class Interop_Client
                                             );
                     return FALSE;
                 }
+                if ($soap_test->service) {
+                    $endpoint_info->client->_wsdl->set_service($soap_test->service);
+                }
                 $soap =& $endpoint_info->client;
+                #$port = $soap->_wsdl->getPortName($soap_test->method_name);
+                #$opdata = $soap->_wsdl->getOperationData($port, $soap_test->method_name);
             } else {
                 $fault = array(
                     'faultcode'=>'WSDL',
@@ -281,8 +294,7 @@ class Interop_Client
                                       );
                 return FALSE;
             }
-            $namespace = false;
-            $soapaction = false;
+            $options = array('trace'=>1);
         } else {
             $namespace = $soapaction = 'http://soapinterop.org/';
             // hack to make tests work with MS SoapToolkit
@@ -298,14 +310,11 @@ class Interop_Client
                 $endpoint_info->client->_auto_translation = true;
             }
             $soap = &$endpoint_info->client;
+            $options = array('namespace'=>$namespace, 
+                         'soapaction'=>$soapaction,
+                         'trace'=>1);
         }
         
-        // for round3 testing
-        if (isset($soap_test->soapaction))
-            $soapaction = $soap_test->soapaction;
-        if (isset($soap_test->namespace))
-            $namespace = $soap_test->namespace;
-            
         // add headers to the test
         if ($soap_test->headers) {
             // $header is already a SOAP_Header class
@@ -317,10 +326,34 @@ class Interop_Client
         }
         $soap->setEncoding($soap_test->encoding);
         
-        $options = array('namespace'=>$namespace, 
-                         'soapaction'=>$soapaction,
-                         'trace'=>1);
-        $return = $soap->call($soap_test->method_name,$soap_test->method_params, $options);
+
+        #if ($opdata) {
+        #    if (isset($opdata['style'])) 
+        #        $options['style'] = $opdata['style'];
+        #    if (isset($opdata['soapAction'])) 
+        #        $options['soapaction'] = $opdata['soapAction'];
+        #    if (isset($opdata['input']) &&
+        #        isset($opdata['input']['use']))
+        #        $options['use'] = $opdata['input']['use'];
+        #    if (isset($opdata['input']) &&
+        #        isset($opdata['input']['namespace']))
+        #        $options['namespace'] = $soap->_wsdl->namespaces[$opdata['input']['namespace']];
+        #}
+        #if ($this->useWSDL) {
+        #    $wsdlcall = '$return = $soap->'.$soap_test->method_name.'(';
+        #    $args = '';
+        #    if ($soap_test->method_params) {
+        #    $pnames = array_keys($soap_test->method_params);
+        #    foreach ($pnames as $argname) {
+        #        if ($args) $args .=',';
+        #        $args .= '$soap_test->method_params[\''.$argname.'\']';
+        #    }
+        #    }
+        #    $wsdlcall = $wsdlcall.$args.');';
+        #    eval($wsdlcall);
+        #} else {
+            $return = $soap->call($soap_test->method_name,$soap_test->method_params, $options);
+        #}
         
         if(!PEAR::isError($return)){
             if (is_array($soap_test->method_params) && count($soap_test->method_params) == 1) {
@@ -613,16 +646,16 @@ class Interop_Client
                     else $this->totals['fail']++;
                 }
             } else {
-                unset($this->endpoints[$i]);
+                //unset($this->endpoints[$i]);
             }
         }
         $this->totals['calls'] = count($methods) * $this->totals['servers'];
 
-        if ($this->totals['fail'] == $this->totals['calls']) {
-            // assume tests have not run, skip outputing table
-            print "No Data Available<br>\n";
-            return;
-        }
+        #if ($this->totals['fail'] == $this->totals['calls']) {
+        #    // assume tests have not run, skip outputing table
+        #    print "No Data Available<br>\n";
+        #    return;
+        #}
         
         echo "\n\n<b>Servers: {$this->totals['servers']} Calls: {$this->totals['calls']} ".
             "Success: {$this->totals['success']} <br>\n".

@@ -22,6 +22,7 @@
 set_time_limit(0);
 require_once 'interop_client.php';
 #$SOAP_RAW_CONVERT = TRUE;
+$INTEROP_LOCAL_SERVER = TRUE;// add local server to endpoints
 
 $iop = new Interop_Client();
 // force a fetch of endpoints, this happens irregardless if no endpoints in database
@@ -29,7 +30,7 @@ $iop = new Interop_Client();
 
 // set some options
 $iop->client_type='pear'; // 'pear' or 'php-soap'
-$iop->currentTest = 'Round 2 Base';      // see $tests above
+$iop->currentTest = 'Round 2 Group C';      // see $tests above
 $iop->paramType = 'php';     // 'php' or 'soapval'
 $iop->useWSDL = 1;           // 1= do wsdl tests
 $iop->numServers = 0;        // 0 = all

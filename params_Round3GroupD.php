@@ -61,27 +61,28 @@ $soap_tests[INTEROP_R3D_DOCLIT][] =
 $soap_tests[INTEROP_R3D_DOCLIT][] = 
     new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
-$soap_tests[INTEROP_R3D_DOCLIT][] = 
-    new SOAP_Interop_Test('echoVoid', NULL);
+#$soap_tests[INTEROP_R3D_DOCLIT][] = 
+#    new SOAP_Interop_Test('echoVoid', NULL);
 
 # DOC LIT w/Params Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclitparameters.wsdl
 $soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
     new SOAP_Interop_Test('echoString', 
-        array('inputString' => &$string));
+        array('echoString' => $string));
 $soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
     new SOAP_Interop_Test('echoStringArray', 
-        array('inputString' => &$string_array));
+        array('echoStringArray' => &$string_array));
 $soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
     new SOAP_Interop_Test('echoStruct',
-        array('inputStruct' => &$soapstruct));
+        array('echoStruct' => &$soapstruct));
 $soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
     new SOAP_Interop_Test('echoVoid', NULL);
 
 # IMPORT 1 tests
 # http://www.whitemesa.net/wsdl/r3/import1.wsdl
-$soap_tests[INTEROP_R3D_IMPORT1][] = new SOAP_Interop_Test('echoString', 
-    array('inputString' => &$string));
+$soap_tests[INTEROP_R3D_IMPORT1][] = 
+    new SOAP_Interop_Test('echoString', 
+        array('inputString' => &$string));
 
 # IMPORT 2 tests
 # http://www.whitemesa.net/wsdl/r3/import2.wsdl
@@ -91,12 +92,17 @@ $soap_tests[INTEROP_R3D_IMPORT2][] =
 
 # IMPORT 2 tests
 # http://www.whitemesa.net/wsdl/r3/import3.wsdl
-$soap_tests[INTEROP_R3D_IMPORT3][] = 
-    new SOAP_Interop_Test('echoStruct',
+$test = new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
-$soap_tests[INTEROP_R3D_IMPORT3][] = 
-    new SOAP_Interop_Test('echoStructArray', 
+$test->service = 'Import3';
+$soap_tests[INTEROP_R3D_IMPORT3][] = &$test;
+unset($test);
+
+$test = new SOAP_Interop_Test('echoStructArray', 
         array('inputStructArray' =>&$soapstruct_array));
+$test->service = 'Import3';
+$soap_tests[INTEROP_R3D_IMPORT3][] = &$test;
+unset($test);
 
 # RPC ENCODED Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclitparameters.wsdl

@@ -61,7 +61,9 @@ class SOAP_Interop_GroupB {
 
     function &echoNestedStruct(&$struct)
     {
-	return $struct->to_soap();
+        if (array_key_exists('__to_soap',get_class_methods($struct)))
+            return $struct->__to_soap();
+        return $struct;
     }
 
     function &echo2DStringArray(&$ary)

@@ -93,7 +93,9 @@ class SOAP_Interop_Base {
 
     function &echoStruct($inputStruct)
     {
-	return $inputStruct->to_soap();
+        if (get_class($inputStruct)=='SOAPStruct')
+            return $inputStruct->__to_soap();
+        return $inputStruct;
     }
 
     function &echoStructArray($inputStructArray)
@@ -102,7 +104,7 @@ class SOAP_Interop_Base {
 	if ($inputStructArray) {
 	    $c = count($inputStructArray);
 	    for ($i = 0; $i < $c; $i++) {
-	        $ra[] = $inputStructArray[$i]->to_soap();
+	        $ra[] = $this->echoStruct($inputStructArray[$i]);
 	    }
 	}
 	return $ra;

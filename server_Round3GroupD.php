@@ -26,7 +26,25 @@ require_once 'interop_Round3GroupD.php';
 
 $groupd = new SOAP_Interop_GroupD();
 $server = new SOAP_Server;
+$server->_auto_translation = true;
+
 $server->addObjectMap($groupd,'http://soapinterop/');
+$server->addObjectMap($groupd,'http://soapinterop.org/xsd');
+
 $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
 
+$test = '<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:ns4="http://soapinterop.org/xsd"
+>
+<SOAP-ENV:Body>
+
+<ns4:x_Document>Test Document Here</ns4:x_Document>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>';
+#$server->service($test,'',TRUE);
 ?>

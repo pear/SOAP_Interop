@@ -24,6 +24,28 @@ require_once 'interop_Round2Base.php';
 
 $base = new SOAP_Interop_Base();
 $server = new SOAP_Server;
+$server->_auto_translation = true;
+
 $server->addObjectMap($base,'http://soapinterop.org/');
 $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+
+$test = '<?xml version="1.0" encoding="UTF-8"?>
+
+<SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:ns4="http://soapinterop.org/"
+ SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<SOAP-ENV:Body>
+
+<ns4:echoStruct>
+<inputStruct>
+<varString xsi:type="xsd:string">arg</varString>
+<varInt xsi:type="xsd:int">34</varInt>
+<varFloat xsi:type="xsd:float">325.325</varFloat></inputStruct></ns4:echoStruct>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>';
+#$server->service($test,'',TRUE);
+
 ?>
