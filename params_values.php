@@ -36,6 +36,12 @@ $string_array_soapval = new SOAP_Value('inputStringArray','Array',
                 new SOAP_Value('item','string','bad')
             )
         );
+$string_array_one = array('good');
+$string_array_one_soapval = new SOAP_Value('inputStringArray','Array',
+            array( #push struct elements into one soap value
+                new SOAP_Value('item','string','good'),
+            )
+        );
 $string_array_null = NULL;
 $string_array_null_soapval = new SOAP_Value('inputStringArray','Array',NULL);
 $string_array_null_soapval->arrayType='{http://www.w3.org/2001/XMLSchema}string';

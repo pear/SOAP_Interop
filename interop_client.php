@@ -301,10 +301,10 @@ class Interop_Client
             // it's the only one that uses this soapaction, and breaks if
             // it isn't right.  Can't wait for soapaction to be fully depricated
             # 8/25/2002, seems this is fixed now
-            if ($this->currentTest == 'Round 2 Base' &&
-                strstr($endpoint_info->name,'MS SOAP ToolKit 2.0')) {
-                $soapaction = 'urn:soapinterop';
-            }
+            #if ($this->currentTest == 'Round 2 Base' &&
+            #    strstr($endpoint_info->name,'MS SOAP ToolKit 2.0')) {
+            #    $soapaction = 'urn:soapinterop';
+            #}
             if (!$endpoint_info->client) {
                 $endpoint_info->client = new SOAP_Client($endpoint_info->endpointURL);
                 $endpoint_info->client->_auto_translation = true;
@@ -497,7 +497,7 @@ class Interop_Client
                 }
                 
                 // if we're looking for a specific method, skip unless we have it
-                if ($this->testMethod && !strstr($this->testMethod,$soap_test->test_name)) continue;
+                if ($this->testMethod && strcmp($this->testMethod,$soap_test->test_name)!=0) continue;
                 if ($this->testMethod && $this->currentTest == 'Round 2 Group C') {
                     // we have to figure things out now
                     if (!preg_match('/(.*):(.*),(\d),(\d)/',$this->testMethod, $m)) continue;
@@ -536,8 +536,7 @@ class Interop_Client
                     if ($this->doEndpointMethod($endpoint_info, $soap_test)) {
                         $this->totals['success']++;
                     } else {
-                        $skipendpoint = $soap_test->result['fault']->faultcode=='HTTP'
-                            && strstr($soap_test->result['fault']->faultstring,'Connect Error');
+                        $skipendpoint = $soap_test->result['fault']->faultcode=='HTTP';
                         if ($skipendpoint) $skipfault = $soap_test->result['fault'];
                         else  $skipfault = NULL;
                         $this->totals['fail']++;

@@ -55,6 +55,10 @@ $soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray',
         array('inputStringArray' => &$string_array));
 $soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray',
         array('inputStringArray' => &$string_array_soapval));
+$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(one)',
+        array('inputStringArray' => &$string_array_one));
+$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(one)',
+        array('inputStringArray' => &$string_array_one_soapval));
 // null array test
 $soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(null)', 
         array('inputStringArray' => &$string_array_null));

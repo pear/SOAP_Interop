@@ -20,10 +20,10 @@
   <license>PHP License</license>
   <release>
     <state>beta</state>
-    <version>0.7.1</version>
-    <date>2002-12-01</date>
+    <version>0.7.2</version>
+    <date>2003-04-01</date>
     <notes>
-       Minor fixes to make interop suite run without modifications.
+       Minor fixes over 0.7.1.
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
@@ -88,6 +88,14 @@
     </deps>
   </release>
   <changelog>
+  <release>
+    <state>beta</state>
+    <version>0.7.1</version>
+    <date>2002-12-01</date>
+    <notes>
+       Minor fixes to make interop suite run without modifications.
+    </notes>
+  </release>
   <release>
     <state>beta</state>
     <version>0.7.0</version>

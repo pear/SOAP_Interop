@@ -107,7 +107,7 @@ class SOAP_Interop_Test {
         } else {
             $fault = $this->result['fault'];
             if ($fault) {
-                print "FAILED: {$fault['faultcode']} {$fault['faultstring']}\n";
+                print "FAILED: [{$fault->faultcode}] {$fault->faultstring}\n";
             } else {
                 print "FAILED: ".$this->result['result']."\n";
             }
