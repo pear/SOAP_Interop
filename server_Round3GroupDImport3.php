@@ -28,7 +28,7 @@ class SOAP_Interop_GroupDImport3 {
     function &echoStruct($inputStruct)
     {
         $ns = '{http://soapinterop.org/xsd}';
-        if (is_object($inputStruct) && get_class($inputStruct)=='soapstruct')
+        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
             return $inputStruct->__to_soap($ns.'return');
         else {
             if (is_object($inputStruct)) {

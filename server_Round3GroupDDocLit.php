@@ -45,7 +45,7 @@ class SOAP_Interop_GroupDDocLit {
     function &echoStruct($inputStruct)
     {
         $ns = '{http://soapinterop.org/xsd}';
-        if (is_object($inputStruct) && get_class($inputStruct)=='soapstruct')
+        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
             return $inputStruct->__to_soap($ns.'echoStructReturn');
         else {
             if (is_object($inputStruct)) {

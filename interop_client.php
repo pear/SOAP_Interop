@@ -171,7 +171,7 @@ class Interop_Client
         if ($soap_test->headers) {
             foreach ($soap_test->headers as $h) {
                 $destination = 0;
-                if (get_class($h) == 'soap_header') {
+                if (strtolower(get_class($h)) == 'soap_header') {
                     if ($h->attributes['SOAP-ENV:actor'] == 'http://schemas.xmlsoap.org/soap/actor/next') $destination = 1;
                     $test_name .= ":{$h->name},$destination,{$h->attributes['SOAP-ENV:mustUnderstand']}";
                 } else {
@@ -376,7 +376,7 @@ class Interop_Client
                 $hc = count($soap_test->headers);
                 for ($i=0; $i < $hc; $i++) {
                     $header =& $soap_test->headers[$i];
-                    if (get_class($header) != 'soap_header') {
+                    if (strtolower(get_class($header)) != 'soap_header') {
                         // assume it's an array
                         $header =& new SOAP_Header($header[0], NULL, $header[1], $header[2], $header[3], $header[4]);
                     }
@@ -400,7 +400,7 @@ class Interop_Client
             }
 
             # we need to decode what we sent so we can compare!
-            if (gettype($sent)=='object' && (get_class($sent)=='soap_value' ||
+            if (gettype($sent) == 'object' && (strtolower(get_class($sent)) == 'soap_value' ||
                             is_subclass_of($sent,'soap_value')))
                 $sent_d =& $soap->_decode($sent);
             else
@@ -525,7 +525,7 @@ class Interop_Client
                     $thc = count($soap_test->headers);
                     for ($thi = 0; $thi < $thc; $thi++) {
                         $header =& $soap_test->headers[$thi];
-                        if (get_class($header) == 'soap_header') {
+                        if (strtolower(get_class($header)) == 'soap_header') {
                             if ($header->name == $m[2]) {
                                 $gotit = $header->attributes['SOAP-ENV:actor'] == ($m[3]?SOAP_TEST_ACTOR_NEXT: SOAP_TEST_ACTOR_OTHER);
                                 $gotit = $gotit && $header->attributes['SOAP-ENV:mustUnderstand'] == $m[4];

@@ -27,7 +27,7 @@ require_once 'params_classes.php';
 class SOAP_Interop_GroupDImport2 {
     function &echoStruct($inputStruct)
     {
-        if (is_object($inputStruct) && get_class($inputStruct)=='soapstruct')
+        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
             return $inputStruct->__to_soap('Result');
         else {
             if (is_object($inputStruct)) {

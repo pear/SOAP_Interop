@@ -52,7 +52,7 @@ class SOAP_Interop_Test {
         // determine test type
         if ($params) {
         $v = array_values($params);
-        if (gettype($v[0]) == 'object' && get_class($v[0]) == 'soap_value')
+        if (gettype($v[0]) == 'object' && strtolower(get_class($v[0])) == 'soap_value')
             $this->type = 'soapval';
         }
     }
@@ -91,7 +91,7 @@ class SOAP_Interop_Test {
             $hc = count($this->headers);
             for ($i=0; $i < $hc; $i++) {
                 $h =& $this->headers[$i];
-                if (get_class($h) == 'soap_header') {
+                if (strtolower(get_class($h)) == 'soap_header') {
                     
                     echo "\n    {$h->name},{$h->attributes['SOAP-ENV:actor']},{$h->attributes['SOAP-ENV:mustUnderstand']} : ";
                 } else {
