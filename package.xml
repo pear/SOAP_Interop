@@ -16,6 +16,12 @@
       <email>shane@php.net</email>
       <role>lead</role>
     </maintainer>
+    <maintainer>
+      <user>arnaud</user>
+      <name>Arnaud Limbourg</name>
+      <email>arnaud@php.net</email>
+      <role>lead</role>
+    </maintainer>
   </maintainers>
   <license>PHP License</license>
   <release>
@@ -58,7 +64,7 @@
         <file role="php" name="params_Round2GroupB.php"/>
         <file role="php" name="params_Round2GroupC.php"/>
         <file role="php" name="params_Round3GroupD.php"/>
-        <dir name="wsdl"> 
+        <dir name="wsdl">
           <file role="php" name="compound1.wsdl.php"/>
           <file role="php" name="compound2.wsdl.php"/>
           <file role="php" name="echoheadersvc.wsdl.php"/>
@@ -75,7 +81,7 @@
           <file role="php" name="InteropTestheaders.wsdl.php"/>
           <file role="php" name="InteropTestList.wsdl.php"/>
           <file role="php" name="InteropTestRpcEnc.wsdl.php"/>
-            <dir name="imported"> 
+            <dir name="imported">
                 <file role="php" name="import1B.wsdl"/>
                 <file role="php" name="import2B.wsdl"/>
                 <file role="php" name="import2B.xsd"/>
