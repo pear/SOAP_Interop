@@ -25,8 +25,8 @@ require_once 'interop_Round3GroupD.php';
 // http://www.whitemesa.com/r3/plan.html
 
 $options = array('use'=>'literal','style'=>'document');
-$groupd = new SOAP_Interop_GroupD();
-$server = new SOAP_Server($options);
+$groupd =& new SOAP_Interop_GroupD();
+$server =& new SOAP_Server($options);
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop/');

@@ -39,33 +39,33 @@ $soap_tests[INTEROP_R2GROUPB][] =
 //***********************************************************
 // GroupB echoSimpleTypesAsStruct
 
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoSimpleTypesAsStruct',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoSimpleTypesAsStruct',
     $simpletypes, $soapstruct);
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoSimpleTypesAsStruct',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoSimpleTypesAsStruct',
     $simpletypes_soapval, $soapstruct);    
 
 //***********************************************************
 // GroupB echo2DStringArray
 
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echo2DStringArray',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echo2DStringArray',
     array('input2DStringArray' => &$multidimarray));
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echo2DStringArray',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echo2DStringArray',
     array('input2DStringArray' => &$multidimarray_soapval));
 
 //***********************************************************
 // GroupB echoNestedStruct
 
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoNestedStruct',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoNestedStruct',
     array('inputStruct' => &$soapstructstruct));
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoNestedStruct',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoNestedStruct',
     array('inputStruct' => &$soapstructstruct_soapval));
 
 //***********************************************************
 // GroupB echoNestedArray
 
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoNestedArray',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoNestedArray',
     array('inputStruct' => &$soaparraystruct));
-$soap_tests[INTEROP_R2GROUPB][] = new SOAP_Interop_Test('echoNestedArray',
+$soap_tests[INTEROP_R2GROUPB][] =& new SOAP_Interop_Test('echoNestedArray',
     array('inputStruct' => &$soaparraystruct_soapval));
         
 

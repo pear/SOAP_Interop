@@ -23,7 +23,7 @@ require_once 'SOAP/Client.php';
 
 require_once 'config.php';
 require_once 'interop_test_functions.php';
-//require_once 'interop_wrapper.php';
+require_once 'interop_test.php';
 require_once 'params_Round2Base.php';
 require_once 'params_Round2GroupB.php';
 require_once 'params_Round2GroupC.php';
@@ -81,10 +81,10 @@ class Interop_Client
     function Interop_Client() {
         global $interopConfig;
         $this->DSN = $interopConfig['DSN'];
-        $this->registrationDB = new SOAP_Interop_registrationDB();
+        $this->registrationDB =& new SOAP_Interop_registrationDB();
         
         // XXX for now, share the database for results also
-        $this->dbc = $this->registrationDB->dbc;
+        $this->dbc =& $this->registrationDB->dbc;
     }
     
     /**
@@ -95,8 +95,8 @@ class Interop_Client
     * @access private
     */    
     function fetchEndpoints($name = 'Round 2 Base') {
-        $service = $this->registrationDB->findService($name);
-        $this->endpoints = $this->registrationDB->getServerList($service->id,TRUE);
+        $service =& $this->registrationDB->findService($name);
+        $this->endpoints =& $this->registrationDB->getServerList($service->id,TRUE);
         return TRUE;
     }
     
@@ -110,8 +110,8 @@ class Interop_Client
     * @access private
     */    
     function getEndpoints($name = 'Round 2 Base', $all = 0) {
-        $service = $this->registrationDB->findService($name);
-        $this->endpoints = $this->registrationDB->getServerList($service->id);
+        $service =& $this->registrationDB->findService($name);
+        $this->endpoints =& $this->registrationDB->getServerList($service->id);
         return TRUE;
     }
 
@@ -127,8 +127,10 @@ class Interop_Client
         
         // retreive the results and put them into the endpoint info
         $sql = "select * from results where class='$test' and type='$type' and wsdl=$wsdl";
-        $results = $this->dbc->getAll($sql,NULL, DB_FETCHMODE_ASSOC );
-        foreach ($results as $result) {
+        $results =& $this->dbc->getAll($sql,NULL, DB_FETCHMODE_ASSOC );
+        $rc = count($results);
+        for ($i=0; $i < $rc; $i++) {
+            $result =& $results[$i];
             // find the endpoint
             $c = count($this->endpoints);
             for ($i=0;$i<$c;$i++) {
@@ -136,7 +138,7 @@ class Interop_Client
                     // store the info
                     if (!isset($this->endpoints[$i]->methods))
                         $this->endpoints[$i]->methods = array();
-                    $this->endpoints[$i]->methods[$result['function']] = $result;
+                    $this->endpoints[$i]->methods[$result['function']] =& $result;
                     break;
                 }
             }
@@ -175,7 +177,7 @@ class Interop_Client
                 } else {
                     if (!$h[3] || $h[3] == 'http://schemas.xmlsoap.org/soap/actor/next') $destination = 1;
                     if (!$h[2]) $h[2] = 0;
-                    $qn = new QName($h[0]);
+                    $qn =& new QName($h[0]);
                     $test_name .= ":{$qn->name},$destination,".(int)$h[2];
                 }
             }
@@ -186,7 +188,7 @@ class Interop_Client
                     "and wsdl=$this->useWSDL and client='$this->client_type' and function=".
                     $this->dbc->quote($test_name);
         #echo "\n".$sql;
-        $res = $this->dbc->query($sql);
+        $res =& $this->dbc->query($sql);
         if (DB::isError($res)) {
             die ($res->getMessage());
         }
@@ -200,7 +202,7 @@ class Interop_Client
                     $this->dbc->quote($error).",".
                     ($wire?$this->dbc->quote($wire):"''").")";
         #echo "\n".$sql;
-        $res = $this->dbc->query($sql);
+        $res =& $this->dbc->query($sql);
         
         if (DB::isError($res)) {
             die ($res->getMessage());
@@ -217,7 +219,7 @@ class Interop_Client
     * @return boolean result
     * @access public
     */    
-    function compareResult($expect, $result, $type = NULL)
+    function compareResult(&$expect, &$result, $type = NULL)
     {
         $ok = 0;
         $expect_type = gettype($expect);
@@ -260,16 +262,16 @@ class Interop_Client
             if ($endpoint_info->wsdlURL) {
                 if (!$endpoint_info->client) {
                     if (0 /* dynamic client */) {
-                    $endpoint_info->wsdl = new SOAP_WSDL($endpoint_info->wsdlURL);
+                    $endpoint_info->wsdl =& new SOAP_WSDL($endpoint_info->wsdlURL);
                     $endpoint_info->wsdl->trace=1;
-                    $endpoint_info->client = $endpoint_info->wsdl->getProxy('',$endpoint_info->name);
+                    $endpoint_info->client =& $endpoint_info->wsdl->getProxy('',$endpoint_info->name);
                     } else {
-                    $endpoint_info->client = new SOAP_Client($endpoint_info->wsdlURL,1);
+                    $endpoint_info->client =& new SOAP_Client($endpoint_info->wsdlURL,1);
                     }
                     $endpoint_info->client->_auto_translation = true;
                 }
                 if ($endpoint_info->client->_wsdl->__isfault()) {
-                    $fault = $endpoint_info->client->_wsdl->fault->getFault();
+                    $fault =& $endpoint_info->client->_wsdl->fault->getFault();
                     $soap_test->setResult(0,'WSDL',
                                             $fault->faultstring."\n\n".$fault->faultdetail,
                                             $fault->faultstring,
@@ -306,7 +308,7 @@ class Interop_Client
             #    $soapaction = 'urn:soapinterop';
             #}
             if (!$endpoint_info->client) {
-                $endpoint_info->client = new SOAP_Client($endpoint_info->endpointURL);
+                $endpoint_info->client =& new SOAP_Client($endpoint_info->endpointURL);
                 $endpoint_info->client->_auto_translation = true;
             }
             $soap = &$endpoint_info->client;
@@ -320,8 +322,9 @@ class Interop_Client
             // $header is already a SOAP_Header class
             $soap->headersOut = array();
             $soap->headersIn = array();
-            foreach ($soap_test->headers as $header) {
-                $soap->addHeader($header);
+            $hc = count($soap_test->headers);
+            for ($i=0; $i < $hc; $i++) {
+                $soap->addHeader($soap_test->headers[$i]);
             }
         }
         $soap->setEncoding($soap_test->encoding);
@@ -352,7 +355,7 @@ class Interop_Client
         #    $wsdlcall = $wsdlcall.$args.');';
         #    eval($wsdlcall);
         #} else {
-            $return = $soap->call($soap_test->method_name,$soap_test->method_params, $options);
+            $return =& $soap->call($soap_test->method_name,$soap_test->method_params, $options);
         #}
         
         if(!PEAR::isError($return)){
@@ -367,10 +370,12 @@ class Interop_Client
             $headers_ok = TRUE;
             if ($soap_test->headers) {
                 // $header is already a SOAP_Header class
-                foreach ($soap_test->headers as $header) {
+                $hc = count($soap_test->headers);
+                for ($i=0; $i < $hc; $i++) {
+                    $header =& $soap_test->headers[$i];
                     if (get_class($header) != 'soap_header') {
                         // assume it's an array
-                        $header = new SOAP_Header($header[0], NULL, $header[1], $header[2], $header[3], $header[4]);
+                        $header =& new SOAP_Header($header[0], NULL, $header[1], $header[2], $header[3], $header[4]);
                     }
                     $expect = $soap_test->headers_expect[$header->name];
                     $header_result[$header->name] = array();
@@ -383,7 +388,7 @@ class Interop_Client
                         $ok = !$need_result || $this->compareResult($hresult ,$expect[key($expect)]);
                     } else {
                         $hresult = $soap->headersIn[$header->name];
-                        $expect = $soap->_decode($header);
+                        $expect =& $soap->_decode($header);
                         $ok = !$need_result || $this->compareResult($hresult ,$expect);
                     }
                     $header_result[$header->name]['ok'] = $ok;
@@ -394,12 +399,12 @@ class Interop_Client
             # we need to decode what we sent so we can compare!
             if (gettype($sent)=='object' && (get_class($sent)=='soap_value' ||
                             is_subclass_of($sent,'soap_value')))
-                $sent_d = $soap->_decode($sent);
+                $sent_d =& $soap->_decode($sent);
             else
                 $sent_d =& $sent;
             
-            $soap_test->result['sent'] = $sent;
-            $soap_test->result['return'] = $return;
+            $soap_test->result['sent'] =& $sent;
+            $soap_test->result['return'] =& $return;
             // compare the results with what we sent
             $ok = $this->compareResult($sent_d,$return, $sent->type);
             if (!$ok && $soap_test->expect) {
@@ -408,7 +413,7 @@ class Interop_Client
             
             if($ok){
                 if (!$headers_ok) {
-                    $fault = new stdclass;
+                    $fault =& new stdclass;
                     $fault->faultcode = 'HEADER';
                     $fault->faultstring = 'The returned result did not match what we expected to receive';
                     $soap_test->setResult(0,$fault->faultcode,
@@ -421,7 +426,7 @@ class Interop_Client
                     $success = TRUE;
                 }
             } else {
-                $fault = new stdclass();
+                $fault =& new stdclass();
                 $fault->faultcode = 'RESULT';
                 $fault->faultstring = 'The returned result did not match what we expected to receive';
                 $fault->faultdetail = ''/*"SENT:\n".var_export($soap_test->result['sent']).
@@ -455,6 +460,7 @@ class Interop_Client
     */    
     function doTest() {
         global $soap_tests;
+        $empty_string='';
         // get endpoints for this test
         $this->getEndpoints($this->currentTest);
         #clear totals
@@ -482,10 +488,10 @@ class Interop_Client
                 // if this is in our skip list, skip it
                 if (in_array($endpoint_info->name, $this->skipEndpointList)) {
                     $skipendpoint = TRUE;
-                    $skipfault = new stdclass;
+                    $skipfault =& new stdclass;
                     $skipfault->faultcode='SKIP';
                     $skipfault->faultstring='endpoint skipped';
-                    $soap_test->setResult(0,$skipfault->faultcode, '',
+                    $soap_test->setResult(0,$skipfault->faultcode, $empty_string,
                                   $skipfault->faultstring,
                                   $skipfault
                                   );
@@ -509,12 +515,12 @@ class Interop_Client
                         $header =& $soap_test->headers[$thi];
                         if (get_class($header) == 'soap_header') {
                             if ($header->name == $m[2]) {
-                                $gotit = $header->attributes['SOAP-ENV:actor'] == ($m[3]?SOAP_TEST_ACTOR_NEXT:SOAP_TEST_ACTOR_OTHER);
+                                $gotit = $header->attributes['SOAP-ENV:actor'] == ($m[3]?SOAP_TEST_ACTOR_NEXT: SOAP_TEST_ACTOR_OTHER);
                                 $gotit = $gotit && $header->attributes['SOAP-ENV:mustUnderstand'] == $m[4];
                             }
                         } else {
                             if ($header[0] == $m[2]) {
-                                $gotit = $gotit && $header[3] == ($m[3]?SOAP_TEST_ACTOR_NEXT:SOAP_TEST_ACTOR_OTHER);
+                                $gotit = $gotit && $header[3] == ($m[3]?SOAP_TEST_ACTOR_NEXT: SOAP_TEST_ACTOR_OTHER);
                                 $gotit = $gotit && $header[4] == $m[4];
                             }
                         }
@@ -524,7 +530,8 @@ class Interop_Client
             
                 // if we are skipping the rest of the tests (due to error) note a fault
                 if ($skipendpoint) {
-                    $soap_test->setResult(0,$skipfault->faultcode, '',
+                    
+                    $soap_test->setResult(0,$skipfault->faultcode, $empty_string,
                                   $skipfault->faultstring,
                                   $skipfault
                                   );

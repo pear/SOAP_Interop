@@ -22,8 +22,8 @@
 require_once 'SOAP/Server.php';
 require_once 'interop_Round2Base.php';
 
-$base = new SOAP_Interop_Base();
-$server = new SOAP_Server;
+$base =& new SOAP_Interop_Base();
+$server =& new SOAP_Server;
 $server->_auto_translation = true;
 
 $server->addObjectMap($base,'http://soapinterop.org/');

@@ -44,19 +44,17 @@ class SOAP_Interop_GroupB {
     function &echoStructAsSimpleTypes (&$struct)
     {
 	# convert a SOAPStruct to an array
-	return array(
-	    new SOAP_Value('outputString','string',$struct->varString),
-	    new SOAP_Value('outputInteger','int',$struct->varInt),
-	    new SOAP_Value('outputFloat','float',$struct->varFloat)
-	    );
+	$r[] =& new SOAP_Value('outputString','string',$struct->varString);
+	$r[] =& new SOAP_Value('outputInteger','int',$struct->varInt);
+	$r[] =& new SOAP_Value('outputFloat','float',$struct->varFloat);
+	return $r;
     }
 
     function &echoSimpleTypesAsStruct(&$string, &$int, &$float)
     {
 	# convert a input into struct
-	return new SOAP_Value('return','{http://soapinterop.org/xsd}SOAPStruct',
-		new SOAPStruct($string, $int, $float)
-	    );
+	$v =& new SOAPStruct($string, $int, $float);
+	return new SOAP_Value('return','{http://soapinterop.org/xsd}SOAPStruct',$v);
     }
 
     function &echoNestedStruct(&$struct)
@@ -68,7 +66,7 @@ class SOAP_Interop_GroupB {
 
     function &echo2DStringArray(&$ary)
     {
-	$ret = new SOAP_Value('return','Array',$ary);
+	$ret =& new SOAP_Value('return','Array',$ary);
 	$ret->options['flatten'] = TRUE;
 	return $ret;
     }

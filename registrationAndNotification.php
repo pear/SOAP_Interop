@@ -63,7 +63,7 @@ class ChangeItem {
     var $url;
 }
 
-function getLocalInteropServer($testname,$id,$localBaseUrl='http://localhost/soap_interop/') {
+function &getLocalInteropServer($testname,$id,$localBaseUrl='http://localhost/soap_interop/') {
     $localServer = array();
     $localServer['service_id']=$id;
     $localServer['name']='Local PEAR::SOAP';
@@ -135,7 +135,7 @@ class SOAP_Interop_registrationAndNotificationService_ServicesPort extends SOAP_
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
         $this->_auto_translation = true;
     }
-    function ServiceList() {
+    function &ServiceList() {
         return $this->call("ServiceList", 
                         NULL, 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/services',
@@ -143,7 +143,7 @@ class SOAP_Interop_registrationAndNotificationService_ServicesPort extends SOAP_
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function Servers($serviceID) {
+    function &Servers($serviceID) {
         return $this->call("Servers", 
                         array("serviceID"=>$serviceID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/services',
@@ -151,7 +151,7 @@ class SOAP_Interop_registrationAndNotificationService_ServicesPort extends SOAP_
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function Clients($serviceID) {
+    function &Clients($serviceID) {
         return $this->call("Clients", 
                         array("serviceID"=>$serviceID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/services',
@@ -165,7 +165,7 @@ class SOAP_Interop_registrationAndNotificationService_ClientsPort extends SOAP_C
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
         $this->_auto_translation = true;
     }
-    function RegisterClient($serviceID, $clientInfo) {
+    function &RegisterClient($serviceID, $clientInfo) {
         return $this->call("RegisterClient", 
                         array("serviceID"=>$serviceID, "clientInfo"=>$clientInfo), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/clients',
@@ -173,7 +173,7 @@ class SOAP_Interop_registrationAndNotificationService_ClientsPort extends SOAP_C
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function UpdateClient($clientID, $clientInfo) {
+    function &UpdateClient($clientID, $clientInfo) {
         return $this->call("UpdateClient", 
                         array("clientID"=>$clientID, "clientInfo"=>$clientInfo), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/clients',
@@ -181,7 +181,7 @@ class SOAP_Interop_registrationAndNotificationService_ClientsPort extends SOAP_C
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function RemoveClient($clientID) {
+    function &RemoveClient($clientID) {
         return $this->call("RemoveClient", 
                         array("clientID"=>$clientID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/clients',
@@ -195,7 +195,7 @@ class SOAP_Interop_registrationAndNotificationService_ServersPort extends SOAP_C
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
         $this->_auto_translation = true;
     }
-    function RegisterServer($serviceID, $serverInfo) {
+    function &RegisterServer($serviceID, $serverInfo) {
         return $this->call("RegisterServer", 
                         array("serviceID"=>$serviceID, "serverInfo"=>$serverInfo), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/servers',
@@ -203,7 +203,7 @@ class SOAP_Interop_registrationAndNotificationService_ServersPort extends SOAP_C
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function UpdateServer($serverID, $serverInfo) {
+    function &UpdateServer($serverID, $serverInfo) {
         return $this->call("UpdateServer", 
                         array("serverID"=>$serverID, "serverInfo"=>$serverInfo), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/servers',
@@ -211,7 +211,7 @@ class SOAP_Interop_registrationAndNotificationService_ServersPort extends SOAP_C
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function RemoveServer($serverID) {
+    function &RemoveServer($serverID) {
         return $this->call("RemoveServer", 
                         array("serverID"=>$serverID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/servers',
@@ -225,7 +225,7 @@ class SOAP_Interop_registrationAndNotificationService_SubscriberPort extends SOA
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
         $this->_auto_translation = true;
     }
-    function Subscribe($serviceID, $ServerChanges, $ClientChanges, $NotificationURL) {
+    function &Subscribe($serviceID, $ServerChanges, $ClientChanges, $NotificationURL) {
         return $this->call("Subscribe", 
                         array("serviceID"=>$serviceID, "ServerChanges"=>$ServerChanges, "ClientChanges"=>$ClientChanges, "NotificationURL"=>$NotificationURL), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/subscriber',
@@ -233,7 +233,7 @@ class SOAP_Interop_registrationAndNotificationService_SubscriberPort extends SOA
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function Renew($notificationID) {
+    function &Renew($notificationID) {
         return $this->call("Renew", 
                         array("notificationID"=>$notificationID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/subscriber',
@@ -241,7 +241,7 @@ class SOAP_Interop_registrationAndNotificationService_SubscriberPort extends SOA
                             'style'=>'rpc',
                             'use'=>'encoded')); 
     }
-    function Cancel($notificationID) {
+    function &Cancel($notificationID) {
         return $this->call("Cancel", 
                         array("notificationID"=>$notificationID), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/subscriber',
@@ -255,7 +255,7 @@ class SOAP_Interop_registrationAndNotificationService_ChangeLogPort extends SOAP
         $this->SOAP_Client("http://soap.4s4c.com/registration/soap.asp", 0);
         $this->_auto_translation = true;
     }
-    function RecentChanges($MaxEntries) {
+    function &RecentChanges($MaxEntries) {
         return $this->call("RecentChanges", 
                         array("MaxEntries"=>$MaxEntries), 
                         array('namespace'=>'http://soap.pocketsoap.com/registration/changeLog',
@@ -279,7 +279,7 @@ class SOAP_Interop_registrationDB {
     {
         global $interopConfig;
 	$this->DSN = $interopConfig['DSN'];
-        $this->client = new SOAP_Interop_registrationAndNotificationService_ServicesPort();
+        $this->client =& new SOAP_Interop_registrationAndNotificationService_ServicesPort();
         $this->connectDB();
         $this->getServiceList();
     }
@@ -287,7 +287,7 @@ class SOAP_Interop_registrationDB {
     function connectDB()
     {
         if (!$this->dbc)
-            $this->dbc = DB::connect($this->DSN, true);
+            $this->dbc =& DB::connect($this->DSN, true);
         if (PEAR::isError($this->dbc)) {
             echo $this->dbc->getMessage();
             $this->dbc = NULL;
@@ -306,7 +306,7 @@ class SOAP_Interop_registrationDB {
     function &retreiveServiceList()
     {
         if (!$this->services) {
-            $this->services = $this->client->ServiceList();
+            $this->services =& $this->client->ServiceList();
         }
         return $this->services;
     }
@@ -315,7 +315,7 @@ class SOAP_Interop_registrationDB {
     {
         if (!$this->servers || $this->currentServiceId != $serviceID) {
             $this->currentServiceId = $serviceID;
-            $this->servers = $this->client->Servers($serviceID);
+            $this->servers =& $this->client->Servers($serviceID);
         }
         return $this->servers;
     }
@@ -324,7 +324,7 @@ class SOAP_Interop_registrationDB {
     {
         if (!$this->clients || $this->currentServiceId != $serviceID) {
             $this->currentServiceId = $serviceID;
-            $this->clients = $this->client->Clients($serviceID);
+            $this->clients =& $this->client->Clients($serviceID);
         }
         return $this->clients;
     }
@@ -458,7 +458,7 @@ class SOAP_Interop_registrationDB {
     }
 }
 
-#$reg = new SOAP_Interop_registrationAndNotificationDB();
+#$reg =& new SOAP_Interop_registrationAndNotificationDB();
 #$reg->updateDB();
 //print_r($l);
 ?>

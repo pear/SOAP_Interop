@@ -24,25 +24,25 @@ define('INTEROP_R2BASE','Round 2 Base');
 //***********************************************************
 // Base echoString
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString', 
-                            array('inputString' => &$string));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString', 
+                            array('inputString' => &$string),$soap_test_null);
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString', 
                             array('inputString' => &$string_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString(null)', 
                             array('inputString' => &$string_null));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString(null)', 
                             array('inputString' => &$string_null_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString(entities)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString(entities)', 
                             array('inputString' => &$string_entities));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoString(entities)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoString(entities)', 
                             array('inputString' => &$string_entities_soapval));
-$test = new SOAP_Interop_Test('echoString(utf-8)', 
+$test =& new SOAP_Interop_Test('echoString(utf-8)', 
                             array('inputString' => &$string_utf8));
 $test->encoding = 'UTF-8';
 $soap_tests[INTEROP_R2BASE][] =& $test;
 unset($test);
 
-$test = new SOAP_Interop_Test('echoString(utf-8)', 
+$test =& new SOAP_Interop_Test('echoString(utf-8)', 
                             array('inputString' => &$string_utf8_soapval));
 $test->encoding = 'UTF-8';
 $soap_tests[INTEROP_R2BASE][] =& $test;
@@ -51,79 +51,79 @@ unset($test);
 //***********************************************************
 // Base echoStringArray
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray',
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray',
         array('inputStringArray' => &$string_array));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray',
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray',
         array('inputStringArray' => &$string_array_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(one)',
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray(one)',
         array('inputStringArray' => &$string_array_one));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(one)',
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray(one)',
         array('inputStringArray' => &$string_array_one_soapval));
 // null array test
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray(null)', 
         array('inputStringArray' => &$string_array_null));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStringArray(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStringArray(null)', 
         array('inputStringArray' => &$string_array_null_soapval));
 
 //***********************************************************
 // Base echoInteger
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoInteger', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoInteger', 
         array('inputInteger' => &$integer));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoInteger', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoInteger', 
         array('inputInteger' => &$integer_soapval));
 
 //***********************************************************
 // Base echoIntegerArray
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoIntegerArray', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoIntegerArray', 
         array('inputIntegerArray' => &$integer_array));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoIntegerArray',
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoIntegerArray',
         array('inputIntegerArray' => &$integer_array_soapval));
 
 // null array test
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoIntegerArray(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoIntegerArray(null)', 
         array('inputIntegerArray' => &$integer_array_null));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoIntegerArray(null)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoIntegerArray(null)', 
         array('inputIntegerArray' => &$integer_array_null_soapval));
 
 //***********************************************************
 // Base echoFloat
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoFloat', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoFloat', 
         array('inputFloat' => &$float));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoFloat', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoFloat', 
         array('inputFloat' => &$float_soapval));
 
 //***********************************************************
 // Base echoFloatArray
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoFloatArray', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoFloatArray', 
         array('inputFloatArray' => &$float_array));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoFloatArray', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoFloatArray', 
         array('inputFloatArray' => &$float_array_soapval));
 
 //***********************************************************
 // Base echoStruct
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStruct', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStruct', 
         array('inputStruct' => &$soapstruct));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStruct', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStruct', 
         array('inputStruct' => &$soapstruct_soapval));
 
 //***********************************************************
 // Base echoStructArray
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStructArray', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStructArray', 
         array('inputStructArray' => &$soapstruct_array));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoStructArray', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoStructArray', 
         array('inputStructArray' => &$soapstruct_array_soapval));
 
 //***********************************************************
 // Base echoVoid
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoVoid', NULL);
-$test = new SOAP_Interop_Test('echoVoid', NULL);
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoVoid', NULL);
+$test =& new SOAP_Interop_Test('echoVoid', NULL);
 $test->type = 'soapval';
 $soap_tests[INTEROP_R2BASE][] =& $test;
 unset($test);
@@ -131,53 +131,53 @@ unset($test);
 //***********************************************************
 // Base echoBase64
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBase64', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBase64', 
         array('inputBase64' => &$base64));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBase64', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBase64', 
         array('inputBase64' => &$base64_soapval));
 
 //***********************************************************
 // Base echoHexBinary
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoHexBinary', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoHexBinary', 
         array('inputHexBinary' => &$hexBin));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoHexBinary', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoHexBinary', 
         array('inputHexBinary' => &$hexBin_soapval));
 
 //***********************************************************
 // Base echoDecimal
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoDecimal', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoDecimal', 
         array('inputDecimal' => &$decimal));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoDecimal', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoDecimal', 
         array('inputDecimal' => &$decimal_soapval));
 
 //***********************************************************
 // Base echoDate
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoDate', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoDate', 
         array('inputDate' => &$dateTime));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoDate', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoDate', 
         array('inputDate' => &$dateTime_soapval));
 
 //***********************************************************
 // Base echoBoolean
 
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(TRUE)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(TRUE)', 
         array('inputBoolean' => &$boolean_true));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(TRUE)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(TRUE)', 
         array('inputBoolean' => &$boolean_true_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(FALSE)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(FALSE)', 
         array('inputBoolean' => &$boolean_false));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(FALSE)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(FALSE)', 
         array('inputBoolean' => &$boolean_false_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(1)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(1)', 
         array('inputBoolean' => &$boolean_one));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(1)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(1)', 
         array('inputBoolean' => &$boolean_one_soapval));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(0)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(0)', 
         array('inputBoolean' => &$boolean_zero));
-$soap_tests[INTEROP_R2BASE][] = new SOAP_Interop_Test('echoBoolean(0)', 
+$soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBoolean(0)', 
         array('inputBoolean' => &$boolean_zero_soapval));
 
 ?>

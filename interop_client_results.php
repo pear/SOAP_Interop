@@ -51,7 +51,7 @@ TD.SMTP { background-color: Yellow; }
 <p>&nbsp;</p>
 
 <?php
-$iop = new Interop_Client();
+$iop =& new Interop_Client();
 
 if ($_GET['detail'] == 1) $iop->showFaults = 1;
 

@@ -35,7 +35,7 @@ function string_compare($e1, $e2)
     $e2_type = gettype($e2);
     $ok = FALSE;
     if ($e1_type == "string") {
-        $dt = new SOAP_Type_dateTime();
+        $dt =& new SOAP_Type_dateTime();
         $ok = $dt->compare($e1, $e2) == 0;
     }
     return $ok || $e1 == $e2 || strcasecmp(trim($e1), trim($e2)) == 0;
@@ -69,16 +69,16 @@ function array_compare(&$ar1, &$ar2)
 }
 
 
-function parseMessage($msg)
+function &parseMessage($msg)
 {
     # strip line endings
     #$msg = preg_replace('/\r|\n/', ' ', $msg);
-    $response = new SOAP_Parser($msg);
+    $response =& new SOAP_Parser($msg);
     if ($response->fault) {
         return $response->fault->getFault();
     }
-    $return = $response->getResponse();
-    $v = $response->decode($return);
+    $return =& $response->getResponse();
+    $v =& $response->decode($return);
     if (gettype($v) == 'array' && count($v)==1) {
         return array_shift($v);
     }

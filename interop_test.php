@@ -38,7 +38,7 @@ class SOAP_Interop_Test {
     var $encoding = SOAP_DEFAULT_ENCODING;
     var $service = NULL; // if multiple services, this sets to a specific service
     
-    function SOAP_Interop_Test($methodname, $params, $expect = NULL) {
+    function SOAP_Interop_Test($methodname, $params, $expect=NULL) {
         if (strchr($methodname,'(')) {
             preg_match('/(.*)\((.*)\)/',$methodname,$matches);
             $this->test_name = $methodname;
@@ -46,8 +46,8 @@ class SOAP_Interop_Test {
         } else {
             $this->test_name = $this->method_name = $methodname;
         }
-        $this->method_params = $params;
-        $this->expect = $expect;
+        $this->method_params =& $params;
+        $this->expect =& $expect;
         
         // determine test type
         if ($params) {
@@ -57,13 +57,13 @@ class SOAP_Interop_Test {
         }
     }
     
-    function setResult($ok, $result, $wire, $error = '', $fault = NULL)
+    function setResult($ok, $result, &$wire, $error = '', $fault = NULL)
     {
         $this->result['success'] = $ok;
-        $this->result['result'] = $result;
-        $this->result['error'] = $error;
-        $this->result['wire'] = $wire;
-        $this->result['fault'] = $fault;
+        $this->result['result'] =& $result;
+        $this->result['error'] =& $error;
+        $this->result['wire'] =& $wire;
+        $this->result['fault'] =& $fault;
     }
 
     /**
@@ -83,7 +83,9 @@ class SOAP_Interop_Test {
         
         echo "testing $this->test_name : ";
         if ($this->headers) {
-            foreach ($this->headers as $h) {
+            $hc = count($this->headers);
+            for ($i=0; $i < $hc; $i++) {
+                $h =& $this->headers[$i];
                 if (get_class($h) == 'soap_header') {
                     
                     echo "\n    {$h->name},{$h->attributes['SOAP-ENV:actor']},{$h->attributes['SOAP-ENV:mustUnderstand']} : ";

@@ -38,8 +38,8 @@ class SOAP_Interop_GroupDCompound2 {
 // http://www.whitemesa.com/r3/plan.html
 
 $options = array('use'=>'literal','style'=>'document');
-$groupd = new SOAP_Interop_GroupDCompound2();
-$server = new SOAP_Server($options);
+$groupd =& new SOAP_Interop_GroupDCompound2();
+$server =& new SOAP_Server($options);
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop.org/employee');

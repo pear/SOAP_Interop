@@ -22,8 +22,8 @@
 require_once 'SOAP/Server.php';
 require_once 'interop_Round2GroupB.php';
 
-$groupb = new SOAP_Interop_GroupB();
-$server = new SOAP_Server;
+$groupb =& new SOAP_Interop_GroupB();
+$server =& new SOAP_Server;
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupb,'http://soapinterop.org/');

@@ -36,7 +36,7 @@ class SOAP_Interop_GroupDRpcEnc {
 	$ra = array();
 	if ($inputStringArray) {
 	foreach($inputStringArray as $s) {
-	    $ra[] = new SOAP_Value('item','string',$s);
+	    $ra[] =& new SOAP_Value('item','string',$s);
 	}
 	}
 	return new SOAP_Value('echoStringArrayReturn',NULL,$ra);
@@ -50,7 +50,7 @@ class SOAP_Interop_GroupDRpcEnc {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct = new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
             return $struct->__to_soap('return');
         }
     }
@@ -65,8 +65,8 @@ class SOAP_Interop_GroupDRpcEnc {
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd = new SOAP_Interop_GroupDRpcEnc();
-$server = new SOAP_Server();
+$groupd =& new SOAP_Interop_GroupDRpcEnc();
+$server =& new SOAP_Server();
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop/');

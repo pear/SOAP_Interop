@@ -33,7 +33,7 @@ class SOAP_Interop_GroupDImport2 {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct = new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
             return $struct->__to_soap('Result');
         }
     }
@@ -44,8 +44,8 @@ class SOAP_Interop_GroupDImport2 {
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd = new SOAP_Interop_GroupDImport2();
-$server = new SOAP_Server();
+$groupd =& new SOAP_Interop_GroupDImport2();
+$server =& new SOAP_Server();
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop/');

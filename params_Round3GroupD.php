@@ -33,32 +33,32 @@ define('INTEROP_R3D_RPCENC','Round 3 Group D RpcEnc');
 
 # COMPOUND 1 tests
 # http://www.whitemesa.net/wsdl/r3/compound1.wsdl
-$test = new SOAP_Interop_Test('echoPerson', array('x_Person'=>&$person));
+$test =& new SOAP_Interop_Test('echoPerson', array('x_Person'=>&$person));
 $test->type = 'php'; // force to php testing
 $soap_tests[INTEROP_R3D_COMPOUND1][] = &$test;
 unset($test);
 
-$test = new SOAP_Interop_Test('echoDocument', array('document'=>'Test Document Here'));
+$test =& new SOAP_Interop_Test('echoDocument', array('document'=>'Test Document Here'));
 $test->type = 'php'; // force to php testing
 $soap_tests[INTEROP_R3D_COMPOUND1][] = &$test;
 unset($test);
 
 # COMPOUND 2 tests
 # http://www.whitemesa.net/wsdl/r3/compound2.wsdl
-$test = new SOAP_Interop_Test('echoEmployee', array('employee'=>&$employee));
+$test =& new SOAP_Interop_Test('echoEmployee', array('employee'=>&$employee));
 $test->type = 'php'; // force to php testing
 $soap_tests[INTEROP_R3D_COMPOUND2][] = &$test;
 unset($test);
 
 # DOC LIT Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclit.wsdl
-$soap_tests[INTEROP_R3D_DOCLIT][] = 
+$soap_tests[INTEROP_R3D_DOCLIT][] =& 
     new SOAP_Interop_Test('echoString', 
         array('inputString' => &$string));
-$soap_tests[INTEROP_R3D_DOCLIT][] = 
+$soap_tests[INTEROP_R3D_DOCLIT][] =& 
     new SOAP_Interop_Test('echoStringArray', 
         array('inputString' => &$string_array));
-$soap_tests[INTEROP_R3D_DOCLIT][] = 
+$soap_tests[INTEROP_R3D_DOCLIT][] =& 
     new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
 #$soap_tests[INTEROP_R3D_DOCLIT][] = 
@@ -66,39 +66,39 @@ $soap_tests[INTEROP_R3D_DOCLIT][] =
 
 # DOC LIT w/Params Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclitparameters.wsdl
-$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
+$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] =& 
     new SOAP_Interop_Test('echoString', 
         array('echoString' => $string));
-$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
+$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] =& 
     new SOAP_Interop_Test('echoStringArray', 
         array('echoStringArray' => &$string_array));
-$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
+$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] =& 
     new SOAP_Interop_Test('echoStruct',
         array('echoStruct' => &$soapstruct));
-$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] = 
+$soap_tests[INTEROP_R3D_DOCLIT_PARAM][] =& 
     new SOAP_Interop_Test('echoVoid', NULL);
 
 # IMPORT 1 tests
 # http://www.whitemesa.net/wsdl/r3/import1.wsdl
-$soap_tests[INTEROP_R3D_IMPORT1][] = 
+$soap_tests[INTEROP_R3D_IMPORT1][] =& 
     new SOAP_Interop_Test('echoString', 
         array('inputString' => &$string));
 
 # IMPORT 2 tests
 # http://www.whitemesa.net/wsdl/r3/import2.wsdl
-$soap_tests[INTEROP_R3D_IMPORT2][] = 
+$soap_tests[INTEROP_R3D_IMPORT2][] =& 
     new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
 
 # IMPORT 2 tests
 # http://www.whitemesa.net/wsdl/r3/import3.wsdl
-$test = new SOAP_Interop_Test('echoStruct',
+$test =& new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
 $test->service = 'Import3';
 $soap_tests[INTEROP_R3D_IMPORT3][] = &$test;
 unset($test);
 
-$test = new SOAP_Interop_Test('echoStructArray', 
+$test =& new SOAP_Interop_Test('echoStructArray', 
         array('inputStructArray' =>&$soapstruct_array));
 $test->service = 'Import3';
 $soap_tests[INTEROP_R3D_IMPORT3][] = &$test;
@@ -106,16 +106,16 @@ unset($test);
 
 # RPC ENCODED Tests
 # http://www.whitemesa.net/wsdl/r3/interoptestdoclitparameters.wsdl
-$soap_tests[INTEROP_R3D_RPCENC][] = 
+$soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoString', 
         array('inputString' => &$string));
-$soap_tests[INTEROP_R3D_RPCENC][] = 
+$soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoStringArray', 
         array('inputString' => &$string_array));
-$soap_tests[INTEROP_R3D_RPCENC][] = 
+$soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoStruct',
         array('inputStruct' => &$soapstruct));
-$soap_tests[INTEROP_R3D_RPCENC][] = 
+$soap_tests[INTEROP_R3D_RPCENC][] =& 
     new SOAP_Interop_Test('echoVoid', NULL);
 
 ?>

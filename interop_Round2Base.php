@@ -29,7 +29,7 @@ function &generateFault($short, $long)
         "detail" => $long
     );
 
-    $faultmsg  = new SOAP_Message("Fault",$params,"http://schemas.xmlsoap.org/soap/envelope/");
+    $faultmsg  =& new SOAP_Message("Fault",$params,"http://schemas.xmlsoap.org/soap/envelope/");
     return $faultmsg;
 }
 
@@ -52,7 +52,7 @@ class SOAP_Interop_Base {
 	$ra = array();
 	if ($inputStringArray) {
 	foreach($inputStringArray as $s) {
-	    $ra[] = new SOAP_Value('item','string',$s);
+	    $ra[] =& new SOAP_Value('item','string',$s);
 	}
 	}
 	return new SOAP_Value('outputStringArray',NULL,$ra);
@@ -69,7 +69,7 @@ class SOAP_Interop_Base {
 	$ra = array();
 	if ($inputIntegerArray) {
 	foreach ($inputIntegerArray as $i) {
-	    $ra[] = new SOAP_Value('item','int',$i);
+	    $ra[] =& new SOAP_Value('item','int',$i);
 	}
 	}
 	return new SOAP_Value('outputIntArray',NULL,$ra);
@@ -85,7 +85,7 @@ class SOAP_Interop_Base {
 	$ra = array();
 	if ($inputFloatArray) {
 	foreach($inputFloatArray as $float) {
-	    $ra[] = new SOAP_Value('item','float',(FLOAT)$float);
+	    $ra[] =& new SOAP_Value('item','float',(FLOAT)$float);
 	}
 	}
 	return new SOAP_Value('outputFloatArray',NULL,$ra);
@@ -122,7 +122,7 @@ class SOAP_Interop_Base {
 
     function &echoDate($timeInstant)
     {
-	$dt = new SOAP_Type_dateTime($timeInstant);
+	$dt =& new SOAP_Type_dateTime($timeInstant);
 	if ($dt->toUnixtime() != -1) {
 	    $value = $dt->toSOAP();
 	    return new SOAP_Value('return','dateTime',$value);

@@ -36,7 +36,7 @@ class SOAP_Interop_GroupDDocLit {
 	$ra = array();
 	if ($inputStringArray) {
 	foreach($inputStringArray as $s) {
-	    $ra[] = new SOAP_Value('item','string',$s);
+	    $ra[] =& new SOAP_Value('item','string',$s);
 	}
 	}
 	return new SOAP_Value('{http://soapinterop.org/xsd}echoStringArrayReturn',NULL,$ra);
@@ -51,7 +51,7 @@ class SOAP_Interop_GroupDDocLit {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct = new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
             return $struct->__to_soap($ns.'echoStructReturn');
         }
     }
@@ -62,8 +62,8 @@ class SOAP_Interop_GroupDDocLit {
 // http://www.whitemesa.com/r3/plan.html
 
 $options = array('use'=>'literal','style'=>'document');
-$groupd = new SOAP_Interop_GroupDDocLit();
-$server = new SOAP_Server($options);
+$groupd =& new SOAP_Interop_GroupDDocLit();
+$server =& new SOAP_Server($options);
 $server->_auto_translation = true;
 
 $server->addObjectMap($groupd,'http://soapinterop.org/WSDLInteropTestDocLit');

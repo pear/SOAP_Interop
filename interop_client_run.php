@@ -25,7 +25,7 @@ require_once 'interop_client.php';
 #$SOAP_RAW_CONVERT = TRUE;
 $INTEROP_LOCAL_SERVER = TRUE;// add local server to endpoints
 
-$iop = new Interop_Client();
+$iop =& new Interop_Client();
 // force a fetch of endpoints, this happens irregardless if no endpoints in database
 #$iop->fetchEndpoints();
 
@@ -38,7 +38,7 @@ $iop->numServers = 0;        // 0 = all
 $iop->specificEndpoint = ''; // test only this endpoint
 $iop->testMethod = '';       // test only this method
 $iop->skipEndpointList = array('Frontier'); // endpoints to skip
-$this->nosave = 0; // 1= disable saving results to database
+$iop->nosave = 0; // 1= disable saving results to database
 // debug output
 $iop->show = 1;
 $iop->debug = 0;
