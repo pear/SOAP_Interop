@@ -32,10 +32,10 @@
   <license>PHP License</license>
   <release>
     <state>beta</state>
-    <version>0.8</version>
-    <date>2003-08-17</date>
+    <version>0.8.1</version>
+    <date>2007-01-21</date>
     <notes>
-       Minor updates bump version to match PEAR::SOAP
+       PHP 4.4 and 5 compatibility fixes;
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
@@ -102,6 +102,14 @@
     </deps>
   </release>
   <changelog>
+  <release>
+    <state>beta</state>
+    <version>0.8</version>
+    <date>2003-08-17</date>
+    <notes>
+       Minor updates bump version to match PEAR::SOAP
+    </notes>
+  </release>
   <release>
     <version>0.7.2</version>
     <date>2003-04-01</date>
