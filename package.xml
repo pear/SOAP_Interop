@@ -11,6 +11,12 @@
   </description>
   <maintainers>
     <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+    <maintainer>
       <user>shane</user>
       <name>Shane Caraveo</name>
       <email>shane@php.net</email>
@@ -33,7 +39,7 @@
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
-        <file role="php" name="config.php.orig"/>
+        <file role="php" name="config.php.dist"/>
         <file role="php" name="index.php"/>
         <file role="php" name="interop_client.php"/>
         <file role="php" name="interop_client_results.php"/>
@@ -84,9 +90,9 @@
           <file role="php" name="InteropTestList.wsdl.php"/>
           <file role="php" name="InteropTestRpcEnc.wsdl.php"/>
             <dir name="imported">
-                <file role="php" name="import1B.wsdl"/>
-                <file role="php" name="import2B.wsdl"/>
-                <file role="php" name="import2B.xsd"/>
+              <file role="php" name="import1B.wsdl"/>
+              <file role="php" name="import2B.wsdl"/>
+              <file role="php" name="import2B.xsd"/>
             </dir>
         </dir>
       </dir>
