@@ -488,7 +488,7 @@ class Interop_Client
             $this->totals['servers']++;
             #$endpoint_info['tests'] = array();
             
-            if ($this->show) print "Processing {$endpoint_info->name} at {$endpoint_info->endpointURL}<br>\n";
+            if ($this->show) print "Processing {$endpoint_info->name} at {$endpoint_info->endpointURL}\n";
             
             $tc = count($soap_tests[$this->currentTest]);
             for($ti=0; $ti<$tc; $ti++) {

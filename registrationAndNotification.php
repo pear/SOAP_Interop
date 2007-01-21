@@ -63,7 +63,7 @@ class ChangeItem {
     var $url;
 }
 
-function &getLocalInteropServer($testname,$id,$localBaseUrl='http://localhost/soap_interop/') {
+function getLocalInteropServer($testname,$id,$localBaseUrl='http://localhost/soap_interop/') {
     $localServer = array();
     $localServer['service_id']=$id;
     $localServer['name']='Local PEAR::SOAP';

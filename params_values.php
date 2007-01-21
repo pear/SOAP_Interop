@@ -79,13 +79,13 @@ $soapstruct_array_soapval =& new SOAP_Value('inputStructArray','Array',
     array(&$soapstruct_soapval,&$soapstruct_soapval,&$soapstruct_soapval));
 
 $soapstructstruct =& new SOAPStructStruct('arg',34,325.325,$soapstruct);
-$soapstructstruct_soapval = &$soapstructstruct->__to_soap();
+$soapstructstruct_soapval = $soapstructstruct->__to_soap();
 $soapstructstruct_array = array(&$soapstructstruct, &$soapstructstruct, &$soapstructstruct);
 $soapstructstruct_array_soapval =& new SOAP_Value('inputStructArray','Array',
     array(&$soapstructstruct_soapval,&$soapstructstruct_soapval,&$soapstructstruct_soapval));
 
 $soaparraystruct =& new SOAPArrayStruct('arg',34,325.325,array('good','bad','ugly'));
-$soaparraystruct_soapval = &$soaparraystruct->__to_soap();
+$soaparraystruct_soapval = $soaparraystruct->__to_soap();
 $soaparraystruct_array = array(&$soaparraystruct, &$soaparraystruct, &$soaparraystruct);
 $soaparraystruct_array_soapval =& new SOAP_Value('inputStructArray','Array',
     array(&$soaparraystruct_soapval,&$soaparraystruct_soapval,&$soaparraystruct_soapval));
@@ -150,9 +150,6 @@ $multidimarray_soapval->options['flatten'] = TRUE;
 
 // Round2GroupC values
 $_person =& new Person(32,12345,'Shane',TRUE);
-$person =& $_person->__to_soap();
+$person = $_person->__to_soap();
 $_employee =& new Employee($_person,12345,1000000.00);
-$employee =& $_employee->__to_soap();
-
-
-?>
+$employee = $_employee->__to_soap();

@@ -30,11 +30,11 @@ class SOAPStruct {
         $this->varFloat = $f;
     }
     
-    function &__to_soap($name = 'inputStruct', $header=false, $mustUnderstand=0, $actor='http://schemas.xmlsoap.org/soap/actor/next')
+    function __to_soap($name = 'inputStruct', $header=false, $mustUnderstand=0, $actor='http://schemas.xmlsoap.org/soap/actor/next')
     {
-        $inner[] =& new SOAP_Value('varString','string',$this->varString);
-        $inner[] =& new SOAP_Value('varInt','int',$this->varInt);
-        $inner[] =& new SOAP_Value('varFloat','float',$this->varFloat);
+        $inner[] = new SOAP_Value('varString','string',$this->varString);
+        $inner[] = new SOAP_Value('varInt','int',$this->varInt);
+        $inner[] = new SOAP_Value('varFloat','float',$this->varFloat);
         if ($header) {
             return new SOAP_Header($name,'{http://soapinterop.org/xsd}SOAPStruct',$inner,$mustUnderstand,$actor);
         }
@@ -57,12 +57,12 @@ class SOAPStructStruct {
         $this->varStruct = $ss;
     }
     
-    function &__to_soap($name = 'inputStruct')
+    function __to_soap($name = 'inputStruct')
     {
-        $v[] =& new SOAP_Value('varString','string',$this->varString);
-        $v[] =& new SOAP_Value('varInt','int',$this->varInt);
-        $v[] =& new SOAP_Value('varFloat','float',$this->varFloat);
-        $v[] =& $this->varStruct->__to_soap('varStruct');
+        $v[] = new SOAP_Value('varString','string',$this->varString);
+        $v[] = new SOAP_Value('varInt','int',$this->varInt);
+        $v[] = new SOAP_Value('varFloat','float',$this->varFloat);
+        $v[] = $this->varStruct->__to_soap('varStruct');
         return new SOAP_Value($name,'{http://soapinterop.org/xsd}SOAPStructStruct',$v);
     }    
 }
@@ -81,17 +81,17 @@ class SOAPArrayStruct {
         $this->varArray = $ss;
     }
     
-    function &__to_soap($name = 'inputStruct')
+    function __to_soap($name = 'inputStruct')
     {
         $ar = array();
         $c = count($this->varArray);
         for ($i=0; $i<$c; $i++) {
-            $ar[] =& new SOAP_Value('item','string',$this->varArray[$i]);
+            $ar[] = new SOAP_Value('item','string',$this->varArray[$i]);
         }
-        $v[] =& new SOAP_Value('varString','string',$this->varString);
-        $v[] =& new SOAP_Value('varInt','int',$this->varInt);
-        $v[] =& new SOAP_Value('varFloat','float',$this->varFloat);
-        $v[] =& new SOAP_Value('varArray',false,$ar);
+        $v[] = new SOAP_Value('varString','string',$this->varString);
+        $v[] = new SOAP_Value('varInt','int',$this->varInt);
+        $v[] = new SOAP_Value('varFloat','float',$this->varFloat);
+        $v[] = new SOAP_Value('varArray',false,$ar);
         
         return new SOAP_Value($name,'{http://soapinterop.org/xsd}SOAPArrayStruct',$v);
     }    
@@ -114,16 +114,16 @@ class Person {
         $this->$key = $value;
     }
     
-    function &__to_soap($name = 'x_Person',$ns = 'http://soapinterop.org/xsd', $compound2=false)
+    function __to_soap($name = 'x_Person',$ns = 'http://soapinterop.org/xsd', $compound2=false)
     {
         if (!$compound2) {
-            $v[] =& new SOAP_Value("\{$ns}Age",'double',$this->Age);
-            $v[] =& new SOAP_Value("\{$ns}ID",'float',$this->ID);
+            $v[] = new SOAP_Value("\{$ns}Age",'double',$this->Age);
+            $v[] = new SOAP_Value("\{$ns}ID",'float',$this->ID);
             return new SOAP_Value("\{$ns}$name",'Person',
                 $v,array('Name'=>$this->Name,'Male'=>$this->Male));
         } else
-            $v[] =& new SOAP_Value("\{$ns}Name",'string',$this->Name);
-            $v[] =& new SOAP_Value("\{$ns}Male",'boolean',$this->Male);
+            $v[] = new SOAP_Value("\{$ns}Name",'string',$this->Name);
+            $v[] = new SOAP_Value("\{$ns}Male",'boolean',$this->Male);
             return new SOAP_Value("\{$ns}$name",'Person',$v);        
     }        
 }
@@ -144,13 +144,13 @@ class Employee {
         $this->salary = $salary;
     }
     
-    function &__to_soap($name = 'x_Employee', $ns='http://soapinterop.org/employee')
+    function __to_soap($name = 'x_Employee', $ns='http://soapinterop.org/employee')
     {
-        $person =& $this->person->__to_soap('person','http://soapinterop.org/person',true);
+        $person = $this->person->__to_soap('person','http://soapinterop.org/person',true);
         $person->namespace = $ns;
-        $va[] = &$person;
-        $va[] =& new SOAP_Value("\{$ns}salary",'double',$this->salary);
-        $va[] =& new SOAP_Value("\{$ns}ID",'int',$this->ID);
+        $va[] = $person;
+        $va[] = new SOAP_Value("\{$ns}salary",'double',$this->salary);
+        $va[] = new SOAP_Value("\{$ns}ID",'int',$this->ID);
         return new SOAP_Value("\{$ns}$name",'Employee',$va);
     }    
 }
@@ -160,4 +160,3 @@ class x_Employee extends Employee {
         $parent->Employee($person,$id,$salary);
     }
 }
-?>
