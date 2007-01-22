@@ -26,29 +26,27 @@ require_once 'params_classes.php';
 
 class SOAP_Interop_GroupDCompound2 {
 
-    function &echoEmployee(&$employee)
+    function echoEmployee(&$employee)
     {
         return $employee->__to_soap('result_Employee');
     }
     
 }
 
-
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$options = array('use'=>'literal','style'=>'document');
-$groupd =& new SOAP_Interop_GroupDCompound2();
-$server =& new SOAP_Server($options);
+$options = array('use' => 'literal', 'style' => 'document');
+$groupd = new SOAP_Interop_GroupDCompound2();
+$server = new SOAP_Server($options);
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop.org/employee');
+$server->addObjectMap($groupd, 'http://soapinterop.org/employee');
 
 $server->bind('http://localhost/soap_interop/wsdl/compound2.wsdl.php');
 if (isset($_SERVER['SERVER_NAME'])) {
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : NULL);
 } else {
-    
     $test = '<?xml version="1.0" encoding="UTF-8"?>
     
     <SOAP-ENV:Envelope  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
@@ -68,6 +66,5 @@ if (isset($_SERVER['SERVER_NAME'])) {
     <ns5:ID>12345</ns5:ID></ns5:x_Employee>
     </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>

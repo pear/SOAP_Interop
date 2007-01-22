@@ -21,15 +21,15 @@
 require_once 'SOAP/Value.php';
 
 class SOAP_Interop_GroupC_Headers {
-    function &echoMeStringRequest($string)
+
+    function echoMeStringRequest($string)
     {
-	return new SOAP_Value('{http://soapinterop.org/echoheader/}echoMeStringResponse','string',$string);
+        return new SOAP_Value('{http://soapinterop.org/echoheader/}echoMeStringResponse', 'string', $string);
     }
 
-    function &echoMeStructRequest($struct)
+    function echoMeStructRequest($struct)
     {
-	return new SOAP_Value('{http://soapinterop.org/echoheader/}echoMeStructResponse','SOAPStruct',$struct);
+        return new SOAP_Value('{http://soapinterop.org/echoheader/}echoMeStructResponse', 'SOAPStruct', $struct);
     }
+
 }
-
-?>

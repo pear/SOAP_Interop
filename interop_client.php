@@ -272,7 +272,7 @@ class Interop_Client
                     }
                     $endpoint_info->client->_auto_translation = true;
                 }
-                if ($endpoint_info->client->_wsdl->__isfault()) {
+                if ($endpoint_info->client->_wsdl->_isfault()) {
                     $fault =& $endpoint_info->client->_wsdl->fault->getFault();
                     $detail = $fault->faultstring."\n\n".$fault->faultdetail;
                     $soap_test->setResult(0,'WSDL',
@@ -422,12 +422,12 @@ class Interop_Client
                     $fault->faultcode = 'HEADER';
                     $fault->faultstring = 'The returned result did not match what we expected to receive';
                     $soap_test->setResult(0,$fault->faultcode,
-                                      $soap->__get_wire(),
+                                      $soap->getWire(),
                                       $fault->faultstring,
                                       $fault
                                       );
                 } else {
-                    $soap_test->setResult(1,'OK',$soap->__get_wire());
+                    $soap_test->setResult(1,'OK',$soap->getWire());
                     $success = TRUE;
                 }
             } else {
@@ -437,7 +437,7 @@ class Interop_Client
                 $fault->faultdetail = ''/*"SENT:\n".var_export($soap_test->result['sent']).
                                                "\n\nRECIEVED:\n".var_export($soap_test->result['return'])*/;
                 $soap_test->setResult(0,$fault->faultcode,
-                                  $soap->__get_wire(),
+                                  $soap->getWire(),
                                   $fault->faultstring,
                                   $fault
                                   );
@@ -451,7 +451,7 @@ class Interop_Client
                 $ok = 0;
                 $res =$fault->faultcode;
             }
-            $soap_test->setResult($ok,$res, $soap->__get_wire(),$fault->faultstring, $fault);
+            $soap_test->setResult($ok,$res, $soap->getWire(),$fault->faultstring, $fault);
         }
         $soap->_reset();
         unset($return);

@@ -25,54 +25,56 @@ require_once 'params_classes.php';
 // http://www.whitemesa.com/r3/plan.html
 
 class SOAP_Interop_GroupDDocLit {
+
     // wsdlns:SoapInteropEmptySABinding
-    function &echoString($inputString)
+    function echoString($inputString)
     {
-	return new SOAP_Value('{http://soapinterop.org/xsd}echoStringReturn','string',$inputString);
+        return new SOAP_Value('{http://soapinterop.org/xsd}echoStringReturn', 'string', $inputString);
     }
 
-    function &echoStringArray($inputStringArray)
+    function echoStringArray($inputStringArray)
     {
-	$ra = array();
-	if ($inputStringArray) {
-	foreach($inputStringArray as $s) {
-	    $ra[] =& new SOAP_Value('item','string',$s);
-	}
-	}
-	return new SOAP_Value('{http://soapinterop.org/xsd}echoStringArrayReturn',NULL,$ra);
+        $ra = array();
+        if ($inputStringArray) {
+            foreach ($inputStringArray as $s) {
+                $ra[] =& new SOAP_Value('item', 'string', $s);
+            }
+        }
+        return new SOAP_Value('{http://soapinterop.org/xsd}echoStringArrayReturn', null, $ra);
     }
 
-    function &echoStruct($inputStruct)
+    function echoStruct($inputStruct)
     {
         $ns = '{http://soapinterop.org/xsd}';
-        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
+        if (is_object($inputStruct) &&
+            strtolower(get_class($inputStruct)) == 'soapstruct') {
             return $inputStruct->__to_soap($ns.'echoStructReturn');
-        else {
+        } else {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct = new SOAPStruct($inputStruct['varString'], $inputStruct['varInt'], $inputStruct['varFloat']);
             return $struct->__to_soap($ns.'echoStructReturn');
         }
     }
-}
 
+}
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$options = array('use'=>'literal','style'=>'document');
-$groupd =& new SOAP_Interop_GroupDDocLit();
-$server =& new SOAP_Server($options);
+$options = array('use'=>'literal', 'style'=>'document');
+$groupd = new SOAP_Interop_GroupDDocLit();
+$server = new SOAP_Server($options);
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop.org/WSDLInteropTestDocLit');
-$server->addObjectMap($groupd,'http://soapinterop.org/xsd');
+$server->addObjectMap($groupd, 'http://soapinterop.org/WSDLInteropTestDocLit');
+$server->addObjectMap($groupd, 'http://soapinterop.org/xsd');
 
 $server->bind('http://localhost/soap_interop/wsdl/InteropTestDocLit.wsdl.php');
 
 if (isset($_SERVER['SERVER_NAME'])) {
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : NULL);
 } else {
     // allows command line testing of specific request
     $test = '<?xml version="1.0" encoding="UTF-8"?>
@@ -91,6 +93,6 @@ if (isset($_SERVER['SERVER_NAME'])) {
 <ns4:varFloat>325.325</ns4:varFloat></ns4:echoStructParam>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>
+

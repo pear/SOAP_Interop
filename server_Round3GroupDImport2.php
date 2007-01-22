@@ -25,37 +25,36 @@ require_once 'params_classes.php';
 // http://www.whitemesa.com/r3/plan.html
 
 class SOAP_Interop_GroupDImport2 {
-    function &echoStruct($inputStruct)
+
+    function echoStruct($inputStruct)
     {
-        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
+        if (is_object($inputStruct) &&
+            strtolower(get_class($inputStruct)) == 'soapstruct') {
             return $inputStruct->__to_soap('Result');
-        else {
+        } else {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct = new SOAPStruct($inputStruct['varString'], $inputStruct['varInt'], $inputStruct['varFloat']);
             return $struct->__to_soap('Result');
         }
     }
    
 }
 
-
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd =& new SOAP_Interop_GroupDImport2();
-$server =& new SOAP_Server();
+$groupd = new SOAP_Interop_GroupDImport2();
+$server = new SOAP_Server();
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop/');
-$server->addObjectMap($groupd,'http://soapinterop.org/xsd');
+$server->addObjectMap($groupd, 'http://soapinterop/');
+$server->addObjectMap($groupd, 'http://soapinterop.org/xsd');
 
 if (isset($_SERVER['SERVER_NAME'])) {
-    $baseurl = 'http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].'/soap_interop/';
-    #$server->bind($baseurl.'wsdl/import2.wsdl.php');
-    #echo $baseurl;
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $baseurl = 'http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/soap_interop/';
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : null);
 } else {
     $baseurl = 'http://localhost/soap_interop/';
     $server->bind($baseurl.'wsdl/import2.wsdl.php');
@@ -78,6 +77,5 @@ if (isset($_SERVER['SERVER_NAME'])) {
 <varFloat xsi:type="xsd:float">325.325</varFloat></inputStruct></ns5:echoStruct>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>

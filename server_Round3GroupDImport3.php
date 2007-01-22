@@ -25,47 +25,49 @@ require_once 'params_classes.php';
 // http://www.whitemesa.com/r3/plan.html
 
 class SOAP_Interop_GroupDImport3 {
-    function &echoStruct($inputStruct)
+
+    function echoStruct($inputStruct)
     {
         $ns = '{http://soapinterop.org/xsd}';
-        if (is_object($inputStruct) && strtolower(get_class($inputStruct)) == 'soapstruct')
-            return $inputStruct->__to_soap($ns.'return');
-        else {
+        if (is_object($inputStruct) &&
+            strtolower(get_class($inputStruct)) == 'soapstruct') {
+            return $inputStruct->__to_soap($ns . 'return');
+        } else {
             if (is_object($inputStruct)) {
                 $inputStruct = get_object_vars($inputStruct);
             }
-            $struct =& new SOAPStruct($inputStruct['varString'],$inputStruct['varInt'],$inputStruct['varFloat']);
+            $struct = new SOAPStruct($inputStruct['varString'], $inputStruct['varInt'], $inputStruct['varFloat']);
             return $struct->__to_soap($ns.'return');
         }
     }
 
-    function &echoStructArray($inputStructArray)
+    function echoStructArray($inputStructArray)
     {
-	$ra = array();
-	if ($inputStructArray) {
-	    $c = count($inputStructArray);
-	    for ($i = 0; $i < $c; $i++) {
-	        $ra[] = $inputStructArray[$i]->__to_soap('item');
-	    }
-	}
-	return $ra;
+        $ra = array();
+        if ($inputStructArray) {
+            $c = count($inputStructArray);
+            for ($i = 0; $i < $c; $i++) {
+                $ra[] = $inputStructArray[$i]->__to_soap('item');
+            }
+        }
+        return $ra;
     }
-}
 
+}
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd =& new SOAP_Interop_GroupDImport3();
-$server =& new SOAP_Server();
+$groupd = new SOAP_Interop_GroupDImport3();
+$server = new SOAP_Server();
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop/');
-$server->addObjectMap($groupd,'http://soapinterop.org/xsd');
+$server->addObjectMap($groupd, 'http://soapinterop/');
+$server->addObjectMap($groupd, 'http://soapinterop.org/xsd');
 
 $server->bind('http://localhost/soap_interop/wsdl/import3.wsdl.php');
 if (isset($_SERVER['SERVER_NAME'])) {
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : null);
 } else {
     // allows command line testing of specific request
     $test = '<?xml version="1.0" encoding="UTF-8"?>
@@ -95,6 +97,5 @@ if (isset($_SERVER['SERVER_NAME'])) {
 <varFloat xsi:type="xsd:float">325.325</varFloat></item></inputArray></ns5:echoStructArray>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>

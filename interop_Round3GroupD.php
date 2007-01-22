@@ -23,32 +23,31 @@ require_once 'params_classes.php';
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-class SOAP_Interop_GroupD
-{
+class SOAP_Interop_GroupD {
 
     // wsdlns:SoapInteropEmptySABinding
-    function &echoString($inputString)
+    function echoString($inputString)
     {
-        return new SOAP_Value('outputString','string',$inputString);
+        return new SOAP_Value('outputString', 'string', $inputString);
     }
 
-    function &echoStringArray($inputStringArray)
+    function echoStringArray($inputStringArray)
     {
         $ra = array();
         if ($inputStringArray) {
-            foreach($inputStringArray as $s) {
-                $ra[] = new SOAP_Value('item','string',$s);
+            foreach ($inputStringArray as $s) {
+                $ra[] = new SOAP_Value('item', 'string', $s);
             }
         }
-        return new SOAP_Value('outputStringArray',NULL,$ra);
+        return new SOAP_Value('outputStringArray', null, $ra);
     }
 
-    function &echoStruct($inputStruct)
+    function echoStruct($inputStruct)
     {
         return $inputStruct->to_soap();
     }
 
-    function &echoStructArray($inputStructArray)
+    function echoStructArray($inputStructArray)
     {
         $ra = array();
         if ($inputStructArray) {
@@ -62,22 +61,22 @@ class SOAP_Interop_GroupD
 
     function echoVoid()
     {
-        return NULL;
+        return null;
     }
 
     function echoPerson()
     {
-        return NULL;
+        return null;
     }
 
-    function &x_Document(&$document)
+    function x_Document(&$document)
     {
-        return new SOAP_Value('result_Document','{http://soapinterop.org/xsd}x_Document',$document);
+        return new SOAP_Value('result_Document', '{http://soapinterop.org/xsd}x_Document', $document);
     }
 
     function echoEmployee()
     {
-        return NULL;
+        return null;
     }
 
 }

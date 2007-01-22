@@ -25,25 +25,25 @@ require_once 'params_classes.php';
 // http://www.whitemesa.com/r3/plan.html
 
 class SOAP_Interop_GroupDImport1 {
-    function &echoString($inputString)
+
+    function echoString($inputString)
     {
-	return new SOAP_Value('Result','string',$inputString);
+        return new SOAP_Value('Result', 'string', $inputString);
     }
 }
-
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$groupd =& new SOAP_Interop_GroupDImport1();
-$server =& new SOAP_Server();
+$groupd = new SOAP_Interop_GroupDImport1();
+$server = new SOAP_Server();
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop/echoString/');
+$server->addObjectMap($groupd, 'http://soapinterop/echoString/');
 
 $server->bind('http://localhost/soap_interop/wsdl/import1.wsdl.php');
 if (isset($_SERVER['SERVER_NAME'])) {
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : null);
 } else {
     // allows command line testing of specific request
     $test = '<?xml version="1.0" encoding="UTF-8"?>
@@ -60,6 +60,5 @@ if (isset($_SERVER['SERVER_NAME'])) {
 <x xsi:type="xsd:string">Hello World</x></ns4:echoString>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>

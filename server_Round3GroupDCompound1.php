@@ -26,33 +26,33 @@ require_once 'params_classes.php';
 
 class SOAP_Interop_GroupDCompound1 {
 
-    function &echoPerson(&$person)
+    function echoPerson($person)
     {
         return $person->__to_soap('result_Person');
     }
 
-    function &echoDocument(&$document)
+    function echoDocument($document)
     {
         $ns = '{http://soapinterop.org/xsd}';
-	return new SOAP_Value($ns.'result_Document',$ns.'x_Document',$document);
+        return new SOAP_Value($ns . 'result_Document', $ns . 'x_Document', $document);
     }
-}
 
+}
 
 // http://www.whitemesa.com/r3/interop3.html
 // http://www.whitemesa.com/r3/plan.html
 
-$options = array('use'=>'literal','style'=>'document');
-$groupd =& new SOAP_Interop_GroupDCompound1();
-$server =& new SOAP_Server($options);
+$options = array('use' => 'literal', 'style' => 'document');
+$groupd = new SOAP_Interop_GroupDCompound1();
+$server = new SOAP_Server($options);
 $server->_auto_translation = true;
 
-$server->addObjectMap($groupd,'http://soapinterop/');
-$server->addObjectMap($groupd,'http://soapinterop.org/xsd');
+$server->addObjectMap($groupd, 'http://soapinterop/');
+$server->addObjectMap($groupd, 'http://soapinterop.org/xsd');
 
 $server->bind('http://localhost/soap_interop/wsdl/compound1.wsdl.php');
 if (isset($_SERVER['SERVER_NAME'])) {
-    $server->service(isset($HTTP_RAW_POST_DATA)?$HTTP_RAW_POST_DATA:NULL);
+    $server->service(isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : null);
 } else {
     // allows command line testing of specific request
     $test = '<?xml version="1.0" encoding="UTF-8"?>
@@ -68,6 +68,5 @@ if (isset($_SERVER['SERVER_NAME'])) {
 <ns4:x_Document>Test Document Here</ns4:x_Document>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>';
-    $server->service($test,'',TRUE);
+    $server->service($test, '', true);
 }
-?>

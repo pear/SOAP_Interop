@@ -22,80 +22,78 @@
 require_once 'params_classes.php';
 
 class SOAP_Interop_GroupB {
+
     var $__dispatch_map = array();
     
-    function SOAP_Interop_GroupB() {
-	$this->__dispatch_map['echoStructAsSimpleTypes'] =
-		array('in' => array('inputStruct' => 'SOAPStruct'),
-		      'out' => array('outputString' => 'string', 'outputInteger' => 'int', 'outputFloat' => 'float')
-		      );
-	$this->__dispatch_map['echoSimpleTypesAsStruct'] =
-		array('in' => array('inputString' => 'string', 'inputInteger' => 'int', 'inputFloat' => 'float'),
-		      'out' => array('return' => 'SOAPStruct')
-		      );
-	$this->__dispatch_map['echoNestedStruct'] =
-		array('in' => array('inputStruct' => 'SOAPStructStruct'),
-		      'out' => array('return' => 'SOAPStructStruct')
-		      );
-	$this->__dispatch_map['echo2DStringArray'] =
-		array('in' => array('input2DStringArray' => 'ArrayOfString2D'),
-		      'out' => array('return' => 'ArrayOfString2D')
-		      );
-	$this->__dispatch_map['echoNestedArray'] =
-		array('in' => array('inputString' => 'SOAPArrayStruct'),
-		      'out' => array('return' => 'SOAPArrayStruct')
-		      );
+    function SOAP_Interop_GroupB()
+    {
+        $this->__dispatch_map['echoStructAsSimpleTypes'] =
+            array('in' => array('inputStruct' => 'SOAPStruct'),
+                  'out' => array('outputString' => 'string', 'outputInteger' => 'int', 'outputFloat' => 'float'));
+        $this->__dispatch_map['echoSimpleTypesAsStruct'] =
+            array('in' => array('inputString' => 'string', 'inputInteger' => 'int', 'inputFloat' => 'float'),
+                  'out' => array('return' => 'SOAPStruct'));
+        $this->__dispatch_map['echoNestedStruct'] =
+            array('in' => array('inputStruct' => 'SOAPStructStruct'),
+                  'out' => array('return' => 'SOAPStructStruct'));
+        $this->__dispatch_map['echo2DStringArray'] =
+            array('in' => array('input2DStringArray' => 'ArrayOfString2D'),
+                  'out' => array('return' => 'ArrayOfString2D'));
+        $this->__dispatch_map['echoNestedArray'] =
+            array('in' => array('inputString' => 'SOAPArrayStruct'),
+                  'out' => array('return' => 'SOAPArrayStruct'));
     }
     
     /* this private function is called on by SOAP_Server to determine any
-        special dispatch information that might be necessary.  This, for example,
-        can be used to set up a dispatch map for functions that return multiple
-        OUT parameters */
-    function __dispatch($methodname) {
-        if (array_key_exists($methodname,$this->__dispatch_map))
+     * special dispatch information that might be necessary. This, for
+     * example, can be used to set up a dispatch map for functions that return
+     * multiple OUT parameters. */
+    function __dispatch($methodname)
+    {
+        if (array_key_exists($methodname,$this->__dispatch_map)) {
             return $this->__dispatch_map[$methodname];
-        return NULL;
+        }
+        return null;
     }
     
-    function &echoStructAsSimpleTypes (&$struct)
+    function echoStructAsSimpleTypes ($struct)
     {
-	# convert a SOAPStruct to an array
-	$r[] =& new SOAP_Value('outputString','string',$struct->varString);
-	$r[] =& new SOAP_Value('outputInteger','int',$struct->varInt);
-	$r[] =& new SOAP_Value('outputFloat','float',$struct->varFloat);
-	return $r;
+        // Convert a SOAPStruct to an array.
+        return array(
+            new SOAP_Value('outputString','string',$struct->varString),
+            new SOAP_Value('outputInteger','int',$struct->varInt),
+            new SOAP_Value('outputFloat','float',$struct->varFloat));
     }
 
-    function &echoSimpleTypesAsStruct(&$string, &$int, &$float)
+    function echoSimpleTypesAsStruct($string, $int, $float)
     {
-	# convert a input into struct
-	$v =& new SOAPStruct($string, $int, $float);
-	return new SOAP_Value('return','{http://soapinterop.org/xsd}SOAPStruct',$v);
+        // Convert a input into struct.
+        $v = new SOAPStruct($string, $int, $float);
+        return new SOAP_Value('return', '{http://soapinterop.org/xsd}SOAPStruct', $v);
     }
 
-    function &echoNestedStruct(&$struct)
+    function echoNestedStruct($struct)
     {
         $separator = "\n";
         $methods = get_class_methods($struct);
         $arr_str = $separator . strtolower(implode($separator, $methods));
         $string = $separator . '__to_soap' . $separator;
-        if(strpos($arr_str, $string) !== false) {
+        if (strpos($arr_str, $string) !== false) {
             return $struct->__to_soap();
         }
         return $struct;
     }
 
-    function &echo2DStringArray(&$ary)
+    function echo2DStringArray($array)
     {
-	$ret =& new SOAP_Value('return','Array',$ary);
-	$ret->options['flatten'] = TRUE;
-	return $ret;
+        $ret = new SOAP_Value('return', 'Array', $array);
+        $ret->options['flatten'] = true;
+        return $ret;
     }
 
-    function &echoNestedArray(&$ary)
+    function echoNestedArray($array)
     {
-	return $ary;
+        return $array;
     }
+
 }
-
-?>
