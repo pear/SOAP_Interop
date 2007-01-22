@@ -333,7 +333,7 @@ class SOAP_Interop_registrationDB {
     {
         if (!$this->connectDB()) return false;
         $this->retreiveServiceList();
-        echo "Updating Services<br>\n";
+        echo "Updating Services\n";
         foreach ($this->services as $service) {
             $res = $this->dbc->getRow("select id from services where id='{$service->id}'");
             if ($res && !PEAR::isError($res)) {
@@ -359,7 +359,7 @@ class SOAP_Interop_registrationDB {
                                         "values('$id','{$server->name}','{$server->version}','{$server->endpointURL}','{$server->wsdlURL}')");
         }
         if (PEAR::isError($res)) {
-            echo $res->getMessage().$res->getUserInfo()."<br>\n";
+            echo $res->toString() . "\n";
         }
     }
     
@@ -371,16 +371,17 @@ class SOAP_Interop_registrationDB {
         $c = count($this->services);
         for ($i=0;$i<$c;$i++) {
             $this->retreiveServerList($this->services[$i]->id);
-            echo "Updating Servers for {$this->services[$i]->name}<br>\n";
+            echo "Updating Servers for {$this->services[$i]->name}\n";
             if (!$this->servers) continue;
             foreach ($this->servers as $server) {
-                $this->_updateOrAddServer($this->services[$i]->id,$server);
+                $this->_updateOrAddServer($this->services[$i]->id, $server);
             }
             // add the local server now
             if ($INTEROP_LOCAL_SERVER) {
-                $server = getLocalInteropServer($this->services[$i]->name,$this->services[$i]->id);
-                if ($server)
-                    $this->_updateOrAddServer($this->services[$i]->id,$server);
+                $server = getLocalInteropServer($this->services[$i]->name, $this->services[$i]->id);
+                if ($server) {
+                    $this->_updateOrAddServer($this->services[$i]->id, $server);
+                }
             }
         }
     }    
@@ -391,7 +392,7 @@ class SOAP_Interop_registrationDB {
         $this->retreiveServiceList();
         foreach ($this->services as $service) {
             $this->retreiveClientList($service->id);
-            echo "Updating Clients for {$service->name}<br>\n";
+            echo "Updating Clients for {$service->name}\n";
             if (!$this->clients) continue;
             foreach ($this->clients as $client) {
                 $res = $this->dbc->getRow("select id from clientinfo where id='{$service->id}' and name='{$client->name}'");
