@@ -52,7 +52,7 @@ $iop->showFaults = 0; // used in result table output
 $restrict = NULL;
 
 #$_SERVER['argv'] = array('-r', "Round 3", '-s', "Local PEAR::SOAP");
-$args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:v:wq');
+$args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:v:wq', array('help'));
 
 function help() {
 print <<<END
@@ -71,6 +71,7 @@ interop_client_run.php [options]
     -v php|soapval          run tests with specific param types (requires -t)
     -w                      run wsdl tests only (requires -t)
     -q                      do not run tests
+
 END;
 }
 
@@ -107,6 +108,7 @@ foreach($args[0] as $arg) {
         $iop->fetchEndpoints();
         break;
     case 'h':
+    case '--help':
         help();
         exit(1);
         break;
