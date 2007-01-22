@@ -53,6 +53,11 @@ $restrict = NULL;
 
 #$_SERVER['argv'] = array('-r', "Round 3", '-s', "Local PEAR::SOAP");
 $args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:v:wq', array('help'));
+if (PEAR::isError($args)) {
+    echo "\n" . $args->getMessage() . "\n\n";
+    help();
+    exit;
+}
 
 function help() {
 print <<<END
@@ -88,7 +93,7 @@ function print_endpoint_names()
 {
     global $iop;
     if (!$iop->getEndpoints($iop->currentTest)) {
-        die("Unable to retrieve endpoints for $iop->currentTest");
+        die("Unable to retrieve endpoints for $iop->currentTest\n");
     }
     print "Interop Servers for $iop->currentTest:\n";
     foreach ($iop->endpoints as $server) {
@@ -96,7 +101,7 @@ function print_endpoint_names()
     }
 }
 
-foreach($args[0] as $arg) {
+foreach ($args[0] as $arg) {
     switch($arg[0]) {
     case 'c':
         $iop->client_type = $arg[1];
@@ -124,14 +129,14 @@ foreach($args[0] as $arg) {
     case 'p':
         if ($arg[1] == 't') {
             print_test_names();
-        } else if ($arg[1] == 'e') {
+        } elseif ($arg[1] == 'e') {
             if (!$iop->currentTest) {
-                print "You need to specify a test with -t";
+                print "You need to specify a test with -t\n";
                 exit(0);
             }
             print_endpoint_names();
         } else {
-            die("invalid print argument");
+            die("invalid print argument\n");
         }
         exit(0);
         break;
@@ -145,8 +150,9 @@ foreach($args[0] as $arg) {
         $iop->currentTest = $arg[1];
         break;
     case 'v':
-        if ($arg[1]!='php' && $arg[1]!='soapval')
-            die('Incorrect value for argument v: '.$arg[1]);
+        if ($arg[1] != 'php' && $arg[1] != 'soapval') {
+            die('Incorrect value for argument v: ' . $arg[1] . "\n");
+        }
         $iop->paramType = $arg[1];
         break;
     case 'w':
@@ -181,5 +187,4 @@ if ($iop->currentTest) {
 #$iop->doGroupTests(); // run a group of tests set in $currentTest
     $iop->doTests();  // run all tests, ignore above options
 }
-echo "done";
-?>
+echo "done\n";
