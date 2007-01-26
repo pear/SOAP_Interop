@@ -45,14 +45,14 @@ class Interop_Client
     var $localEndpoint;
     
     // specify testing
-    var $currentTest = 'Round 2 Base';      // see $tests above
+    var $currentTest = '';      // see $tests above
     var $paramType = 'php';     // 'php' or 'soapval'
-    var $useWSDL = 0;           // 1= do wsdl tests
-    var $numServers = 0;        // 0 = all
+    var $useWSDL = false;       // true: do wsdl tests
+    var $numServers = 0;        // 0: all
     var $specificEndpoint = ''; // test only this endpoint
     var $testMethod = '';       // test only this method
     var $skipEndpointList = array(); // endpoints to skip
-    var $nosave = 0;
+    var $nosave = false;
     var $client_type = 'pear'; //  name of client
     
     // debug output
@@ -61,7 +61,7 @@ class Interop_Client
     var $showFaults = 0; // used in result table output
     
     // PRIVATE VARIABLES
-    var $dbc = NULL;
+    var $dbc = null;
     var $totals = array();
     var $tests = array('Round 2 Base',
                        'Round 2 Group B', 
@@ -96,8 +96,8 @@ class Interop_Client
     */    
     function fetchEndpoints($name = 'Round 2 Base') {
         $service =& $this->registrationDB->findService($name);
-        $this->endpoints =& $this->registrationDB->getServerList($service->id,TRUE);
-        return TRUE;
+        $this->endpoints =& $this->registrationDB->getServerList($service->id,true);
+        return true;
     }
     
     /**
@@ -112,33 +112,34 @@ class Interop_Client
     function getEndpoints($name = 'Round 2 Base', $all = 0) {
         $service =& $this->registrationDB->findService($name);
         $this->endpoints =& $this->registrationDB->getServerList($service->id);
-        return TRUE;
+        return true;
     }
 
     /**
-    *  getResults
-    * retreive results from the database, stuff them into the endpoint array
-    *
-    * @access private
-    */
-    function getResults($test = 'Round 2 Base', $type = 'php', $wsdl = 0) {
-        // be sure we have the right endpoints for this test result
+     * Retreives results from the database and stuffs them into the endpoint
+     * array.
+     *
+     * @access private
+     */
+    function getResults($test = 'Round 2 Base', $type = 'php', $wsdl = 0)
+    {
+        // Be sure we have the right endpoints for this test result.
         $this->getEndpoints($test);
         $c = count($this->endpoints);
 
-        // retreive the results and put them into the endpoint info
-        $sql = "select * from results where class='$test' and type='$type' and wsdl=$wsdl";
-        $results =& $this->dbc->getAll($sql,NULL, DB_FETCHMODE_ASSOC );
-        $rc = count($results);
-        for ($j=0; $j < $rc; $j++) {
-            $result =& $results[$j];
-            // find the endpoint
-            for ($i=0;$i<$c;$i++) {
+        // Retreive the results and put them into the endpoint info.
+        $sql = "SELECT * FROM results WHERE class='$test' AND type='$type' AND wsdl=$wsdl";
+        $results = $this->dbc->getAll($sql, null, DB_FETCHMODE_ASSOC);
+        for ($j = 0, $rc = count($results); $j < $rc; ++$j) {
+            $result = $results[$j];
+            // Find the endpoint.
+            for ($i = 0; $i < $c; $i++) {
                 if ($this->endpoints[$i]->id == $result['endpoint']) {
-                    // store the info
-                    if (!isset($this->endpoints[$i]->methods))
+                    // Store the info.
+                    if (!isset($this->endpoints[$i]->methods)) {
                         $this->endpoints[$i]->methods = array();
-                    $this->endpoints[$i]->methods[$result['function']] =& $result;
+                    }
+                    $this->endpoints[$i]->methods[$result['function']] = $result;
                     break;
                 }
             }
@@ -146,24 +147,30 @@ class Interop_Client
     }
     
     /**
-    *  saveResults
-    * save the results of a method test into the database
-    *
-    * @access private
-    */
-    function _saveResults($endpoint_id, &$soap_test) {
-        if ($this->nosave) return;
+     * Saves the results of a method test into the database.
+     *
+     * @access private
+     */
+    function _saveResults($endpoint_id, &$soap_test)
+    {
+        if ($this->nosave) {
+            return;
+        }
         
         $result =& $soap_test->result;
-        $wire =& $result['wire'];
+        $wire = $result['wire'];
         if ($result['success']) {
             $success = 'OK';
             $error = '';
         } else {
             $success = $result['fault']->faultcode;
             $error = $result['fault']->faultstring;
-            if (!$wire) $wire= $result['fault']->faultdetail;
-            if (!$wire) $wire= $result['fault']->faultstring;
+            if (!$wire) {
+                $wire = $result['fault']->faultdetail;
+            }
+            if (!$wire) {
+                $wire = $result['fault']->faultstring;
+            }
         }
         
         $test_name = $soap_test->test_name;
@@ -172,213 +179,213 @@ class Interop_Client
             foreach ($soap_test->headers as $h) {
                 $destination = 0;
                 if (strtolower(get_class($h)) == 'soap_header') {
-                    if ($h->attributes['SOAP-ENV:actor'] == 'http://schemas.xmlsoap.org/soap/actor/next') $destination = 1;
+                    if ($h->attributes['SOAP-ENV:actor'] == 'http://schemas.xmlsoap.org/soap/actor/next') {
+                        $destination = 1;
+                    }
                     $test_name .= ":{$h->name},$destination,{$h->attributes['SOAP-ENV:mustUnderstand']}";
                 } else {
-                    if (!$h[3] || $h[3] == 'http://schemas.xmlsoap.org/soap/actor/next') $destination = 1;
-                    if (!$h[2]) $h[2] = 0;
-                    $qn =& new QName($h[0]);
-                    $test_name .= ":{$qn->name},$destination,".(int)$h[2];
+                    if (!$h[3] ||
+                        $h[3] == 'http://schemas.xmlsoap.org/soap/actor/next') {
+                        $destination = 1;
+                    }
+                    if (!$h[2]) {
+                        $h[2] = 0;
+                    }
+                    $qn = new QName($h[0]);
+                    $test_name .= ":{$qn->name},$destination," . (int)$h[2];
                 }
             }
         }
         
-        $sql = "delete from results where endpoint=$endpoint_id ".
-                    "and class='$this->currentTest' and type='$this->paramType' ".
-                    "and wsdl=$this->useWSDL and client='$this->client_type' and function=".
-                    $this->dbc->quote($test_name);
-        #echo "\n".$sql;
-        $res =& $this->dbc->query($sql);
+        $sql = 'DELETE FROM results WHERE endpoint = ? AND class = ? AND type = ? AND wsdl = ? AND client = ? AND function = ?';
+        $values = array($endpoint_id, $this->currentTest, $this->paramType,
+                        $this->useWSDL, $this->client_type, $test_name);
+        $res = $this->dbc->query($sql, $values);
         if (DB::isError($res)) {
-            die ($res->getMessage());
+            die($res->getMessage());
         }
-        if (is_object($res)) $res->free();
+        if (is_object($res)) {
+            $res->free();
+        }
         
-        $sql = "insert into results (client,endpoint,stamp,class,type,wsdl,function,result,error,wire) ".
-                    "values('$this->client_type',$endpoint_id,".time().",'$this->currentTest',".
-                    "'$this->paramType',$this->useWSDL,".
-                    $this->dbc->quote($test_name).",".
-                    $this->dbc->quote($success).",".
-                    $this->dbc->quote($error).",".
-                    ($wire?$this->dbc->quote($wire):"''").")";
-        #echo "\n".$sql;
-        $res =& $this->dbc->query($sql);
-        
+        $sql = 'INSERT INTO results (client, endpoint, stamp, class, type, wsdl, function, result, error, wire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $values = array($this->client_type, $endpoint_id, time(),
+                        $this->currentTest, $this->paramType, $this->useWSDL,
+                        $test_name, $success, $error,
+                        $wire ? $wire : '');
+        //echo "\n".$sql;
+        $res = $this->dbc->query($sql, $values);
         if (DB::isError($res)) {
-            die ($res->getMessage());
+            die($res->getMessage());
         }
-        if (is_object($res)) $res->free();
+        if (is_object($res)) {
+            $res->free();
+        }
     }
 
     /**
-    *  compareResult
-    * compare two php types for a match
-    *
-    * @param string expect
-    * @param string test_result
-    * @return boolean result
-    * @access public
+     * Compares two PHP types for a match.
+     *
+     * @param mixed $expect
+     * @param mixed $test_result
+     *
+     * @return boolean
     */    
-    function compareResult(&$expect, &$result, $type = NULL)
+    function compareResult(&$expect, &$result, $type = null)
     {
-        $ok = 0;
         $expect_type = gettype($expect);
         $result_type = gettype($result);
-        if ($expect_type == "array" && $result_type == "array") {
-            # compare arrays
-            $ok = array_compare($expect, $result);
-        } else {
-            if ($type == 'float')
-                # we'll only compare to 3 digits of precision
-                $ok = number_compare($expect, $result);
-            if ($type == 'boolean')
-                $ok = boolean_compare($expect, $result);
-            else
-                $ok = string_compare($expect, $result);
+        if ($expect_type == 'array' && $result_type == 'array') {
+            // compare arrays
+            return array_compare($expect, $result);
         }
-        return $ok;
+        if ($type == 'float') {
+            // We'll only compare to 3 digits of precision.
+            return number_compare($expect, $result);
+        }
+        if ($type == 'boolean') {
+            return boolean_compare($expect, $result);
+        }
+        return string_compare($expect, $result);
     }
 
 
     /**
-    *  doEndpointMethod
-    *  run a method on an endpoint and store it's results to the database
-    *
-    * @param array endpoint_info
-    * @param SOAP_Test test
-    * @return boolean result
-    * @access public
-    */    
-    function doEndpointMethod(&$endpoint_info, &$soap_test) {
-        $ok = FALSE;
+     * Runs a method on an endpoint and stores its results to the database.
+     *
+     * @param array $endpoint_info
+     * @param SOAP_Test $soap_test
+     *
+     * @return boolean result
+     */    
+    function doEndpointMethod(&$endpoint_info, &$soap_test)
+    {
+        $ok = false;
         
-        // prepare a holder for the test results
+        // Prepare a holder for the test results.
         $soap_test->result['class'] = $this->currentTest;
         $soap_test->result['type'] = $this->paramType;
         $soap_test->result['wsdl'] = $this->useWSDL;
-        $opdata = NULL;
-        #global $soap_value_total;
-        #print "SOAP VALUES TEST-START: $soap_value_total\n";
+        $opdata = null;
+        //global $soap_value_total;
+        //echo "SOAP VALUES TEST-START: $soap_value_total\n";
         
         if ($this->useWSDL) {
             if ($endpoint_info->wsdlURL) {
                 if (!$endpoint_info->client) {
                     if (0 /* dynamic client */) {
-                    $endpoint_info->wsdl =& new SOAP_WSDL($endpoint_info->wsdlURL);
+                    $endpoint_info->wsdl = new SOAP_WSDL($endpoint_info->wsdlURL);
                     $endpoint_info->wsdl->trace=1;
-                    $endpoint_info->client =& $endpoint_info->wsdl->getProxy('',$endpoint_info->name);
+                    $endpoint_info->client = $endpoint_info->wsdl->getProxy('', $endpoint_info->name);
                     } else {
-                    $endpoint_info->client =& new SOAP_Client($endpoint_info->wsdlURL,1);
+                    $endpoint_info->client = new SOAP_Client($endpoint_info->wsdlURL, 1);
                     }
                     $endpoint_info->client->_auto_translation = true;
                 }
                 if ($endpoint_info->client->_wsdl->_isfault()) {
-                    $fault =& $endpoint_info->client->_wsdl->fault->getFault();
-                    $detail = $fault->faultstring."\n\n".$fault->faultdetail;
-                    $soap_test->setResult(0,'WSDL',
-                                            $detail,
-                                            $fault->faultstring,
-                                            $fault
-                                            );
-                    return FALSE;
+                    $fault = $endpoint_info->client->_wsdl->fault->getFault();
+                    $detail = $fault->faultstring . "\n\n" . $fault->faultdetail;
+                    $soap_test->setResult(0,
+                                          'WSDL',
+                                          $detail,
+                                          $fault->faultstring,
+                                          $fault);
+                    return false;
                 }
                 if ($soap_test->service) {
-                    $endpoint_info->client->_wsdl->set_service($soap_test->service);
+                    $endpoint_info->client->_wsdl->setService($soap_test->service);
                 }
                 $soap =& $endpoint_info->client;
-                #$port = $soap->_wsdl->getPortName($soap_test->method_name);
-                #$opdata = $soap->_wsdl->getOperationData($port, $soap_test->method_name);
+                //$port = $soap->_wsdl->getPortName($soap_test->method_name);
+                //$opdata = $soap->_wsdl->getOperationData($port, $soap_test->method_name);
             } else {
-                $fault = array(
-                    'faultcode'=>'WSDL',
-                    'faultstring'=>"no WSDL defined for $endpoint");
-                $soap_test->setResult(0,'WSDL',
+                $fault = array('faultcode' => 'WSDL',
+                               'faultstring' => "no WSDL defined for $endpoint");
+                $soap_test->setResult(0,
+                                      'WSDL',
                                       $fault->faultstring,
                                       $fault->faultstring,
-                                      $fault
-                                      );
-                return FALSE;
+                                      $fault);
+                return false;
             }
-            $options = array('trace'=>1);
+            $options = array('trace' => 1);
         } else {
             $namespace = $soapaction = 'http://soapinterop.org/';
-            // hack to make tests work with MS SoapToolkit
-            // it's the only one that uses this soapaction, and breaks if
-            // it isn't right.  Can't wait for soapaction to be fully depricated
-            # 8/25/2002, seems this is fixed now
-            #if ($this->currentTest == 'Round 2 Base' &&
-            #    strstr($endpoint_info->name,'MS SOAP ToolKit 2.0')) {
-            #    $soapaction = 'urn:soapinterop';
-            #}
+            // Hack to make tests work with MS SoapToolkit.
+            // It's the only one that uses this soapaction, and breaks if
+            // it isn't right. Can't wait for soapaction to be fully deprecated
+            // 8/25/2002, seems this is fixed now
+            //if ($this->currentTest == 'Round 2 Base' &&
+            //    strstr($endpoint_info->name,'MS SOAP ToolKit 2.0')) {
+            //    $soapaction = 'urn:soapinterop';
+            //}
             if (!$endpoint_info->client) {
-                $endpoint_info->client =& new SOAP_Client($endpoint_info->endpointURL);
+                $endpoint_info->client = new SOAP_Client($endpoint_info->endpointURL);
                 $endpoint_info->client->_auto_translation = true;
             }
             $soap = &$endpoint_info->client;
-            $options = array('namespace'=>$namespace, 
-                         'soapaction'=>$soapaction,
-                         'trace'=>1);
+            $options = array('namespace' => $namespace, 
+                             'soapaction' => $soapaction,
+                             'trace' => 1);
         }
         
-        // add headers to the test
+        // Add headers to the test.
         if ($soap_test->headers) {
             // $header is already a SOAP_Header class
             $soap->headersOut = array();
             $soap->headersIn = array();
-            $hc = count($soap_test->headers);
-            for ($i=0; $i < $hc; $i++) {
+            for ($i = 0, $hc = count($soap_test->headers); $i < $hc; $i++) {
                 $soap->addHeader($soap_test->headers[$i]);
             }
         }
         $soap->setEncoding($soap_test->encoding);
-        
 
-        #if ($opdata) {
-        #    if (isset($opdata['style'])) 
-        #        $options['style'] = $opdata['style'];
-        #    if (isset($opdata['soapAction'])) 
-        #        $options['soapaction'] = $opdata['soapAction'];
-        #    if (isset($opdata['input']) &&
-        #        isset($opdata['input']['use']))
-        #        $options['use'] = $opdata['input']['use'];
-        #    if (isset($opdata['input']) &&
-        #        isset($opdata['input']['namespace']))
-        #        $options['namespace'] = $soap->_wsdl->namespaces[$opdata['input']['namespace']];
-        #}
-        #if ($this->useWSDL) {
-        #    $wsdlcall = '$return = $soap->'.$soap_test->method_name.'(';
-        #    $args = '';
-        #    if ($soap_test->method_params) {
-        #    $pnames = array_keys($soap_test->method_params);
-        #    foreach ($pnames as $argname) {
-        #        if ($args) $args .=',';
-        #        $args .= '$soap_test->method_params[\''.$argname.'\']';
-        #    }
-        #    }
-        #    $wsdlcall = $wsdlcall.$args.');';
-        #    eval($wsdlcall);
-        #} else {
-            $return =& $soap->call($soap_test->method_name,$soap_test->method_params, $options);
-        #}
+        //if ($opdata) {
+        //    if (isset($opdata['style'])) 
+        //        $options['style'] = $opdata['style'];
+        //    if (isset($opdata['soapAction'])) 
+        //        $options['soapaction'] = $opdata['soapAction'];
+        //    if (isset($opdata['input']) &&
+        //        isset($opdata['input']['use']))
+        //        $options['use'] = $opdata['input']['use'];
+        //    if (isset($opdata['input']) &&
+        //        isset($opdata['input']['namespace']))
+        //        $options['namespace'] = $soap->_wsdl->namespaces[$opdata['input']['namespace']];
+        //}
+        //if ($this->useWSDL) {
+        //    $wsdlcall = '$return = $soap->'.$soap_test->method_name.'(';
+        //    $args = '';
+        //    if ($soap_test->method_params) {
+        //    $pnames = array_keys($soap_test->method_params);
+        //    foreach ($pnames as $argname) {
+        //        if ($args) $args .=',';
+        //        $args .= '$soap_test->method_params[\''.$argname.'\']';
+        //    }
+        //    }
+        //    $wsdlcall = $wsdlcall.$args.');';
+        //    eval($wsdlcall);
+        //} else {
+            $return =& $soap->call($soap_test->method_name, $soap_test->method_params, $options);
+        //}
         
-        if(!PEAR::isError($return)){
-            if (is_array($soap_test->method_params) && count($soap_test->method_params) == 1) {
+        if (!PEAR::isError($return)) {
+            if (is_array($soap_test->method_params) &&
+                count($soap_test->method_params) == 1) {
                 $sent = array_shift(array_values($soap_test->method_params));
             } else {
                 $sent = $soap_test->method_params;
             }
 
-            // compare header results
+            // Compare header results.
             $header_result = array();
-            $headers_ok = TRUE;
+            $headers_ok = true;
             if ($soap_test->headers) {
                 // $header is already a SOAP_Header class
-                $hc = count($soap_test->headers);
-                for ($i=0; $i < $hc; $i++) {
-                    $header =& $soap_test->headers[$i];
+                for ($i = 0, $hc = count($soap_test->headers); $i < $hc; $i++) {
+                    $header = $soap_test->headers[$i];
                     if (strtolower(get_class($header)) != 'soap_header') {
-                        // assume it's an array
-                        $header =& new SOAP_Header($header[0], NULL, $header[1], $header[2], $header[3], $header[4]);
+                        // Assume it's an array.
+                        $header = new SOAP_Header($header[0], null, $header[1], $header[2], $header[3], $header[4]);
                     }
                     $expect = $soap_test->headers_expect[$header->name];
                     $header_result[$header->name] = array();
@@ -395,52 +402,52 @@ class Interop_Client
                         $ok = !$need_result || $this->compareResult($hresult ,$expect);
                     }
                     $header_result[$header->name]['ok'] = $ok;
-                    if (!$ok) $headers_ok = FALSE;
+                    if (!$ok) {
+                        $headers_ok = false;
+                    }
                 }
             }
 
-            # we need to decode what we sent so we can compare!
-            if (gettype($sent) == 'object' && (strtolower(get_class($sent)) == 'soap_value' ||
-                            is_subclass_of($sent,'soap_value')))
+            // We need to decode what we sent so we can compare!
+            if (gettype($sent) == 'object' &&
+                (strtolower(get_class($sent)) == 'soap_value' ||
+                 is_subclass_of($sent, 'soap_value'))) {
                 $sent_d =& $soap->_decode($sent);
-            else
+            } else {
                 $sent_d =& $sent;
+            }
             
-            #$soap_test->result['sent'] =& $sent;
-            #$soap_test->result['return'] =& $return;
             // compare the results with what we sent
-            $ok = $this->compareResult($sent_d,$return, $sent->type);
+            $ok = $this->compareResult($sent_d, $return, $sent->type);
             unset($sent_d);
             unset($sent);
             if (!$ok && $soap_test->expect) {
-                $ok = $this->compareResult($soap_test->expect,$return);
+                $ok = $this->compareResult($soap_test->expect, $return);
             }
             
-            if($ok){
+            if ($ok) {
                 if (!$headers_ok) {
-                    $fault =& new stdclass;
+                    $fault = new stdClass();
                     $fault->faultcode = 'HEADER';
                     $fault->faultstring = 'The returned result did not match what we expected to receive';
-                    $soap_test->setResult(0,$fault->faultcode,
-                                      $soap->getWire(),
-                                      $fault->faultstring,
-                                      $fault
-                                      );
+                    $soap_test->setResult(0,
+                                          $fault->faultcode,
+                                          $soap->getWire(),
+                                          $fault->faultstring,
+                                          $fault);
                 } else {
-                    $soap_test->setResult(1,'OK',$soap->getWire());
-                    $success = TRUE;
+                    $soap_test->setResult(1, 'OK', $soap->getWire());
+                    $success = true;
                 }
             } else {
-                $fault =& new stdclass();
+                $fault = new stdClass();
                 $fault->faultcode = 'RESULT';
                 $fault->faultstring = 'The returned result did not match what we expected to receive';
-                $fault->faultdetail = ''/*"SENT:\n".var_export($soap_test->result['sent']).
-                                               "\n\nRECIEVED:\n".var_export($soap_test->result['return'])*/;
-                $soap_test->setResult(0,$fault->faultcode,
-                                  $soap->getWire(),
-                                  $fault->faultstring,
-                                  $fault
-                                  );
+                $soap_test->setResult(0,
+                                      $fault->faultcode,
+                                      $soap->getWire(),
+                                      $fault->faultstring,
+                                      $fault);
             }
         } else {
             $fault = $return->getFault();
@@ -449,118 +456,134 @@ class Interop_Client
                 $res = 'OK';
             } else {
                 $ok = 0;
-                $res =$fault->faultcode;
+                $res = $fault->faultcode;
             }
-            $soap_test->setResult($ok,$res, $soap->getWire(),$fault->faultstring, $fault);
+            $soap_test->setResult($ok,
+                                  $res,
+                                  $soap->getWire(),
+                                  $fault->faultstring,
+                                  $fault);
         }
         $soap->_reset();
         unset($return);
-        #print "SOAP VALUES TEST-END: $soap_value_total\n";
+
         return $ok;
     }
-    
 
     /**
-    *  doTest
-    *  run a single round of tests
-    *
-    * @access public
-    */    
-    function doTest() {
+     * Runs a single round of tests.
+     */    
+    function doTest()
+    {
         global $soap_tests;
-        $empty_string='';
-        // get endpoints for this test
+
+        $empty_string = '';
+        // Get endpoints for this test.
         if (!$this->currentTest) {
             die("Asked to run a test, but no testname!\n");
         }
         $this->getEndpoints($this->currentTest);
-        #clear totals
+        // Clear totals.
         $this->totals = array();
         
-        $c = count($this->endpoints);
-        for ($i=0; $i<$c; $i++) {
-            $endpoint_info =& $this->endpoints[$i];
-            // if we specify an endpoint, skip until we find it
-            if ($this->specificEndpoint && $endpoint_info->name != $this->specificEndpoint) continue;
-            if ($this->useWSDL && !$endpoint_info->wsdlURL) continue;
+        for ($i = 0, $c = count($this->endpoints); $i < $c; ++$i) {
+            $endpoint_info = $this->endpoints[$i];
+            // If we specify an endpoint, skip until we find it.
+            if (($this->specificEndpoint &&
+                 $endpoint_info->name != $this->specificEndpoint) ||
+                ($this->useWSDL && !$endpoint_info->wsdlURL)) {
+                continue;
+            }
             
-            $skipendpoint = FALSE;
+            $skipendpoint = false;
             $this->totals['servers']++;
-            #$endpoint_info['tests'] = array();
+            //$endpoint_info['tests'] = array();
             
-            if ($this->show) print "Processing {$endpoint_info->name} at {$endpoint_info->endpointURL}\n";
+            if ($this->show) {
+                echo "Processing {$endpoint_info->name} at {$endpoint_info->endpointURL}\n";
+            }
             
-            $tc = count($soap_tests[$this->currentTest]);
-            for($ti=0; $ti<$tc; $ti++) {
-                $soap_test =& $soap_tests[$this->currentTest][$ti];
+            for ($ti = 0, $tc = count($soap_tests[$this->currentTest]); $ti < $tc; ++$ti) {
+                $soap_test = $soap_tests[$this->currentTest][$ti];
             
-                // only run the type of test we're looking for (php or soapval)
-                if ($soap_test->type != $this->paramType) continue;
+                // Only run the type of test we're looking for (php or
+                // soapval).
+                if ($soap_test->type != $this->paramType) {
+                    continue;
+                }
             
-                // if this is in our skip list, skip it
+                // If this is in our skip list, skip it.
                 if (in_array($endpoint_info->name, $this->skipEndpointList)) {
-                    $skipendpoint = TRUE;
-                    $skipfault =& new stdclass;
-                    $skipfault->faultcode='SKIP';
-                    $skipfault->faultstring='endpoint skipped';
-                    $soap_test->setResult(0,$skipfault->faultcode, $empty_string,
-                                  $skipfault->faultstring,
-                                  $skipfault
-                                  );
-                    #$endpoint_info['tests'][] = &$soap_test;
-                    #$soap_test->showTestResult($this->debug);
-                    #$this->_saveResults($endpoint_info['id'], $soap_test->method_name);
-                    $soap_test->result = NULL;
+                    $skipendpoint = true;
+                    $skipfault = new stdClass();
+                    $skipfault->faultcode = 'SKIP';
+                    $skipfault->faultstring = 'endpoint skipped';
+                    $soap_test->setResult(0,
+                                          $skipfault->faultcode,
+                                          $empty_string,
+                                          $skipfault->faultstring,
+                                          $skipfault);
+                    //$endpoint_info['tests'][] = &$soap_test;
+                    //$soap_test->showTestResult($this->debug);
+                    //$this->_saveResults($endpoint_info['id'], $soap_test->method_name);
+                    $soap_test->result = null;
                     continue;
                 }
                 
-                // if we're looking for a specific method, skip unless we have it
-                if ($this->testMethod && strcmp($this->testMethod,$soap_test->test_name)!=0) continue;
-                if ($this->testMethod && $this->currentTest == 'Round 2 Group C') {
-                    // we have to figure things out now
-                    if (!preg_match('/(.*):(.*),(\d),(\d)/',$this->testMethod, $m)) continue;
+                // If we're looking for a specific method, skip unless we have
+                // it.
+                if ($this->testMethod &&
+                    strcmp($this->testMethod, $soap_test->test_name) != 0) {
+                    continue;
+                }
+                if ($this->testMethod &&
+                    $this->currentTest == 'Round 2 Group C') {
+                    // We have to figure things out now.
+                    if (!preg_match('/(.*):(.*),(\d),(\d)/', $this->testMethod, $m)) {
+                        continue;
+                    }
                     
-                    // is the header in the headers list?
-                    $gotit = FALSE;
+                    // Is the header in the headers list?
+                    $gotit = false;
                     $thc = count($soap_test->headers);
                     for ($thi = 0; $thi < $thc; $thi++) {
-                        $header =& $soap_test->headers[$thi];
+                        $header = $soap_test->headers[$thi];
                         if (strtolower(get_class($header)) == 'soap_header') {
                             if ($header->name == $m[2]) {
-                                $gotit = $header->attributes['SOAP-ENV:actor'] == ($m[3]?SOAP_TEST_ACTOR_NEXT: SOAP_TEST_ACTOR_OTHER);
+                                $gotit = $header->attributes['SOAP-ENV:actor'] == ($m[3] ? SOAP_TEST_ACTOR_NEXT : SOAP_TEST_ACTOR_OTHER);
                                 $gotit = $gotit && $header->attributes['SOAP-ENV:mustUnderstand'] == $m[4];
                             }
-                        } else {
-                            if ($header[0] == $m[2]) {
-                                $gotit = $gotit && $header[3] == ($m[3]?SOAP_TEST_ACTOR_NEXT: SOAP_TEST_ACTOR_OTHER);
-                                $gotit = $gotit && $header[4] == $m[4];
-                            }
+                        } elseif ($header[0] == $m[2]) {
+                            $gotit = $gotit && $header[3] == ($m[3] ? SOAP_TEST_ACTOR_NEXT : SOAP_TEST_ACTOR_OTHER);
+                            $gotit = $gotit && $header[4] == $m[4];
                         }
                     }
-                    if (!$gotit) continue;
+                    if (!$gotit) {
+                        continue;
+                    }
                 }
             
-                // if we are skipping the rest of the tests (due to error) note a fault
+                // If we are skipping the rest of the tests (due to error)
+                // note a fault.
                 if ($skipendpoint) {
-                    
-                    $soap_test->setResult(0,$skipfault->faultcode, $empty_string,
-                                  $skipfault->faultstring,
-                                  $skipfault
-                                  );
-                    #$endpoint_info['tests'][] = &$soap_test;
+                    $soap_test->setResult(0,
+                                          $skipfault->faultcode,
+                                          $empty_string,
+                                          $skipfault->faultstring,
+                                          $skipfault);
+                    //$endpoint_info['tests'][] = &$soap_test;
                     $this->totals['fail']++;
                 } else {
-                    // run the endpoint test
+                    // Run the endpoint test.
                     unset($soap_test->result);
                     if ($this->doEndpointMethod($endpoint_info, $soap_test)) {
                         $this->totals['success']++;
                     } else {
-                        $skipendpoint = $soap_test->result['fault']->faultcode=='HTTP';
-                        if ($skipendpoint) $skipfault = $soap_test->result['fault'];
-                        else  $skipfault = NULL;
+                        $skipendpoint = $soap_test->result['fault']->faultcode == 'HTTP';
+                        $skipfault = $skipendpoint ? $soap_test->result['fault'] : null;
                         $this->totals['fail']++;
                     }
-                    #$endpoint_info['tests'][] = &$soap_test;
+                    //$endpoint_info['tests'][] = &$soap_test;
                 }
                 $soap_test->showTestResult($this->debug);
                 $this->_saveResults($endpoint_info->id, $soap_test);
@@ -568,7 +591,9 @@ class Interop_Client
                 $this->totals['calls']++;
             }
             unset($endpoint_info->client);
-            if ($this->numservers && ++$i >= $this->numservers) break;
+            if ($this->numservers && ++$i >= $this->numservers) {
+                break;
+            }
         }
     }
     
@@ -587,22 +612,24 @@ class Interop_Client
     }
     
     /**
-    *  doTests
-    *  go all out.  This takes time.
-    *
-    * @access public
-    */    
-    function doTests() {
-        // the mother of all interop tests
-        $dowsdl = array(0,1);
-        foreach($this->tests as $test) {
+     * Go all out. This takes time.
+     */    
+    function doTests()
+    {
+        // The mother of all interop tests.
+        $dowsdl = array(0, 1);
+        foreach ($this->tests as $test) {
             $this->currentTest = $test;
-            foreach($dowsdl as $usewsdl) {
+            foreach ($dowsdl as $usewsdl) {
                 $this->useWSDL = $usewsdl;
-                foreach($this->paramTypes as $ptype) {
-                    // skip a pointless test
-                    if ($usewsdl && $ptype == 'soapval') break;
-                    if (stristr($this->currentTest, 'Round 3') && !$usewsdl) break;
+                foreach ($this->paramTypes as $ptype) {
+                    // Skip a pointless test.
+                    if ($usewsdl && $ptype == 'soapval') {
+                        break;
+                    }
+                    if (stristr($this->currentTest, 'Round 3') && !$usewsdl) {
+                        break;
+                    }
                     $this->paramType = $ptype;
                     $this->doTest();
                 }
@@ -610,19 +637,14 @@ class Interop_Client
         }
     }
     
-    // ***********************************************************
-    // output functions
-    
     /**
-    *  getResults
-    * retreive results from the database, stuff them into the endpoint array
-    *
-    * @access private
-    */
-    function getMethodList($test = 'base') {
+     * @access private
+     */
+    function getMethodList($test = 'base')
+    {
         $this->dbc->setFetchMode(DB_FETCHMODE_ORDERED);
-        // retreive the results and put them into the endpoint info
-        $sql = "select distinct(function) from results where client='$this->client_type' and class='$test' order by function";
+        // Retreive the results and put them into the endpoint info.
+        $sql = "SELECT DISTINCT(function) FROM results WHERE client='$this->client_type' AND class='$test' ORDER BY function";
         $results = $this->dbc->getAll($sql);
         $ar = array();
         foreach($results as $result) {
@@ -634,35 +656,48 @@ class Interop_Client
     function outputTable()
     {
         $methods = $this->getMethodList($this->currentTest);
-        if (!$methods) return;
+        if (!$methods) {
+            return;
+        }
         $this->getResults($this->currentTest,$this->paramType,$this->useWSDL);
         
         echo "<b>Testing $this->currentTest ";
-        if ($this->useWSDL) echo "using WSDL ";
-        else echo "using Direct calls ";
+        if ($this->useWSDL) {
+            echo "using WSDL ";
+        } else {
+            echo "using Direct calls ";
+        }
         echo "with $this->paramType values</b><br>\n";
         
-        // calculate totals for this table
+        // Calculate totals for this table.
         $this->totals['success'] = 0;
         $this->totals['fail'] = 0;
         $this->totals['result'] = 0;
         $this->totals['wsdl'] = 0;
         $this->totals['connect'] = 0;
-        $this->totals['servers'] = 0; #count($this->endpoints);
-        $c = count ($this->endpoints);
-        for ($i=0;$i<$c;$i++) {
-            $endpoint_info =& $this->endpoints[$i];
-            if (!$endpoint_info->name) continue;
+        $this->totals['servers'] = 0; //count($this->endpoints);
+        for ($i = 0, $c = count($this->endpoints); $i < $c; ++$i) {
+            $endpoint_info = $this->endpoints[$i];
+            if (!$endpoint_info->name) {
+                continue;
+            }
             if (count($endpoint_info->methods) > 0) {
                 $this->totals['servers']++;
                 foreach ($methods as $method) {
                     $r = $endpoint_info->methods[$method]['result'];
-                    if ($r == 'OK') $this->totals['success']++;
-                    else if (stristr($r,'result')) $this->totals['result']++;
-                    else if (stristr($r,'wsdlcache')) $this->totals['connect']++;
-                    else if (stristr($r,'wsdl')) $this->totals['wsdl']++;
-                    else if (stristr($r,'http')) $this->totals['connect']++;
-                    else $this->totals['fail']++;
+                    if ($r == 'OK') {
+                        $this->totals['success']++;
+                    } elseif (stristr($r, 'result')) {
+                        $this->totals['result']++;
+                    } elseif (stristr($r, 'wsdlcache')) {
+                        $this->totals['connect']++;
+                    } elseif (stristr($r, 'wsdl')) {
+                        $this->totals['wsdl']++;
+                    } elseif (stristr($r, 'http')) {
+                        $this->totals['connect']++;
+                    } else {
+                        $this->totals['fail']++;
+                    }
                 }
             } else {
                 //unset($this->endpoints[$i]);
@@ -670,28 +705,27 @@ class Interop_Client
         }
         $this->totals['calls'] = count($methods) * $this->totals['servers'];
 
-        #if ($this->totals['fail'] == $this->totals['calls']) {
-        #    // assume tests have not run, skip outputing table
-        #    print "No Data Available<br>\n";
-        #    return;
-        #}
+        //if ($this->totals['fail'] == $this->totals['calls']) {
+        //    // assume tests have not run, skip outputing table
+        //    echo "No Data Available<br>\n";
+        //    return;
+        //}
         
-        echo "\n\n<b>Servers: {$this->totals['servers']} Calls: {$this->totals['calls']} ".
-            "Success: {$this->totals['success']} <br>\n".
-            "System-Fail: {$this->totals['fail']} Result-Failure: {$this->totals['result']} ".
-            "Connect-Failure: {$this->totals['connect']} WSDL-Failure: {$this->totals['wsdl']} </b><br>\n";
+        echo "\n\n<b>Servers: {$this->totals['servers']} Calls: {$this->totals['calls']} Success: {$this->totals['success']} <br>\n"
+            . "System-Fail: {$this->totals['fail']} Result-Failure: {$this->totals['result']} Connect-Failure: {$this->totals['connect']} WSDL-Failure: {$this->totals['wsdl']} </b><br>\n"
        
-        echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
-        echo "<tr><td class=\"BLANK\">Endpoint</td>\n";
+            . "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n"
+            . "<tr><td class=\"BLANK\">Endpoint</td>\n";
         foreach ($methods as $method) {
             $info = split(':', $method);
             echo "<td class='BLANK' valign='top'>";
             foreach ($info as $m) {
-                $hi = split(',',$m);
-                echo '<b>'.$hi[0]."</b><br>\n";
+                $hi = split(',', $m);
+                echo '<b>'. $hi[0] . "</b><br>\n";
                 if (count($hi) > 1) {
-                    echo "&nbsp;&nbsp;Actor=".($hi[1]?'Target':'Not Target')."<br>\n";
-                    echo "&nbsp;&nbsp;MustUnderstand=$hi[2]<br>\n";
+                    echo "&nbsp;&nbsp;Actor="
+                        . ($hi[1] ? 'Target' : 'Not Target')
+                        . "<br>\n&nbsp;&nbsp;MustUnderstand=$hi[2]<br>\n";
                 }
             }
             echo "</td>\n";
@@ -699,10 +733,11 @@ class Interop_Client
         echo "</tr>\n";
         $faults = array();
         $fi = 0;
-        $c = count ($this->endpoints);
-        for ($i=0;$i<$c;$i++) {
-            $endpoint_info =& $this->endpoints[$i];
-            if (!$endpoint_info->name) continue;
+        for ($i = 0, $c = count($this->endpoints); $i < $c; ++$i) {
+            $endpoint_info = $this->endpoints[$i];
+            if (!$endpoint_info->name) {
+                continue;
+            }
             if ($endpoint_info->wsdlURL) {
                 echo "<tr><td class=\"BLANK\"><a href=\"{$endpoint_info->wsdlURL}\">{$endpoint_info->name}</a></td>\n";
             } else {
@@ -726,25 +761,29 @@ class Interop_Client
         echo "</table><br>\n";
         if ($this->showFaults && count($faults) > 0) {
             echo "<b>ERROR Details:</b><br>\n<ul>\n";
-            # output more error detail
+            // output more error detail
             foreach ($faults as $fault) {
-                echo '<li>'.HTMLSpecialChars($fault)."</li>\n";
+                echo '<li>' . htmlspecialchars($fault) . "</li>\n";
             }
         }
         echo "</ul><br><br>\n";
     }
     
-    function outputTables() {
-        // the mother of all interop tests
-        $dowsdl = array(0,1);
+    function outputTables()
+    {
+        $dowsdl = array(0, 1);
         foreach($this->tests as $test) {
             $this->currentTest = $test;
-            foreach($dowsdl as $usewsdl) {
+            foreach ($dowsdl as $usewsdl) {
                 $this->useWSDL = $usewsdl;
-                foreach($this->paramTypes as $ptype) {
-                    // skip a pointless test
-                    if ($usewsdl && $ptype == 'soapval') break;
-                    if (stristr($this->currentTest, 'Round 3') && !$usewsdl) break;
+                foreach ($this->paramTypes as $ptype) {
+                    // Skip a pointless test.
+                    if ($usewsdl && $ptype == 'soapval') {
+                        break;
+                    }
+                    if (stristr($this->currentTest, 'Round 3') && !$usewsdl) {
+                        break;
+                    }
                     $this->paramType = $ptype;
                     $this->outputTable();
                 }
@@ -752,13 +791,12 @@ class Interop_Client
         }
     }
     
-    function showWire($id) {
-        $results = $this->dbc->getAll("select * from results where id=$id",NULL, DB_FETCHMODE_ASSOC );
-        #$wire = preg_replace("/>/",">\n",$results[0]['wire']);
+    function showWire($id)
+    {
+        $results = $this->dbc->getAll("SELECT * FROM results WHERE id=$id", null, DB_FETCHMODE_ASSOC );
+        //$wire = preg_replace("/>/",">\n",$results[0]['wire']);
         $wire = $results[0]['wire'];
-        echo "<pre>\n".HTMLSpecialChars($wire)."</pre>\n";
+        echo "<pre>\n" . htmlspecialchars($wire) . "</pre>\n";
     }
 
 }
-
-?>

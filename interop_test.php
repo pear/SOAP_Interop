@@ -24,40 +24,48 @@ define('SOAP_TEST_ACTOR_NEXT','http://schemas.xmlsoap.org/soap/actor/next');
 define('SOAP_TEST_ACTOR_OTHER','http://some/other/actor');
 
 class SOAP_Interop_Test {
+
     var $type = 'php';
-    var $test_name = NULL;
-    var $method_name = NULL;
-    var $method_params = NULL;
-    var $expect = NULL;
-    var $expect_fault = FALSE;
-    var $headers = NULL;
-    var $headers_expect = NULL;
+    var $test_name = null;
+    var $method_name = null;
+    var $method_params = null;
+    var $expect = null;
+    var $expect_fault = false;
+    var $headers = null;
+    var $headers_expect = null;
     var $result = array();
     var $show = 1;
     var $debug = 0;
     var $encoding = SOAP_DEFAULT_ENCODING;
-    var $service = NULL; // if multiple services, this sets to a specific service
+
+    /**
+     * If multiple services, this sets to a specific service.
+     */
+    var $service = null;
     
-    function SOAP_Interop_Test($methodname, $params, $expect=NULL) {
-        if (strchr($methodname,'(')) {
-            preg_match('/(.*)\((.*)\)/',$methodname,$matches);
+    function SOAP_Interop_Test($methodname, $params, $expect = null)
+    {
+        if (strchr($methodname, '(')) {
+            preg_match('/(.*)\((.*)\)/', $methodname, $matches);
             $this->test_name = $methodname;
             $this->method_name = $matches[1];
         } else {
             $this->test_name = $this->method_name = $methodname;
         }
-        $this->method_params =& $params;
-        $this->expect =& $expect;
-        
+        $this->method_params = $params;
+        $this->expect = $expect;
+
         // determine test type
         if ($params) {
-        $v = array_values($params);
-        if (gettype($v[0]) == 'object' && strtolower(get_class($v[0])) == 'soap_value')
-            $this->type = 'soapval';
+            $v = array_values($params);
+            if (gettype($v[0]) == 'object' &&
+                strtolower(get_class($v[0])) == 'soap_value') {
+                $this->type = 'soapval';
+            }
         }
     }
     
-    function setResult($ok, $result, $wire, $error = '', $fault = NULL)
+    function setResult($ok, $result, $wire, $error = '', $fault = null)
     {
         $this->result['success'] = $ok;
         $this->result['result'] = $result;
@@ -72,57 +80,55 @@ class SOAP_Interop_Test {
     }
     
     /**
-    *  showMethodResult
-    * print simple output about a methods result
-    *
-    * @param array endpoint_info
-    * @param string method
-    * @access public
-    */    
-    function showTestResult($debug = 0) {
-        // debug output
-        if ($debug) $this->show = 1;
+     * Prints simple output about a methods result.
+     */    
+    function showTestResult($debug = 0)
+    {
+        // Debug output
         if ($debug) {
-            echo str_repeat("-",50)."<br>\n";
+            $this->show = 1;
+            echo str_repeat('-', 50) . "\n";
         }
         
-        echo "testing $this->test_name : ";
+        echo "Testing $this->test_name: ";
         if ($this->headers) {
             $hc = count($this->headers);
-            for ($i=0; $i < $hc; $i++) {
-                $h =& $this->headers[$i];
+            for ($i = 0; $i < $hc; $i++) {
+                $h = $this->headers[$i];
                 if (strtolower(get_class($h)) == 'soap_header') {
-                    
                     echo "\n    {$h->name},{$h->attributes['SOAP-ENV:actor']},{$h->attributes['SOAP-ENV:mustUnderstand']} : ";
                 } else {
-                    if (!$h[4]) $h[4] = SOAP_TEST_ACTOR_NEXT;
-                    if (!$h[3]) $h[3] = 0;
+                    if (!$h[4]) {
+                        $h[4] = SOAP_TEST_ACTOR_NEXT;
+                    }
+                    if (!$h[3]) {
+                        $h[3] = 0;
+                    }
                     echo "\n    $h[0],$h[4],$h[3] : ";
                 }
             }
         }
         
         if ($debug) {
-            print "method params: ";
+            echo "method params: ";
             print_r($this->params);
-            print "\n";
+            echo "\n";
         }
         
         $ok = $this->result['success'];
         if ($ok) {
-            print "SUCCESS\n";
+            echo "SUCCESS\n";
         } else {
             $fault = $this->result['fault'];
             if ($fault) {
-                print "FAILED: [{$fault->faultcode}] {$fault->faultstring}\n";
+                echo "FAILED: [{$fault->faultcode}] {$fault->faultstring}\n";
             } else {
-                print "FAILED: ".$this->result['result']."\n";
+                echo "FAILED: " . $this->result['result'] . "\n";
             }
         }
         if ($debug) {
-            echo "<pre>\n".htmlentities($this->result['wire'])."</pre>\n";
+            echo "\n" . $this->result['wire'] . "\n";
         }
     }
-}
 
-?>
+}

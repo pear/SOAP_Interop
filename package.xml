@@ -34,9 +34,8 @@
     <state>beta</state>
     <version>0.8.2</version>
     <date>2007-01-21</date>
-    <notes>
-       More PHP 4.4 and 5 reference fixes.
-    </notes>
+    <notes>* More PHP 4.4 and 5 reference fixes.
+* Code cleanup.</notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
         <file role="php" name="config.php.dist"/>

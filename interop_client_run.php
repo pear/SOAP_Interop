@@ -30,29 +30,19 @@ error_reporting(E_ALL);
 require 'Console/Getopt.php';
 require_once 'interop_client.php';
 
-#$SOAP_RAW_CONVERT = TRUE;
 $INTEROP_LOCAL_SERVER = TRUE;// add local server to endpoints
 
 $iop =& new Interop_Client();
 
-// set some defaults
-$iop->client_type='pear'; // 'pear' or 'php-soap'
-$iop->currentTest = '';      // see $tests above
-$iop->paramType = 'php';     // 'php' or 'soapval'
-$iop->useWSDL = 0;           // 1= do wsdl tests
-$iop->numServers = 0;        // 0 = all
-$iop->specificEndpoint = ''; // test only this endpoint
-$iop->testMethod = '';       // test only this method
-$iop->skipEndpointList = array();#array('Frontier','CapeConnect','Apache Axis','Apache SOAP 2.2'); // endpoints to skip
-$iop->nosave = 0; // 1= disable saving results to database
 // debug output
 $iop->show = 1;
 $iop->debug = 0;
 $iop->showFaults = 0; // used in result table output
-$restrict = NULL;
+$restrict = null;
 
-#$_SERVER['argv'] = array('-r', "Round 3", '-s', "Local PEAR::SOAP");
-$args = Console_Getopt::getopt($_SERVER['argv'], 'c:dehl:m:np:r:s:t:v:wq', array('help'));
+$args = Console_Getopt::getopt($_SERVER['argv'],
+                               'c:dehl:m:np:r:s:t:v:wq',
+                               array('help'));
 if (PEAR::isError($args)) {
     echo "\n" . $args->getMessage() . "\n\n";
     help();
@@ -62,7 +52,7 @@ if (PEAR::isError($args)) {
 function help() {
 print <<<END
 interop_client_run.php [options]
-    -c pear|php-soap        client type (not implmented yet)
+    -c pear|php-soap        client type (not implemented yet)
     -d                      turn on debug output
     -e                      fetch interop test information
     -h                      this help
@@ -115,10 +105,9 @@ foreach ($args[0] as $arg) {
     case 'h':
     case '--help':
         help();
-        exit(1);
-        break;
+        exit(0);
     case 'l':
-        $iop->skipEndpointList = split(',',$arg[1]);
+        $iop->skipEndpointList = split(',', $arg[1]);
         break;
     case 'm':
         $iop->testMethod = $arg[1];
@@ -139,7 +128,6 @@ foreach ($args[0] as $arg) {
             die("invalid print argument\n");
         }
         exit(0);
-        break;
     case 'r':
         $restrict = $arg[1];
         break;
@@ -163,12 +151,10 @@ foreach ($args[0] as $arg) {
     }
 }
 
-// these are endpoints that are listed in the interop
-// server, but do not realy exist any longer
-$bad = array('Spheon JSOAP','Phalanx',
-             'SilverStream','SOAPx4 (PHP)',
-             'Virtuoso (development)',
-             'Zolera SOAP Infrastructure');
+// These are endpoints that are listed in the interop server, but do not realy
+// exist any longer.
+$bad = array('Spheon JSOAP', 'Phalanx', 'SilverStream', 'SOAPx4 (PHP)',
+             'Virtuoso (development)', 'Zolera SOAP Infrastructure');
 $iop->skipEndpointList = array_merge($iop->skipEndpointList, $bad);
 
 if ($restrict) {
@@ -184,7 +170,8 @@ if ($restrict) {
 if ($iop->currentTest) {
     $iop->doTest();  // run a single set of tests using above options
 } else {
-#$iop->doGroupTests(); // run a group of tests set in $currentTest
+    // $iop->doGroupTests(); // run a group of tests set in $currentTest
     $iop->doTests();  // run all tests, ignore above options
 }
+
 echo "done\n";
