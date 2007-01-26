@@ -419,10 +419,12 @@ class Interop_Client
             
             // compare the results with what we sent
             $ok = $this->compareResult($sent_d, $return, $sent->type);
+            $expected = $sent_d;
             unset($sent_d);
             unset($sent);
             if (!$ok && $soap_test->expect) {
                 $ok = $this->compareResult($soap_test->expect, $return);
+                $expected = $soap_test->expect;
             }
             
             if ($ok) {
@@ -443,6 +445,7 @@ class Interop_Client
                 $fault = new stdClass();
                 $fault->faultcode = 'RESULT';
                 $fault->faultstring = 'The returned result did not match what we expected to receive';
+                $fault->faultdetail = "RETURNED:\n" . var_export($return, true) . "\n\nEXPECTED:\n" . var_export($expected, true);
                 $soap_test->setResult(0,
                                       $fault->faultcode,
                                       $soap->getWire(),
