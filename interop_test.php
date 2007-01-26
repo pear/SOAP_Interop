@@ -122,6 +122,9 @@ class SOAP_Interop_Test {
             $fault = $this->result['fault'];
             if ($fault) {
                 echo "FAILED: [{$fault->faultcode}] {$fault->faultstring}\n";
+                if (!empty($fault->faultdetail)) {
+                    echo $fault->faultdetail . "\n";
+                }
             } else {
                 echo "FAILED: " . $this->result['result'] . "\n";
             }
