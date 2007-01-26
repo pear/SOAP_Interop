@@ -132,9 +132,9 @@ unset($test);
 // Base echoBase64
 
 $soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBase64', 
-        array('inputBase64' => &$base64));
+        array('inputBase64' => &$base64), 'Nebraska');
 $soap_tests[INTEROP_R2BASE][] =& new SOAP_Interop_Test('echoBase64', 
-        array('inputBase64' => &$base64_soapval));
+        array('inputBase64' => &$base64_soapval), 'Nebraska');
 
 //***********************************************************
 // Base echoHexBinary
