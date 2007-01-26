@@ -35,6 +35,7 @@ function string_compare($e1, $e2)
     $e2_type = gettype($e2);
     $ok = FALSE;
     if ($e1_type == "string") {
+        require_once 'SOAP/Type/dateTime.php';
         $dt =& new SOAP_Type_dateTime();
         $ok = $dt->compare($e1, $e2) == 0;
     }

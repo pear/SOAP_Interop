@@ -123,6 +123,7 @@ class SOAP_Interop_Base {
 
     function echoDate($timeInstant)
     {
+        require_once 'SOAP/Type/dateTime.php';
         $dt = new SOAP_Type_dateTime($timeInstant);
         if ($dt->toUnixtime() != -1) {
             $value = $dt->toSOAP();
