@@ -32,10 +32,10 @@
   <license>PHP License</license>
   <release>
     <state>beta</state>
-    <version>0.8.2</version>
-    <date>2007-01-21</date>
-    <notes>* More PHP 4.4 and 5 reference fixes.
-* Code cleanup.</notes>
+    <version>0.8.3</version>
+    <date>2007-06-29</date>
+    <notes>* Remove link to nonexistent file (Bug #11453).
+* Remove links to no longer existing SOAPBuilders website (Bug #11455).</notes>
     <filelist>
       <dir name="/" baseinstalldir="SOAP/Interop">
         <file role="php" name="config.php.dist"/>
@@ -101,6 +101,13 @@
     </deps>
   </release>
   <changelog>
+    <release>
+      <state>beta</state>
+      <version>0.8.2</version>
+      <date>2007-01-21</date>
+      <notes>* More PHP 4.4 and 5 reference fixes.
+* Code cleanup.</notes>
+    </release>
     <release>
       <state>beta</state>
       <version>0.8.1</version>
