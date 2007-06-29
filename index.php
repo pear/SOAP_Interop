@@ -28,8 +28,7 @@ $baseurl = 'http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$intero
 
 <h2 align='center'>PEAR SOAP Interop</h2>
 <p>Welcome to the PEAR SOAP Interop pages.  These pages are set up for
-SOAP Builder interop tests.  You can find out more about the interop tests
-at <a href="http://www.soapbuilders.org/">SOAP Builders</a>.</p>
+SOAP Builder interop tests.</p>
 <table width="90%" border="1" cellspacing="0" cellpadding="2" align="center">
 <?php
 

@@ -1,7 +1,6 @@
 Round 2 Interop Test files
 
 Resources:
-http://www.soapbuilders.com/
 http://www.whitemesa.com/interop.htm
 http://www.whitemesa.com/r3/interop3.html
 http://www.pocketsoap.com/registration/
