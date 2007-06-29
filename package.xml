@@ -29,15 +29,17 @@ Supports Round 2 and Round 3 tests.
  </lead>
  <date>2007-06-29</date>
  <version>
-  <release>0.8.3</release>
-  <api>0.8.3</api>
+  <release>0.8.2</release>
+  <api>0.8.0</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Remove link to nonexistent file (Bug #11453).
+ <notes>* More PHP 4.4 and 5 reference fixes.
+* Code cleanup.
+* Remove link to nonexistent file (Bug #11453).
 * Remove links to no longer existing SOAPBuilders website (Bug #11455).</notes>
  <contents>
   <dir name="/">
@@ -117,23 +119,8 @@ Supports Round 2 and Round 3 tests.
  <changelog>
   <release>
    <version>
-    <release>0.8.2</release>
-    <api>0.8.2</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <date>2007-01-21</date>
-   <license uri="http://www.php.net/license">PHP License</license>
-   <notes>* More PHP 4.4 and 5 reference fixes.
-* Code cleanup.
-   </notes>
-  </release>
-  <release>
-   <version>
     <release>0.8.1</release>
-    <api>0.8.1</api>
+    <api>0.8.0</api>
    </version>
    <stability>
     <release>beta</release>
@@ -147,7 +134,7 @@ Supports Round 2 and Round 3 tests.
   <release>
    <version>
     <release>0.8</release>
-    <api>0.8</api>
+    <api>0.8.0</api>
    </version>
    <stability>
     <release>beta</release>
