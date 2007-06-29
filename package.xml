@@ -1,151 +1,204 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!-- do not use the "Type" attribute here, that one is only for
-     generated package.xml files -->
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0">
-  <name>SOAP_Interop</name>
-  <summary>SOAP Interop Test Application</summary>
-  <description>
-    Test harness for SOAP Builders tests.
-    Supports Round 2 and Round 3 tests.
-  </description>
-  <maintainers>
-    <maintainer>
-      <user>yunosh</user>
-      <role>lead</role>
-      <name>Jan Schneider</name>
-      <email>jan@horde.org</email>
-    </maintainer>
-    <maintainer>
-      <user>shane</user>
-      <name>Shane Caraveo</name>
-      <email>shane@php.net</email>
-      <role>lead</role>
-    </maintainer>
-    <maintainer>
-      <user>arnaud</user>
-      <name>Arnaud Limbourg</name>
-      <email>arnaud@php.net</email>
-      <role>lead</role>
-    </maintainer>
-  </maintainers>
-  <license>PHP License</license>
-  <release>
-    <state>beta</state>
-    <version>0.8.3</version>
-    <date>2007-06-29</date>
-    <notes>* Remove link to nonexistent file (Bug #11453).
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.6.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+ <name>SOAP_Interop</name>
+ <channel>pear.php.net</channel>
+ <summary>SOAP Interop Test Application</summary>
+ <description>Test harness for SOAP Builders tests.
+Supports Round 2 and Round 3 tests.
+ </description>
+ <lead>
+  <name>Jan Schneider</name>
+  <user>yunosh</user>
+  <email>jan@horde.org</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Shane Caraveo</name>
+  <user>shane</user>
+  <email>shane@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Arnaud Limbourg</name>
+  <user>arnaud</user>
+  <email>arnaud@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-06-29</date>
+ <version>
+  <release>0.8.3</release>
+  <api>0.8.3</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP License</license>
+ <notes>* Remove link to nonexistent file (Bug #11453).
 * Remove links to no longer existing SOAPBuilders website (Bug #11455).</notes>
-    <filelist>
-      <dir name="/" baseinstalldir="SOAP/Interop">
-        <file role="php" name="config.php.dist"/>
-        <file role="php" name="index.php"/>
-        <file role="php" name="interop_client.php"/>
-        <file role="php" name="interop_client_results.php"/>
-        <file role="php" name="interop_client_run.php"/>
-        <file role="php" name="interop_database.sql"/>
-        <file role="php" name="interop_test.php"/>
-        <file role="php" name="interop_test_functions.php"/>
-        <file role="php" name="readme.txt"/>
-        <file role="php" name="registrationAndNotification.php"/>
-        <file role="php" name="interop_Round2Base.php"/>
-        <file role="php" name="interop_Round2GroupB.php"/>
-        <file role="php" name="interop_Round2GroupC.php"/>
-        <file role="php" name="interop_Round3GroupD.php"/>
-        <file role="php" name="server_Round2Base.php"/>
-        <file role="php" name="server_Round2GroupB.php"/>
-        <file role="php" name="server_Round2GroupC.php"/>
-        <file role="php" name="server_Round3GroupD.php"/>
-        <file role="php" name="server_Round3GroupDCompound1.php"/>
-        <file role="php" name="server_Round3GroupDCompound2.php"/>
-        <file role="php" name="server_Round3GroupDDocLit.php"/>
-        <file role="php" name="server_Round3GroupDDocLitParams.php"/>
-        <file role="php" name="server_Round3GroupDEmptySA.php"/>
-        <file role="php" name="server_Round3GroupDImport1.php"/>
-        <file role="php" name="server_Round3GroupDImport2.php"/>
-        <file role="php" name="server_Round3GroupDImport3.php"/>
-        <file role="php" name="server_Round3GroupDRpcEnc.php"/>
-        <file role="php" name="params_classes.php"/>
-        <file role="php" name="params_values.php"/>
-        <file role="php" name="params_Round2Base.php"/>
-        <file role="php" name="params_Round2GroupB.php"/>
-        <file role="php" name="params_Round2GroupC.php"/>
-        <file role="php" name="params_Round3GroupD.php"/>
-        <dir name="wsdl">
-          <file role="php" name="compound1.wsdl.php"/>
-          <file role="php" name="compound2.wsdl.php"/>
-          <file role="php" name="echoheadersvc.wsdl.php"/>
-          <file role="php" name="emptysa.wsdl.php"/>
-          <file role="php" name="import1.wsdl.php"/>
-          <file role="php" name="import2.wsdl.php"/>
-          <file role="php" name="import3.wsdl.php"/>
-          <file role="php" name="interop.wsdl.php"/>
-          <file role="php" name="interopB.wsdl.php"/>
-          <file role="php" name="InteropTestDocLit.wsdl.php"/>
-          <file role="php" name="InteropTestDocLitParameters.wsdl.php"/>
-          <file role="php" name="InteropTestExtensibility.wsdl.php"/>
-          <file role="php" name="InteropTestExtensibilityRequired.wsdl.php"/>
-          <file role="php" name="InteropTestheaders.wsdl.php"/>
-          <file role="php" name="InteropTestList.wsdl.php"/>
-          <file role="php" name="InteropTestRpcEnc.wsdl.php"/>
-            <dir name="imported">
-              <file role="php" name="import1B.wsdl"/>
-              <file role="php" name="import2B.wsdl"/>
-              <file role="php" name="import2B.xsd"/>
-            </dir>
-        </dir>
-      </dir>
-    </filelist>
-    <deps>
-      <dep type="pkg" rel="has">SOAP</dep>
-    </deps>
+ <contents>
+  <dir name="/">
+   <dir name="wsdl">
+    <dir name="imported">
+     <file baseinstalldir="SOAP/Interop" name="import1B.wsdl" role="php" />
+     <file baseinstalldir="SOAP/Interop" name="import2B.wsdl" role="php" />
+     <file baseinstalldir="SOAP/Interop" name="import2B.xsd" role="php" />
+    </dir> <!-- //wsdl/imported -->
+    <file baseinstalldir="SOAP/Interop" name="compound1.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="compound2.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="echoheadersvc.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="emptysa.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="import1.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="import2.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="import3.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="interop.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="interopB.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestDocLit.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestDocLitParameters.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestExtensibility.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestExtensibilityRequired.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestheaders.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestList.wsdl.php" role="php" />
+    <file baseinstalldir="SOAP/Interop" name="InteropTestRpcEnc.wsdl.php" role="php" />
+   </dir> <!-- //wsdl -->
+   <file baseinstalldir="SOAP/Interop" name="config.php.dist" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="index.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_client.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_client_results.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_client_run.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_database.sql" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_Round2Base.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_Round2GroupB.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_Round2GroupC.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_Round3GroupD.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_test.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="interop_test_functions.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_classes.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_Round2Base.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_Round2GroupB.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_Round2GroupC.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_Round3GroupD.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="params_values.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="readme.txt" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="registrationAndNotification.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round2Base.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round2GroupB.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round2GroupC.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupD.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDCompound1.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDCompound2.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDDocLit.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDDocLitParams.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDEmptySA.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDImport1.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDImport2.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDImport3.php" role="php" />
+   <file baseinstalldir="SOAP/Interop" name="server_Round3GroupDRpcEnc.php" role="php" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>SOAP</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.8.2</release>
+    <api>0.8.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-01-21</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* More PHP 4.4 and 5 reference fixes.
+* Code cleanup.
+   </notes>
   </release>
-  <changelog>
-    <release>
-      <state>beta</state>
-      <version>0.8.2</version>
-      <date>2007-01-21</date>
-      <notes>* More PHP 4.4 and 5 reference fixes.
-* Code cleanup.</notes>
-    </release>
-    <release>
-      <state>beta</state>
-      <version>0.8.1</version>
-      <date>2007-01-21</date>
-      <notes>
-         PHP 4.4 and 5 compatibility fixes.
-      </notes>
-    </release>
-    <release>
-      <state>beta</state>
-      <version>0.8</version>
-      <date>2003-08-17</date>
-      <notes>
-         Minor updates bump version to match PEAR::SOAP
-      </notes>
-    </release>
-    <release>
-      <version>0.7.2</version>
-      <date>2003-04-01</date>
-      <notes>
-         Minor fixes over 0.7.1.
-      </notes>
-    </release>
-    <release>
-      <state>beta</state>
-      <version>0.7.1</version>
-      <date>2002-12-01</date>
-      <notes>
-         Minor fixes to make interop suite run without modifications.
-      </notes>
-    </release>
-    <release>
-      <state>beta</state>
-      <version>0.7.0</version>
-      <date>2002-10-20</date>
-      <notes>
-        Initial release of the SOAP Builders Interop Test Suite for PEAR::SOAP
-      </notes>
-    </release>
-  </changelog>
+  <release>
+   <version>
+    <release>0.8.1</release>
+    <api>0.8.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2007-01-21</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>PHP 4.4 and 5 compatibility fixes.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.8</release>
+    <api>0.8</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2003-08-17</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>Minor updates bump version to match PEAR::SOAP
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.2</release>
+    <api>0.7.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2003-04-01</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>Minor fixes over 0.7.1.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.1</release>
+    <api>0.7.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2002-12-01</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>Minor fixes to make interop suite run without modifications.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.7.0</release>
+    <api>0.7.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2002-10-20</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>Initial release of the SOAP Builders Interop Test Suite for PEAR::SOAP
+   </notes>
+  </release>
+ </changelog>
 </package>
