@@ -18,29 +18,41 @@
 //
 // $Id$
 //
+
 require_once 'SOAP/Value.php';
 
 class SOAPStruct {
+
     var $varString;
     var $varInt;
     var $varFloat;
-    function SOAPStruct($s=NULL, $i=NULL, $f=NULL) {
+
+    function SOAPStruct($s = null, $i = null, $f = null)
+    {
         $this->varString = $s;
         $this->varInt = $i;
         $this->varFloat = $f;
     }
     
-    function __to_soap($name = 'inputStruct', $header=false, $mustUnderstand=0, $actor='http://schemas.xmlsoap.org/soap/actor/next')
+    function __to_soap($name = 'inputStruct', $header = false,
+                       $mustUnderstand = 0,
+                       $actor = 'http://schemas.xmlsoap.org/soap/actor/next')
     {
-        $inner[] = new SOAP_Value('varString','string',$this->varString);
-        $inner[] = new SOAP_Value('varInt','int',$this->varInt);
-        $inner[] = new SOAP_Value('varFloat','float',$this->varFloat);
+        $inner = array(new SOAP_Value('varString', 'string', $this->varString),
+                       new SOAP_Value('varInt', 'int', $this->varInt),
+                       new SOAP_Value('varFloat', 'float', $this->varFloat));
         if ($header) {
-            return new SOAP_Header($name,'{http://soapinterop.org/xsd}SOAPStruct',$inner,$mustUnderstand,$actor);
+            return new SOAP_Header($name,
+                                   '{http://soapinterop.org/xsd}SOAPStruct',
+                                   $inner,
+                                   $mustUnderstand,
+                                   $actor);
         }
-        return new SOAP_Value($name,'{http://soapinterop.org/xsd}SOAPStruct',$inner);
-        
+        return new SOAP_Value($name,
+                              '{http://soapinterop.org/xsd}SOAPStruct',
+                              $inner);
     }
+
 }
 
 class SOAPStructStruct {
