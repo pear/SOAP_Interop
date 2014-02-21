@@ -1,0 +1,39 @@
+{
+    "authors": [
+        {
+            "email": "jan@horde.org",
+            "name": "Jan Schneider",
+            "role": "Lead"
+        },
+        {
+            "email": "shane@php.net",
+            "name": "Shane Caraveo",
+            "role": "Lead"
+        },
+        {
+            "email": "arnaud@php.net",
+            "name": "Arnaud Limbourg",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "./"
+        ]
+    },
+    "description": "More info available on: http://pear.php.net/package/SOAP_Interop",
+    "license": "PHP License",
+    "name": "pear/soap_interop",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=SOAP_Interop",
+        "source": "https://github.com/pear/SOAP_Interop"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*",
+        "pear/soap": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
